@@ -34,7 +34,7 @@ const Harvest: React.FC<HarvestProps> = ({ pid }) => {
           <StyledCardHeader>
             <CardIcon>🍣</CardIcon>
             <Value value={getBalanceNumber(earnings)} />
-            <Label text="SUSHI Earned" />
+            <Label text="SASHIMI Earned" />
           </StyledCardHeader>
           <StyledCardActions>
             <Button

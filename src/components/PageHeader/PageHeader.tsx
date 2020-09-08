@@ -36,8 +36,8 @@ const StyledIcon = styled.div`
   height: 120px;
   line-height: 120px;
   text-align: center;
-  width: 120px;
 `
+//  width: 120px;
 
 const StyledTitle = styled.h1`
   font-family: 'Kaushan Script', sans-serif;

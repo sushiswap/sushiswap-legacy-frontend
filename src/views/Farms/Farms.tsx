@@ -27,7 +27,7 @@ const Farms: React.FC = () => {
             <Route exact path={path}>
               <PageHeader
                 icon={<img src={chef} height="120" />}
-                subtitle="Earn SUSHI tokens by staking Uniswap V2 LP Tokens."
+                subtitle="Earn SASHIMI tokens by staking Uniswap V2 LP Tokens."
                 title="Select Your Favorite Dishes"
               />
               <FarmCards />

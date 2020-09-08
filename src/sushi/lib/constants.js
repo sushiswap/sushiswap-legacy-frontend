@@ -86,7 +86,7 @@ export const supportedPools = [
       // 42: '0x76cE90eC600f6D8Af072eAA811485C5e0EE17d30', // sushi
       1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
     },
-    name: 'Sushi Party!',
+    name: 'Sashimi Party!',
     symbol: 'SUSHI-ETH UNI-V2 LP',
     tokenSymbol: 'SUSHI',
     icon: '🍣',

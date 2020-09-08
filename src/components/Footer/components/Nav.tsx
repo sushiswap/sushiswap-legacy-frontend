@@ -14,7 +14,7 @@ const Nav: React.FC = () => {
         target="_blank"
         href="https://uniswap.info/pair/0xce84867c3c02b05dc570d0135103d3fb9cc19433"
       >
-        Uniswap SUSHI-ETH
+        Uniswap SASHIMI-ETH
       </StyledLink>
       {/*<StyledLink target="_blank" href="https://discord.gg/hJ2p555">*/}
       {/*  Discord*/}
