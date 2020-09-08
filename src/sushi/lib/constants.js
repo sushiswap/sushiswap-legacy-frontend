@@ -75,22 +75,40 @@ UNI-V2 LP Address on mainnet for reference
 */
 
 export const supportedPools = [
+  // completely for aelf
   {
-    pid: 12,
+    pid: 0,
     lpAddresses: {
-      42: '0xdb2d3Ec777aF8fc0C1B0B951fe263e21aF4dd120',
-      1: '0xce84867c3c02b05dc570d0135103d3fb9cc19433',
+      42: '0xF5fE4e3237BDE3AF05Fe190585FA5319b6bF6Dbc',
+      1: '0xce84867c3c02b05dc570d0135103d3fb9cc19433', // Null
     },
     tokenAddresses: {
-      42: '0x9EB246347d5055440ADC1eC10a040d4d627abA56', // aelf sushi token
+      42: '0x4615fF2bf25B5b40E08Bf50C7eBb8Bd6C97Eb14F', // ABC token
       // 42: '0x76cE90eC600f6D8Af072eAA811485C5e0EE17d30', // sushi
-      1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
+      1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2', // Null
     },
+    // elf:42: 0xB5685232b185cAdF7C5F58217722Ac40BC4ec45e
     name: 'Sashimi Party!',
-    symbol: 'SUSHI-ETH UNI-V2 LP',
-    tokenSymbol: 'SUSHI',
+    symbol: 'ABC-ELF UNI-V2 LP',
+    tokenSymbol: 'ABC',
     icon: '🍣',
   },
+  // {
+  //   pid: 12,
+  //   lpAddresses: {
+  //     42: '0xdb2d3Ec777aF8fc0C1B0B951fe263e21aF4dd120',
+  //     1: '0xce84867c3c02b05dc570d0135103d3fb9cc19433',
+  //   },
+  //   tokenAddresses: {
+  //     42: '0x9EB246347d5055440ADC1eC10a040d4d627abA56', // aelf sushi token
+  //     // 42: '0x76cE90eC600f6D8Af072eAA811485C5e0EE17d30', // sushi
+  //     1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
+  //   },
+  //   name: 'Sashimi Party!',
+  //   symbol: 'SUSHI-ETH UNI-V2 LP',
+  //   tokenSymbol: 'SUSHI',
+  //   icon: '🍣',
+  // },
   // {
   //   pid: 0,
   //   lpAddresses: {

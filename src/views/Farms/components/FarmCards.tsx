@@ -133,6 +133,19 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   const poolActive = true // startTime * 1000 - Date.now() <= 0
 
+  let farmApy:any;
+  if (farm.apy && !farm.apy.comparedTo(NaN)) {
+    farmApy = '- %';
+  } else {
+    farmApy = farm.apy
+        ? `${farm.apy
+            .times(new BigNumber(100))
+            .toNumber()
+            .toLocaleString('en-US')
+            .slice(0, -1)}%`
+        : 'Loading ...';
+  }
+
   return (
     <StyledCardWrapper>
       {farm.tokenSymbol === 'SUSHI' && <StyledCardAccent />}
@@ -161,13 +174,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
             <StyledInsight>
               <span>APY</span>
               <span>
-                {farm.apy
-                  ? `${farm.apy
-                      .times(new BigNumber(100))
-                      .toNumber()
-                      .toLocaleString('en-US')
-                      .slice(0, -1)}%`
-                  : 'Loading ...'}
+                {farmApy}
               </span>
               {/* <span>
                 {farm.tokenAmount
