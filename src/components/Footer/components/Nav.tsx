@@ -16,15 +16,16 @@ const Nav: React.FC = () => {
       >
         Uniswap SUSHI-ETH
       </StyledLink>
-      <StyledLink target="_blank" href="https://discord.gg/hJ2p555">
-        Discord
-      </StyledLink>
-      <StyledLink target="_blank" href="https://github.com/sushiswap">
+      {/*<StyledLink target="_blank" href="https://discord.gg/hJ2p555">*/}
+      {/*  Discord*/}
+      {/*</StyledLink>*/}
+      {/*<StyledLink target="_blank" href="https://github.com/sushiswap">*/}
+      <StyledLink target="_blank" href="https://github.com/hzz780/sushiswap-frontend">
         Github
       </StyledLink>
-      <StyledLink target="_blank" href="https://twitter.com/sushiswap">
-        Twitter
-      </StyledLink>
+      {/*<StyledLink target="_blank" href="https://twitter.com/sushiswap">*/}
+      {/*  Twitter*/}
+      {/*</StyledLink>*/}
     </StyledNav>
   )
 }

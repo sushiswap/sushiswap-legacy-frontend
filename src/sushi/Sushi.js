@@ -1,7 +1,7 @@
 import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
 import { Contracts } from './lib/contracts.js'
-import { Account } from './lib/accounts.js'
+// import { Account } from './lib/accounts.js'
 import { EVM } from './lib/evm.js'
 
 import { contractAddresses } from './lib/constants'
@@ -42,13 +42,13 @@ export class Sushi {
     this.wethAddress = contractAddresses.weth[networkId]
   }
 
-  async resetEVM() {
-    this.testing.resetEVM(this.snapshot)
-  }
+  // async resetEVM() {
+  //   this.testing.resetEVM(this.snapshot)
+  // }
 
-  addAccount(address, number) {
-    this.accounts.push(new Account(this.contracts, address, number))
-  }
+  // addAccount(address, number) {
+  //   this.accounts.push(new Account(this.contracts, address, number))
+  // }
 
   setProvider(provider, networkId) {
     this.web3.setProvider(provider)
@@ -56,29 +56,29 @@ export class Sushi {
     this.operation.setNetworkId(networkId)
   }
 
-  setDefaultAccount(account) {
-    this.web3.eth.defaultAccount = account
-    this.contracts.setDefaultAccount(account)
-  }
+  // setDefaultAccount(account) {
+  //   this.web3.eth.defaultAccount = account
+  //   this.contracts.setDefaultAccount(account)
+  // }
 
-  getDefaultAccount() {
-    return this.web3.eth.defaultAccount
-  }
+  // getDefaultAccount() {
+  //   return this.web3.eth.defaultAccount
+  // }
 
-  loadAccount(account) {
-    const newAccount = this.web3.eth.accounts.wallet.add(account.privateKey)
-
-    if (
-      !newAccount ||
-      (account.address &&
-        account.address.toLowerCase() !== newAccount.address.toLowerCase())
-    ) {
-      throw new Error(`Loaded account address mismatch.
-        Expected ${account.address}, got ${
-        newAccount ? newAccount.address : null
-      }`)
-    }
-  }
+  // loadAccount(account) {
+  //   const newAccount = this.web3.eth.accounts.wallet.add(account.privateKey)
+  //
+  //   if (
+  //     !newAccount ||
+  //     (account.address &&
+  //       account.address.toLowerCase() !== newAccount.address.toLowerCase())
+  //   ) {
+  //     throw new Error(`Loaded account address mismatch.
+  //       Expected ${account.address}, got ${
+  //       newAccount ? newAccount.address : null
+  //     }`)
+  //   }
+  // }
 
   toBigN(a) {
     return BigNumber(a)

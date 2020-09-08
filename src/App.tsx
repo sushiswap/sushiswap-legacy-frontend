@@ -53,18 +53,24 @@ const App: React.FC = () => {
   )
 }
 
+// https://infura.io/docs/gettingStarted/chooseaNetwork
+// https://www.anyblockanalytics.com/news/overview-ethereum-blockchain-networks/
 const Providers: React.FC = ({ children }) => {
+
+  let chainId = 42;
+  let rpcUrl = 'https://kovan.infura.io/';
+  if (/\/\/sushi.aelf.io/.test(window.location.href)) {
+    chainId = 3;
+    rpcUrl = 'https://mainnet.eth.aragon.network/';
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <UseWalletProvider
-        chainId={1}
+        chainId={chainId}
         connectors={{
-          walletconnect: { rpcUrl: 'https://mainnet.eth.aragon.network/' },
+          walletconnect: { rpcUrl },
         }}
-        // chainId={42}
-        // connectors={{
-        //   walletconnect: { rpcUrl: 'https://kovan.infura.io/' },
-        // }}
       >
         <YamProvider>
           <TransactionProvider>
