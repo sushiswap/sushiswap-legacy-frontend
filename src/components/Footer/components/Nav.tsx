@@ -1,28 +1,41 @@
 import React from 'react'
 import styled from 'styled-components'
+import {contractAddresses} from '../../../sushi/lib/constants';
+import {getEthChainInfo} from "../../../utils/getEthChainInfo";
+// import {GITHUB} from '../../../constants/config';
+
+const {
+    ethscanType,
+    chainId
+} = getEthChainInfo();
+
+const contractAddressesTemp = contractAddresses as {[index: string]:any};
 
 const Nav: React.FC = () => {
-  return (
+    return (
     <StyledNav>
       <StyledLink
         target="_blank"
-        href="https://etherscan.io/address/0xc2edad668740f1aa35e4d8f227fb8e17dca888cd#code"
+        href={`https://${ethscanType}etherscan.io/address/${contractAddressesTemp.masterChef[chainId]}#code`}
       >
         MasterChef Contract
       </StyledLink>
-      <StyledLink
-        target="_blank"
-        href="https://uniswap.info/pair/0xce84867c3c02b05dc570d0135103d3fb9cc19433"
-      >
-        Uniswap SASHIMI-ETH
-      </StyledLink>
-      {/*<StyledLink target="_blank" href="https://discord.gg/hJ2p555">*/}
-      {/*  Discord*/}
+      {/*<StyledLink*/}
+      {/*  target="_blank"*/}
+      {/*  href={`https://uniswap.info/pair/${contractAddressesTemp.sushi[chainId]}`}*/}
+      {/*>*/}
+      {/*  Uniswap SASHIMI-ETH*/}
       {/*</StyledLink>*/}
-      {/*<StyledLink target="_blank" href="https://github.com/sushiswap">*/}
-      <StyledLink target="_blank" href="https://github.com/hzz780/sushiswap-frontend">
-        Github
+      <StyledLink target="_blank" href="https://discord.gg/zTdmUkb">
+        Discord
       </StyledLink>
+        <StyledLink target="_blank" href="https://t.me/joinchat/KABj-Bz6CVzyi23HK2rjzA">
+        Telegram
+      </StyledLink>
+      {/*<StyledLink target="_blank" href="https://github.com/sushiswap">*/}
+      {/*<StyledLink target="_blank" href={GITHUB}>*/}
+      {/*  Github*/}
+      {/*</StyledLink>*/}
       {/*<StyledLink target="_blank" href="https://twitter.com/sushiswap">*/}
       {/*  Twitter*/}
       {/*</StyledLink>*/}

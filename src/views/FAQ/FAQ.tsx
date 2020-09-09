@@ -10,7 +10,7 @@ import PageHeader from '../../components/PageHeader'
 const FAQ: React.FC = () => {
   return (
     <Page>
-      <PageHeader icon="❓" title="About SushiSwap" />
+      <PageHeader icon="❓" title="About SashimiSwap" />
       <Container>
         <Card>
           <CardContent>

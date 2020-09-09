@@ -8,7 +8,7 @@ import {
 } from './constants.js'
 
 import UNIV2PairAbi from './abi/uni_v2_lp.json'
-// TODO: update newsushi.json
+
 import SushiAbi from './abi/sushi.json'
 import MasterChefAbi from './abi/masterchef.json'
 import ERC20Abi from './abi/erc20.json'

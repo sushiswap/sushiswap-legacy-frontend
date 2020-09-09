@@ -20,6 +20,11 @@ import ModalTitle from '../../ModalTitle'
 import Separator from '../../Separator'
 import Spacer from '../../Spacer'
 import Value from '../../Value'
+import {getEthChainInfo} from "../../../utils/getEthChainInfo";
+
+const {
+  ethscanType
+} = getEthChainInfo();
 
 const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
   const { account, reset } = useWallet()
@@ -45,14 +50,15 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
             </CardIcon>
             <StyledBalance>
               <Value value={getBalanceNumber(sushiBalance)} />
-              <Label text="SUSHI Balance" />
+              {/*<Label text="SUSHI Balance" />*/}
+              <Label text="SASHIMI Balance" />
             </StyledBalance>
           </StyledBalanceWrapper>
         </div>
 
         <Spacer />
         <Button
-          href={`https://etherscan.io/address/${account}`}
+          href={`https://${ethscanType}etherscan.io/address/${account}`}
           text="View on Etherscan"
           variant="secondary"
         />

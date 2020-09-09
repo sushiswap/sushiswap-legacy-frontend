@@ -18,6 +18,8 @@ import FAQ from './views/FAQ'
 import Farms from './views/Farms'
 import Home from './views/Home'
 
+import { getEthChainInfo } from './utils/getEthChainInfo'
+
 import theme from './theme'
 
 const App: React.FC = () => {
@@ -57,12 +59,10 @@ const App: React.FC = () => {
 // https://www.anyblockanalytics.com/news/overview-ethereum-blockchain-networks/
 const Providers: React.FC = ({ children }) => {
 
-  let chainId = 42;
-  let rpcUrl = 'https://kovan.infura.io/';
-  if (/\/\/sushi.aelf.io/.test(window.location.href)) {
-    chainId = 3;
-    rpcUrl = 'https://mainnet.eth.aragon.network/';
-  }
+  const {
+    chainId,
+    rpcUrl
+  } = getEthChainInfo();
 
   return (
     <ThemeProvider theme={theme}>

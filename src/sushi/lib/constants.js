@@ -1,6 +1,6 @@
 // import BigNumber from 'bignumber.js/bignumber'
 
-export const SUBTRACT_GAS_LIMIT = 100000
+// export const SUBTRACT_GAS_LIMIT = 100000
 
 // const ONE_MINUTE_IN_SECONDS = new BigNumber(60)
 // const ONE_HOUR_IN_SECONDS = ONE_MINUTE_IN_SECONDS.times(60)
@@ -40,19 +40,19 @@ export const SUBTRACT_GAS_LIMIT = 100000
 
 export const contractAddresses = {
   sushi: {
-    42: '0x9EB246347d5055440ADC1eC10a040d4d627abA56', // aelf sushi
+    42: '0xC28E27870558cF22ADD83540d2126da2e4b464c2', // aelf sushi new one 9.9
     // 42: '0x43a7903E3a839a67192151eE300e11198985E54b', // sushi
-    1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
+    1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2', // sushi use
   },
   masterChef: {
-    42: '0xF2E0B0c5cC6bC4836108C4167e79153B7eD1A380', // aelf sushi
+    42: '0x1DaeD74ed1dD7C9Dabbe51361ac90A69d851234D', // aelf sushi new one 9.9
     // 42: '0x245A074cA9814fB46A21562bC70fAB92F8A3F779', // sushi
-    1: '0xc2edad668740f1aa35e4d8f227fb8e17dca888cd',
+    1: '0xc2edad668740f1aa35e4d8f227fb8e17dca888cd', // sushi use
   },
   weth: {
     42: '0xa050886815cfc52a24b9c4ad044ca199990b6690', // aelf sushi
     // 42: '0xd0a1e359811322d97991e03f863a0c30c2cf029c', // weth in kovan
-    1: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+    1: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // sushi use
   },
 }
 
@@ -75,11 +75,11 @@ UNI-V2 LP Address on mainnet for reference
 */
 
 export const supportedPools = [
-  // completely for aelf
+  // Test Only
   {
-    pid: 0,
+    pid: 10,
     lpAddresses: {
-      42: '0xF5fE4e3237BDE3AF05Fe190585FA5319b6bF6Dbc',
+      42: '0xF5fE4e3237BDE3AF05Fe190585FA5319b6bF6Dbc', // ABC-ELF
       1: '0xce84867c3c02b05dc570d0135103d3fb9cc19433', // Null
     },
     tokenAddresses: {
@@ -88,280 +88,163 @@ export const supportedPools = [
       1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2', // Null
     },
     // elf:42: 0xB5685232b185cAdF7C5F58217722Ac40BC4ec45e
-    name: 'Sashimi Party!',
+    name: 'ABC Test Only!',
     symbol: 'ABC-ELF UNI-V2 LP',
     tokenSymbol: 'ABC',
     icon: '🍣',
   },
-  // {
-  //   pid: 12,
-  //   lpAddresses: {
-  //     42: '0xdb2d3Ec777aF8fc0C1B0B951fe263e21aF4dd120',
-  //     1: '0xce84867c3c02b05dc570d0135103d3fb9cc19433',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0x9EB246347d5055440ADC1eC10a040d4d627abA56', // aelf sushi token
-  //     // 42: '0x76cE90eC600f6D8Af072eAA811485C5e0EE17d30', // sushi
-  //     1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
-  //   },
-  //   name: 'Sashimi Party!',
-  //   symbol: 'SUSHI-ETH UNI-V2 LP',
-  //   tokenSymbol: 'SUSHI',
-  //   icon: '🍣',
-  // },
-  // {
-  //   pid: 0,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-  //   },
-  //   name: 'Tether Turtle',
-  //   symbol: 'USDT-ETH UNI-V2 LP',
-  //   tokenSymbol: 'USDT',
-  //   icon: '🐢',
-  // },
-  // {
-  //   pid: 1,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-  //   },
-  //   name: 'Circle Snail',
-  //   symbol: 'USDC-ETH UNI-V2 LP',
-  //   tokenSymbol: 'USDC',
-  //   icon: '🐌',
-  // },
-  // {
-  //   pid: 2,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0xa478c2975ab1ea89e8196811f51a7b7ade33eb11',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0x6b175474e89094c44da98b954eedeac495271d0f',
-  //   },
-  //   name: 'Donald DAI',
-  //   symbol: 'DAI-ETH UNI-V2 LP',
-  //   tokenSymbol: 'DAI',
-  //   icon: '🦆',
-  // },
-  // {
-  //   pid: 3,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0xf80758ab42c3b07da84053fd88804bcb6baa4b5c',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0x57ab1ec28d129707052df4df418d58a2d46d5f51',
-  //   },
-  //   name: 'Spartan Dollar',
-  //   symbol: 'SUSD-ETH UNI-V2 LP',
-  //   tokenSymbol: 'SUSD',
-  //   icon: '🦍',
-  // },
-  // {
-  //   pid: 7,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0x88d97d199b9ed37c29d846d00d443de980832a22',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0x04fa0d235c4abf4bcf4787af4cf447de572ef828',
-  //   },
-  //   name: 'Umami Squid',
-  //   symbol: 'UMA-ETH UNI-V2 LP',
-  //   tokenSymbol: 'UMA',
-  //   icon: '🦑',
-  // },
-  // {
-  //   pid: 9,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0xf421c3f2e695c2d4c0765379ccace8ade4a480d9',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0xba11d00c5f74255f56a5e366f4f77f5a186d7f55',
-  //   },
-  //   name: 'Band-osaurus',
-  //   symbol: 'BAND-ETH UNI-V2 LP',
-  //   tokenSymbol: 'BAND',
-  //   icon: '🦖',
-  // },
-  // {
-  //   pid: 8,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0xa2107fa5b38d9bbd2c461d6edf11b11a50f6b974',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0x514910771af9ca656af840dff83e8264ecf986ca',
-  //   },
-  //   name: 'Toadie Marine',
-  //   symbol: 'LINK-ETH UNI-V2 LP',
-  //   tokenSymbol: 'LINK',
-  //   icon: '🐸',
-  // },
-  // {
-  //   pid: 10,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0xc5be99a02c6857f9eac67bbce58df5572498f40c',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0xd46ba6d942050d489dbd938a2c909a5d5039a161',
-  //   },
-  //   name: 'Ample Chicks',
-  //   symbol: 'AMPL-ETH UNI-V2 LP',
-  //   tokenSymbol: 'AMPL',
-  //   icon: '🐥',
-  // },
-  // {
-  //   pid: 4,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0xcffdded873554f362ac02f8fb1f02e5ada10516f',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0xc00e94cb662c3520282e6f5717214004a7f26888',
-  //   },
-  //   name: 'Compound Truffle',
-  //   symbol: 'COMP-ETH UNI-V2 LP',
-  //   tokenSymbol: 'COMP',
-  //   icon: '🍄',
-  // },
-  // {
-  //   pid: 5,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0xab3f9bf1d81ddb224a2014e98b238638824bcf20',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0x80fb784b7ed66730e8b1dbd9820afd29931aab03',
-  //   },
-  //   name: 'Aave Boar',
-  //   symbol: 'LEND-ETH UNI-V2 LP',
-  //   tokenSymbol: 'LEND',
-  //   icon: '🐗',
-  // },
-  // {
-  //   pid: 6,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0x43ae24960e5534731fc831386c07755a2dc33d47',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
-  //   },
-  //   name: 'Synthetic Snake',
-  //   symbol: 'SNX-ETH UNI-V2 LP',
-  //   tokenSymbol: 'SNX',
-  //   icon: '🐍',
-  // },
-  // {
-  //   pid: 11,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0x2fdbadf3c4d5a8666bc06645b8358ab803996e28',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e',
-  //   },
-  //   name: 'YFI Whale',
-  //   symbol: 'YFI-ETH UNI-V2 LP',
-  //   tokenSymbol: 'YFI',
-  //   icon: '🐋',
-  // },
-  // {
-  //   pid: 13,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0x8bd1661da98ebdd3bd080f0be4e6d9be8ce9858c',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0x408e41876cccdc0f92210600ef50372656052a38',
-  //   },
-  //   name: 'REN Rhino',
-  //   symbol: 'REN-ETH UNI-V2 LP',
-  //   tokenSymbol: 'REN',
-  //   icon: '🦏',
-  // },
-  // {
-  //   pid: 14,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0xaad22f5543fcdaa694b68f94be177b561836ae57',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0x68A118Ef45063051Eac49c7e647CE5Ace48a68a5',
-  //   },
-  //   name: 'BASED Bull',
-  //   symbol: 'BASE-sUSD UNI-V2 LP',
-  //   tokenSymbol: 'BASED',
-  //   icon: '🐂',
-  // },
-  // {
-  //   pid: 15,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0xcc3d1ecef1f9fd25599dbea2755019dc09db3c54',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0x476c5E26a75bd202a9683ffD34359C0CC15be0fF',
-  //   },
-  //   name: 'SRM Shark',
-  //   symbol: 'SRM-ETH UNI-V2 LP',
-  //   tokenSymbol: 'SRM',
-  //   icon: '🦈',
-  // },
-  // {
-  //   pid: 16,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0xa5904961f61bae7c4dd8478077556c91bf291cfd',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0xaba8cac6866b83ae4eec97dd07ed254282f6ad8a',
-  //   },
-  //   name: 'YAMv2 YAM',
-  //   symbol: 'YAMv2-ETH UNI-V2 LP',
-  //   tokenSymbol: 'YAMv2',
-  //   icon: '🍠',
-  // },
-  // {
-  //   pid: 17,
-  //   lpAddresses: {
-  //     42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
-  //     1: '0x3da1313ae46132a397d90d95b1424a9a7e3e0fce',
-  //   },
-  //   tokenAddresses: {
-  //     42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
-  //     1: '0xD533a949740bb3306d119CC777fa900bA034cd52',
-  //   },
-  //   name: 'CRV Crocodile',
-  //   symbol: 'CRV-ETH UNI-V2 LP',
-  //   tokenSymbol: 'CRV',
-  //   icon: '🐊',
-  // },
+  // ELF
+  // TODO: SASHIMI add main net info
+  {
+    pid: 9,
+    lpAddresses: {
+      42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
+      1: '0xce84867c3c02b05dc570d0135103d3fb9cc19433', // Null
+    },
+    tokenAddresses: {
+      42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
+      1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2', // Null
+    },
+    name: 'Sashimi Party!',
+    symbol: 'SASHIMI-WETH UNI-V2 LP',
+    tokenSymbol: 'SASHIMI',
+    icon: '🍣',
+  },
+  {
+    pid: 7,
+    lpAddresses: {
+      42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
+      1: '0xA6be7F7C6c454B364cDA446ea39Be9e5E4369DE8',
+    },
+    tokenAddresses: {
+      42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
+      1: '0xbf2179859fc6D5BEE9Bf9158632Dc51678a4100e',
+    },
+    name: 'elf garden 🧝🧝‍♂️🧝‍♀️',
+    symbol: 'ELF-ETH UNI-V2 LP',
+    tokenSymbol: 'ELF',
+    icon: '🧝',
+  },
+  {
+    pid: 8,
+    lpAddresses: {
+      42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
+      1: '0xBb2b8038a1640196FbE3e38816F3e67Cba72D940',
+    },
+    tokenAddresses: {
+      42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
+      1: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+    },
+    name: 'BTC Satoshi and his friends！',
+    symbol: 'WBTC-ETH UNI-V2 LP',
+    tokenSymbol: 'WBTC',
+    icon: '₿',
+  },
+
+  // Others
+  {
+    pid: 0,
+    lpAddresses: {
+      42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
+      1: '0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852',
+    },
+    tokenAddresses: {
+      42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
+      1: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+    },
+    name: 'Tether Turtle',
+    symbol: 'USDT-ETH UNI-V2 LP',
+    tokenSymbol: 'USDT',
+    icon: '🐢',
+  },
+  {
+    pid: 1,
+    lpAddresses: {
+      42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
+      1: '0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc',
+    },
+    tokenAddresses: {
+      42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
+      1: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+    },
+    name: 'Circle Snail',
+    symbol: 'USDC-ETH UNI-V2 LP',
+    tokenSymbol: 'USDC',
+    icon: '🐌',
+  },
+  {
+    pid: 2,
+    lpAddresses: {
+      42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
+      1: '0xa478c2975ab1ea89e8196811f51a7b7ade33eb11',
+    },
+    tokenAddresses: {
+      42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
+      1: '0x6b175474e89094c44da98b954eedeac495271d0f',
+    },
+    name: 'Donald DAI',
+    symbol: 'DAI-ETH UNI-V2 LP',
+    tokenSymbol: 'DAI',
+    icon: '🦆',
+  },
+  {
+    pid: 3,
+    lpAddresses: {
+      42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
+      1: '0x2fdbadf3c4d5a8666bc06645b8358ab803996e28',
+    },
+    tokenAddresses: {
+      42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
+      1: '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e',
+    },
+    name: 'YFI Whale',
+    symbol: 'YFI-ETH UNI-V2 LP',
+    tokenSymbol: 'YFI',
+    icon: '🐋',
+  },
+  {
+    pid: 4,
+    lpAddresses: {
+      42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
+      1: '0xab3f9bf1d81ddb224a2014e98b238638824bcf20',
+    },
+    tokenAddresses: {
+      42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
+      1: '0x80fb784b7ed66730e8b1dbd9820afd29931aab03',
+    },
+    name: 'Aave Boar',
+    symbol: 'LEND-ETH UNI-V2 LP',
+    tokenSymbol: 'LEND',
+    icon: '🐗',
+  },
+  {
+    pid: 5,
+    lpAddresses: {
+      42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
+      1: '0xa2107fa5b38d9bbd2c461d6edf11b11a50f6b974',
+    },
+    tokenAddresses: {
+      42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
+      1: '0x514910771af9ca656af840dff83e8264ecf986ca',
+    },
+    name: 'Toadie Marine',
+    symbol: 'LINK-ETH UNI-V2 LP',
+    tokenSymbol: 'LINK',
+    icon: '🐸',
+  },
+  {
+    pid: 6,
+    lpAddresses: {
+      42: '0xb21f5d46e1756cfeb34496636d38f97dc8552415',
+      1: '0x43ae24960e5534731fc831386c07755a2dc33d47',
+    },
+    tokenAddresses: {
+      42: '0xf2c73AF42FbAC096FE8F591899C5fc8bCB13884B',
+      1: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
+    },
+    name: 'Synthetic Snake',
+    symbol: 'SNX-ETH UNI-V2 LP',
+    tokenSymbol: 'SNX',
+    icon: '🐍',
+  },
 ]

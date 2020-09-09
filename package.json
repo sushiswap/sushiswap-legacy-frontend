@@ -25,6 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "CI= GENERATE_SOURCEMAP=false react-scripts build",
+    "build:pro": "rm -rf build* && npm run build && tar -zcvf build.tar.gz  build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "yarn build && cp ./build/index.html ./build/200.html && surge ./build sushiswap.org"

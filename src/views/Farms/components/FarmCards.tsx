@@ -23,6 +23,8 @@ import useAllStakedValue, {
   StakedValue,
 } from '../../../hooks/useAllStakedValue'
 
+import {BASIC_TOKEN} from '../../../constants/config';
+
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber
 }
@@ -32,9 +34,8 @@ const FarmCards: React.FC = () => {
   const { account } = useWallet()
   const stakedValue = useAllStakedValue()
 
-  // TODO: SASHIMI select
   const sushiIndex = farms.findIndex(
-    ({ tokenSymbol }) => tokenSymbol === 'SUSHI',
+    ({ tokenSymbol }) => tokenSymbol === BASIC_TOKEN,
   )
 
   const sushiPrice =
@@ -134,7 +135,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
   const poolActive = true // startTime * 1000 - Date.now() <= 0
 
   let farmApy:any;
-  if (farm.apy && !farm.apy.comparedTo(NaN)) {
+  if (farm.apy && farm.apy.isNaN()) {
     farmApy = '- %';
   } else {
     farmApy = farm.apy
@@ -142,7 +143,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
             .times(new BigNumber(100))
             .toNumber()
             .toLocaleString('en-US')
-            .slice(0, -1)}%`
+            .slice(0, -1) || '-' }%`
         : 'Loading ...';
   }
 
