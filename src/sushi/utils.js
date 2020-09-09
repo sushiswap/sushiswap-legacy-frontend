@@ -123,7 +123,9 @@ export const approve = async (lpContract, masterChefContract, account) => {
 }
 
 export const getSushiSupply = async (sushi) => {
-  return new BigNumber(await sushi.contracts.sushi.methods.totalSupply().call())
+  const supply = await sushi.contracts.sushi.methods.totalSupply().call()
+  console.log(supply)
+  return new BigNumber(supply)
 }
 
 export const stake = async (masterChefContract, pid, amount, account) => {

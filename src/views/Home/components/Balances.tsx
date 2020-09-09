@@ -8,7 +8,7 @@ import CardContent from '../../../components/CardContent'
 import Label from '../../../components/Label'
 import Spacer from '../../../components/Spacer'
 import Value from '../../../components/Value'
-import SushiIcon from '../../../components/SushiIcon'
+// import SushiIcon from '../../../components/SushiIcon'
 import useAllEarnings from '../../../hooks/useAllEarnings'
 import useAllStakedValue from '../../../hooks/useAllStakedValue'
 import useFarms from '../../../hooks/useFarms'
@@ -91,7 +91,7 @@ const Balances: React.FC = () => {
         <CardContent>
           <StyledBalances>
             <StyledBalance>
-              <SushiIcon />
+              {/* <SushiIcon /> */}
               <Spacer />
               <div style={{ flex: 1 }}>
                 <Label text="Your SUSHI Balance" />

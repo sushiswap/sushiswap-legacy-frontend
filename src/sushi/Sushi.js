@@ -7,26 +7,29 @@ import { EVM } from './lib/evm.js'
 import { contractAddresses } from './lib/constants'
 
 export class Sushi {
-  constructor(provider, networkId, testing, options) {
-    var realProvider
+  constructor(provider, networkId, testing, options={}) {
+    const realProvider = new Web3.providers.WebsocketProvider(
+      provider,
+      10000
+    )
 
-    if (typeof provider === 'string') {
-      if (provider.includes('wss')) {
-        realProvider = new Web3.providers.WebsocketProvider(
-          provider,
-          options.ethereumNodeTimeout || 10000,
-        )
-      } else {
-        realProvider = new Web3.providers.HttpProvider(
-          provider,
-          options.ethereumNodeTimeout || 10000,
-        )
-      }
-    } else {
-      realProvider = provider
-    }
+    // if (typeof provider === 'string') {
+    //   if (provider.includes('wss')) {
+    //     realProvider = new Web3.providers.WebsocketProvider(
+    //       provider,
+    //       options.ethereumNodeTimeout || 10000,
+    //     )
+    //   } else {
+    //     realProvider = new Web3.providers.HttpProvider(
+    //       provider,
+    //       options.ethereumNodeTimeout || 10000,
+    //     )
+    //   }
+    // } else {
+    //   realProvider = provider
+    // }
 
-    this.web3 = new Web3(realProvider)
+    this.web3 = new Web3(new Web3.providers.WebsocketProvider(provider));
 
     if (testing) {
       this.testing = new EVM(realProvider)
