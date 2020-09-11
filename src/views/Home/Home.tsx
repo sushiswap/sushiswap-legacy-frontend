@@ -22,8 +22,16 @@ const Home: React.FC = () => {
       </Container>
       <Spacer size="lg" />
       <StyledInfo>
-        🏆<b>Pro Tip</b>: SUSHI-ETH UNI-V2 LP token pool yields TWICE more token
-        rewards per block.
+        <b>🪂 Welcome!</b>
+      </StyledInfo>
+      <StyledInfo>
+        You're currently using our classic interface (<b>sushiswapclassic.org</b>).
+      </StyledInfo>
+      <StyledInfo>
+        Soon, we'll be launching a new UI on <b>sushiswap.org</b>.
+      </StyledInfo>
+      <StyledInfo>
+        Until that time, please enjoy using our classic interface!
       </StyledInfo>
       <Spacer size="lg" />
       <div
@@ -31,7 +39,11 @@ const Home: React.FC = () => {
           margin: '0 auto',
         }}
       >
-        <Button text="🔪 See the Menu" to="/farms" variant="secondary" />
+        <Button
+          text="🔪 Learn more about SushiSwap"
+          href="https://help.sushidocs.com/"
+          variant="secondary"
+        />
       </div>
     </Page>
   )
