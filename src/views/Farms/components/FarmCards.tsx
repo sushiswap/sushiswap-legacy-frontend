@@ -28,7 +28,7 @@ const FarmCards: React.FC = () => {
   const stakedValue = useAllStakedValue()
 
   const sushiIndex = farms.findIndex(
-    ({ tokenSymbol }) => tokenSymbol === 'SUSHI',
+    ({ tokenSymbol }) => tokenSymbol === 'METM',
   )
 
   const sushiPrice =
@@ -128,11 +128,14 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   return (
     <StyledCardWrapper>
-      {farm.tokenSymbol === 'SUSHI' && <StyledCardAccent />}
+      {farm.tokenSymbol === 'METM' && <StyledCardAccent />}
       <Card>
         <CardContent>
           <StyledContent>
-            <CardIcon>{farm.icon}</CardIcon>
+            <div>
+            <img src='../assets/img/metaswap.svg' alt={farm.name}/>
+            </div>
+            {/* <CardIcon>{farm.icon}</CardIcon> */}
             <StyledTitle>{farm.name}</StyledTitle>
             <StyledDetails>
               <StyledDetail>Deposit {farm.lpToken.toUpperCase()}</StyledDetail>
@@ -141,6 +144,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
             <Spacer />
             <Button
               disabled={!poolActive}
+              
               text={poolActive ? 'Select' : undefined}
               to={`/farms/${farm.id}`}
             >
@@ -224,6 +228,7 @@ const StyledCardAccent = styled.div`
 
 const StyledCards = styled.div`
   width: 900px;
+  
   @media (max-width: 768px) {
     width: 100%;
   }

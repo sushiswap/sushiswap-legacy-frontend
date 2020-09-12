@@ -1,5 +1,5 @@
 body {
-  background: #fff8ee;
+  background:  linear-gradient(90deg, rgba(50,15,125,0.989233193277311) 0%, rgba(22,20,33,1) 100%);
   margin: 0;
   font-family: 'Noto Sans', sans-serif;
   font-size: 16px;
@@ -10,4 +10,6 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+    
 }
+

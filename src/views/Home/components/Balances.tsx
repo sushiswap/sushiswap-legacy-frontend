@@ -94,7 +94,7 @@ const Balances: React.FC = () => {
               {/* <SushiIcon /> */}
               <Spacer />
               <div style={{ flex: 1 }}>
-                <Label text="Your SUSHI Balance" />
+                <Label text="Your METM Balance" />
                 <Value
                   value={!!account ? getBalanceNumber(sushiBalance) : 'Locked'}
                 />
@@ -105,7 +105,7 @@ const Balances: React.FC = () => {
         <Footnote>
           Pending harvest
           <FootnoteValue>
-            <PendingRewards /> SUSHI
+            <PendingRewards /> METM
           </FootnoteValue>
         </Footnote>
       </Card>
@@ -113,14 +113,14 @@ const Balances: React.FC = () => {
 
       <Card>
         <CardContent>
-          <Label text="Total SUSHI Supply" />
+          <Label text="Total METM Supply" />
           <Value
             value={totalSupply ? getBalanceNumber(totalSupply) : 'Locked'}
           />
         </CardContent>
         <Footnote>
           New rewards per block
-          <FootnoteValue>1,000 SUSHI</FootnoteValue>
+          <FootnoteValue>1,000 METM</FootnoteValue>
         </Footnote>
       </Card>
     </StyledWrapper>
@@ -134,7 +134,7 @@ const Footnote = styled.div`
   border-top: solid 1px ${(props) => props.theme.color.grey[300]};
 `
 const FootnoteValue = styled.div`
-  font-family: 'Roboto Mono', monospace;
+font-family: 'Montserrat', sans-serif;
   float: right;
 `
 
@@ -150,6 +150,7 @@ const StyledWrapper = styled.div`
 
 const StyledBalances = styled.div`
   display: flex;
+  
 `
 
 const StyledBalance = styled.div`

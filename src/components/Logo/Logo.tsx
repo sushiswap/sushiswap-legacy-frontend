@@ -1,14 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import chef from '../../assets/img/chef.png'
+import metaswap from '../../assets/img/metaswap.svg'
 
 const Logo: React.FC = () => {
   return (
     <StyledLogo to="/">
-      <img src={chef} height="32" style={{ marginTop: -4 }} />
+      <img src={metaswap} height="32" style={{ marginTop: -4 }} />
       <StyledText>
-        SushiSwap <MasterChefText>MasterChef</MasterChefText>
+        MetaSwap
       </StyledText>
     </StyledLogo>
   )
@@ -27,10 +27,10 @@ const StyledLogo = styled(Link)`
 
 const StyledText = styled.span`
   color: ${(props) => props.theme.color.grey[600]};
-  font-family: 'Reem Kufi', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  font-weight: 800;
+  
   margin-left: ${(props) => props.theme.spacing[2]}px;
   @media (max-width: 400px) {
     display: none;

@@ -1,9 +1,9 @@
 {
-  "short_name": "SushiSwap",
-  "name": "Farm SUSHI with Uniswap LP Tokens",
+  "short_name": "MetaSwap",
+  "name": "Farm METM with Uniswap LP Tokens",
   "icons": [
     {
-      "src": "favicon.png",
+      "src": "favicon.svg",
       "type": "image/png",
       "sizes": "240x240"
     }

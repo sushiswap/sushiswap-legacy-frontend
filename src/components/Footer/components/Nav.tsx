@@ -39,6 +39,7 @@ const StyledLink = styled.a`
   padding-left: ${(props) => props.theme.spacing[3]}px;
   padding-right: ${(props) => props.theme.spacing[3]}px;
   text-decoration: none;
+  font-family: 'Montserrat', sans-serif; 
   &:hover {
     color: ${(props) => props.theme.color.grey[500]};
   }

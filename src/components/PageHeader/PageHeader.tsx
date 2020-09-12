@@ -40,16 +40,21 @@ const StyledIcon = styled.div`
 `
 
 const StyledTitle = styled.h1`
-  font-family: 'Kaushan Script', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  text-align:center;
+  
   color: ${(props) => props.theme.color.grey[600]};
   font-size: 36px;
   font-weight: 700;
   margin: 0;
+  margin-top:1.5em;
+  margin-bottom:0.5em;
   padding: 0;
 `
 
 const StyledSubtitle = styled.h3`
   color: ${(props) => props.theme.color.grey[400]};
+  font-family: 'Montserrat', sans-serif;
   font-size: 18px;
   font-weight: 400;
   margin: 0;
