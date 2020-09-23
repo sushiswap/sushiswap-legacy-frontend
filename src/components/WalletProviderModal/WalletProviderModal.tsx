@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 
 import metamaskLogo from '../../assets/img/metamask-fox.svg'
-import walletConnectLogo from '../../assets/img/wallet-connect.svg'
 
 import Button from '../Button'
 import Modal, { ModalProps } from '../Modal'
@@ -34,14 +33,6 @@ const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
               icon={<img src={metamaskLogo} style={{ height: 32 }} />}
               onConnect={() => connect('injected')}
               title="Metamask"
-            />
-          </StyledWalletCard>
-          <Spacer size="sm" />
-          <StyledWalletCard>
-            <WalletCard
-              icon={<img src={walletConnectLogo} style={{ height: 24 }} />}
-              onConnect={() => connect('walletconnect')}
-              title="WalletConnect"
             />
           </StyledWalletCard>
         </StyledWalletsWrapper>

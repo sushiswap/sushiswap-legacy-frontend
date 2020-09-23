@@ -1,20 +1,20 @@
 import { useCallback } from 'react'
+import { Contract } from 'web3-eth-contract'
 
 import useSushi from './useSushi'
 import { useWallet } from 'use-wallet'
 
-import { harvest, getMasterChefContract } from '../sushi/utils'
+import { harvest } from '../sushi/utils'
 
-const useReward = (pid: number) => {
+const useReward = (poolContract: Contract) => {
   const { account } = useWallet()
   const sushi = useSushi()
-  const masterChefContract = getMasterChefContract(sushi)
 
   const handleReward = useCallback(async () => {
-    const txHash = await harvest(masterChefContract, pid, account)
+    const txHash = await harvest(poolContract, account)
     console.log(txHash)
     return txHash
-  }, [account, pid, sushi])
+  }, [account, poolContract, sushi])
 
   return { onReward: handleReward }
 }

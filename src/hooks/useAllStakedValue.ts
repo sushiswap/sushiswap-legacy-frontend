@@ -35,11 +35,9 @@ const useAllStakedValue = () => {
     const balances: Array<StakedValue> = await Promise.all(
       farms.map(
         ({
-          pid,
           lpContract,
           tokenContract,
         }: {
-          pid: number
           lpContract: Contract
           tokenContract: Contract
         }) =>
@@ -48,7 +46,6 @@ const useAllStakedValue = () => {
             wethContact,
             lpContract,
             tokenContract,
-            pid,
           ),
       ),
     )

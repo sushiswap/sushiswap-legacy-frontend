@@ -14,8 +14,7 @@ import useAllStakedValue, {
   StakedValue,
 } from '../../../hooks/useAllStakedValue'
 import useFarms from '../../../hooks/useFarms'
-import useSushi from '../../../hooks/useSushi'
-import { getEarned, getMasterChefContract } from '../../../sushi/utils'
+import { getEarned } from '../../../sushi/utils'
 import { bnToDec } from '../../../utils'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
@@ -28,7 +27,7 @@ const FarmCards: React.FC = () => {
   const stakedValue = useAllStakedValue()
 
   const sushiIndex = farms.findIndex(
-    ({ tokenSymbol }) => tokenSymbol === 'SUSHI',
+    ({ tokenSymbol }) => tokenSymbol === 'HNY',
   )
 
   const sushiPrice =
@@ -36,8 +35,17 @@ const FarmCards: React.FC = () => {
       ? stakedValue[sushiIndex].tokenPriceInWeth
       : new BigNumber(0)
 
-  const BLOCKS_PER_YEAR = new BigNumber(2336000)
-  const SUSHI_PER_BLOCK = new BigNumber(1000)
+
+  const BLOCKS_PER_YEAR = new BigNumber(2336000) // TODO
+  const SUSHI_PER_BLOCK = new BigNumber(1000) // TODO
+  console.log(
+    sushiIndex,
+    stakedValue[sushiIndex]
+      ? stakedValue[sushiIndex].tokenPriceInWeth.toString()
+      : new BigNumber(0).toString(),
+    sushiPrice.times(SUSHI_PER_BLOCK).times(BLOCKS_PER_YEAR).toString(),
+    stakedValue.map(({ totalWethValue }) => console.log(totalWethValue))
+  )
 
   const rows = farms.reduce<FarmWithStakedValue[][]>(
     (farmRows, farm, i) => {
@@ -45,11 +53,10 @@ const FarmCards: React.FC = () => {
         ...farm,
         ...stakedValue[i],
         apy: stakedValue[i]
-          ? sushiPrice
-              .times(SUSHI_PER_BLOCK)
-              .times(BLOCKS_PER_YEAR)
-              .times(stakedValue[i].poolWeight)
-              .div(stakedValue[i].totalWethValue)
+          ? sushiPrice // TODO
+              .times(SUSHI_PER_BLOCK) // TODO
+              .times(BLOCKS_PER_YEAR) // TODO
+              .div(stakedValue[i].totalWethValue) // TODO
           : null,
       }
       const newFarmRows = [...farmRows]
@@ -94,8 +101,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
   const [harvestable, setHarvestable] = useState(0)
 
   const { account } = useWallet()
-  const { lpTokenAddress } = farm
-  const sushi = useSushi()
+  const { poolContract } = farm
 
   const renderer = (countdownProps: CountdownRenderProps) => {
     const { hours, minutes, seconds } = countdownProps
@@ -111,24 +117,23 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   useEffect(() => {
     async function fetchEarned() {
-      if (sushi) return
+      if (!poolContract) return
       const earned = await getEarned(
-        getMasterChefContract(sushi),
-        lpTokenAddress,
+        poolContract,
         account,
       )
-      setHarvestable(bnToDec(earned))
+      setHarvestable(bnToDec(new BigNumber(earned)))
     }
-    if (sushi && account) {
+    if (poolContract && account) {
       fetchEarned()
     }
-  }, [sushi, lpTokenAddress, account, setHarvestable])
+  }, [poolContract, account, setHarvestable])
 
   const poolActive = true // startTime * 1000 - Date.now() <= 0
 
   return (
     <StyledCardWrapper>
-      {farm.tokenSymbol === 'SUSHI' && <StyledCardAccent />}
+      {farm.tokenSymbol === 'HNY' && <StyledCardAccent />}
       <Card>
         <CardContent>
           <StyledContent>

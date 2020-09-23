@@ -6,9 +6,6 @@ import { provider } from 'web3-core'
 import PageHeader from '../../components/PageHeader'
 import Spacer from '../../components/Spacer'
 import useFarm from '../../hooks/useFarm'
-import useRedeem from '../../hooks/useRedeem'
-import useSushi from '../../hooks/useSushi'
-import { getMasterChefContract } from '../../sushi/utils'
 import { getContract } from '../../utils/erc20'
 import Harvest from './components/Harvest'
 import Stake from './components/Stake'
@@ -16,35 +13,28 @@ import Stake from './components/Stake'
 const Farm: React.FC = () => {
   const { farmId } = useParams()
   const {
-    pid,
     lpToken,
-    lpTokenAddress,
     tokenAddress,
     earnToken,
     name,
     icon,
+    lpContract,
+    poolContract
   } = useFarm(farmId) || {
-    pid: 0,
     lpToken: '',
-    lpTokenAddress: '',
     tokenAddress: '',
     earnToken: '',
     name: '',
     icon: '',
+    poolContract: null,
+    lpContract: null,
   }
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
-  const sushi = useSushi()
   const { ethereum } = useWallet()
-
-  const lpContract = useMemo(() => {
-    return getContract(ethereum as provider, lpTokenAddress)
-  }, [ethereum, lpTokenAddress])
-
-  const { onRedeem } = useRedeem(getMasterChefContract(sushi))
 
   const lpTokenName = useMemo(() => {
     return lpToken.toUpperCase()
@@ -53,6 +43,11 @@ const Farm: React.FC = () => {
   const earnTokenName = useMemo(() => {
     return earnToken.toUpperCase()
   }, [earnToken])
+
+  // We're still loading
+  if (!lpContract || !poolContract) {
+    return <></>
+  }
 
   return (
     <>
@@ -64,13 +59,13 @@ const Farm: React.FC = () => {
       <StyledFarm>
         <StyledCardsWrapper>
           <StyledCardWrapper>
-            <Harvest pid={pid} />
+            <Harvest poolContract={poolContract} />
           </StyledCardWrapper>
           <Spacer />
           <StyledCardWrapper>
             <Stake
               lpContract={lpContract}
-              pid={pid}
+              poolContract={poolContract}
               tokenName={lpToken.toUpperCase()}
             />
           </StyledCardWrapper>

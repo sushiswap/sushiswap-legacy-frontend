@@ -25,14 +25,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onDismiss, visible }) => {
           >
             Farms
           </StyledLink>
-          <StyledLink
-            exact
-            activeClassName="active"
-            to="/staking"
-            onClick={onDismiss}
-          >
-            Staking
-          </StyledLink>
         </StyledMobileMenu>
       </StyledMobileMenuWrapper>
     )

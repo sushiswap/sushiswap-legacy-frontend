@@ -13,7 +13,6 @@ import useModal from './hooks/useModal'
 import theme from './theme'
 import Farms from './views/Farms'
 import Home from './views/Home'
-import Stake from './views/Stake'
 
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -38,9 +37,6 @@ const App: React.FC = () => {
           <Route path="/farms">
             <Farms />
           </Route>
-          <Route path="/staking">
-            <Stake />
-          </Route>
         </Switch>
       </Router>
       <Disclaimer />
@@ -52,10 +48,7 @@ const Providers: React.FC = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <UseWalletProvider
-        chainId={1}
-        connectors={{
-          walletconnect: { rpcUrl: 'https://xdai.poa.network/' },
-        }}
+        chainId={100}
       >
         <SushiProvider>
           <TransactionProvider>

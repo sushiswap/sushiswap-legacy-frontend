@@ -14,7 +14,6 @@ import useAllowance from '../../../hooks/useAllowance'
 import useApprove from '../../../hooks/useApprove'
 import useModal from '../../../hooks/useModal'
 import useStake from '../../../hooks/useStake'
-import useStakedBalance from '../../../hooks/useStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useUnstake from '../../../hooks/useUnstake'
 import { getBalanceNumber } from '../../../utils/formatBalance'
@@ -23,21 +22,21 @@ import WithdrawModal from './WithdrawModal'
 
 interface StakeProps {
   lpContract: Contract
-  pid: number
+  poolContract: Contract
   tokenName: string
 }
 
-const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName }) => {
+const Stake: React.FC<StakeProps> = ({ lpContract, poolContract, tokenName }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
 
-  const allowance = useAllowance(lpContract)
-  const { onApprove } = useApprove(lpContract)
+  const allowance = useAllowance(lpContract, poolContract)
+  const { onApprove } = useApprove(lpContract, poolContract)
 
   const tokenBalance = useTokenBalance(lpContract.options.address)
-  const stakedBalance = useStakedBalance(pid)
+  const stakedBalance = useTokenBalance(poolContract.options.address)
 
-  const { onStake } = useStake(pid)
-  const { onUnstake } = useUnstake(pid)
+  const { onStake } = useStake(poolContract)
+  const { onUnstake } = useUnstake(poolContract)
 
   const [onPresentDeposit] = useModal(
     <DepositModal
