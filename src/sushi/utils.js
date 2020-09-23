@@ -6,9 +6,6 @@ BigNumber.config({
   DECIMAL_PLACES: 80,
 })
 
-export const getMasterChefAddress = (sushi) => {
-  return sushi && sushi.masterChefAddress
-}
 export const getSushiAddress = (sushi) => {
   return sushi && sushi.sushiAddress
 }
@@ -16,9 +13,6 @@ export const getWethContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.weth
 }
 
-export const getMasterChefContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.masterChef
-}
 export const getSushiContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.sushi
 }
@@ -61,14 +55,12 @@ export const getEarned = (poolContract, account) => {
 }
 
 export const getTotalLPWethValue = async (
-  masterChefContract,
+  poolContract,
   wethContract,
   lpContract,
   tokenContract
 ) => {
-  const {
-    pool
-  } = await masterChefContract.methods.pools(lpContract.options.address).call()
+  const pool = poolContract.options.address
 
   // Get balance of the token address
   const tokenAmountWholeLP = await tokenContract.methods
@@ -106,9 +98,9 @@ export const getTotalLPWethValue = async (
   }
 }
 
-export const approve = async (lpContract, masterChefContract, account) => {
+export const approve = async (lpContract, contract, account) => {
   return lpContract.methods
-    .approve(masterChefContract.options.address, ethers.constants.MaxUint256)
+    .approve(contract.options.address, ethers.constants.MaxUint256)
     .send({ from: account })
 }
 
@@ -147,19 +139,4 @@ export const harvest = async (poolContract, account) => {
       console.log(tx)
       return tx.transactionHash
     })
-}
-
-export const redeem = async (masterChefContract, account) => {
-  let now = new Date().getTime() / 1000
-  if (now >= 1597172400) {
-    return masterChefContract.methods
-      .exit()
-      .send({ from: account })
-      .on('transactionHash', (tx) => {
-        console.log(tx)
-        return tx.transactionHash
-      })
-  } else {
-    alert('pool not active')
-  }
 }

@@ -40,9 +40,6 @@ export const contractAddresses = {
   sushi: {
     100: '0x71850b7E9Ee3f13Ab46d67167341E4bDc905Eef9',
   },
-  masterChef: {
-    100: '0xE29DCD715D11455194D7d74c622F3c42C8a37040',
-  },
   weth: {
     100: '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d',
   },

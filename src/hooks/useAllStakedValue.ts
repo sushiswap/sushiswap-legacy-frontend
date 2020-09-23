@@ -6,7 +6,6 @@ import { useWallet } from 'use-wallet'
 import { Contract } from 'web3-eth-contract'
 
 import {
-  getMasterChefContract,
   getWethContract,
   getFarms,
   getTotalLPWethValue,
@@ -27,7 +26,6 @@ const useAllStakedValue = () => {
   const { account }: { account: string; ethereum: provider } = useWallet()
   const sushi = useSushi()
   const farms = getFarms(sushi)
-  const masterChefContract = getMasterChefContract(sushi)
   const wethContact = getWethContract(sushi)
   const block = useBlock()
 
@@ -35,14 +33,16 @@ const useAllStakedValue = () => {
     const balances: Array<StakedValue> = await Promise.all(
       farms.map(
         ({
+          poolContract,
           lpContract,
           tokenContract,
         }: {
+          poolContract: Contract,
           lpContract: Contract
           tokenContract: Contract
         }) =>
           getTotalLPWethValue(
-            masterChefContract,
+            poolContract,
             wethContact,
             lpContract,
             tokenContract,
@@ -51,13 +51,13 @@ const useAllStakedValue = () => {
     )
 
     setBalance(balances)
-  }, [account, masterChefContract, sushi])
+  }, [account, sushi])
 
   useEffect(() => {
-    if (account && masterChefContract && sushi) {
+    if (account && sushi) {
       fetchAllStakedValue()
     }
-  }, [account, block, masterChefContract, setBalance, sushi])
+  }, [account, block, setBalance, sushi])
 
   return balances
 }
