@@ -1,24 +1,26 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
+import { useI18n  } from 'use-i18n';
 
 const Nav: React.FC = () => {
+  const t = useI18n()
   return (
     <StyledNav>
       <StyledLink exact activeClassName="active" to="/">
-        Home
+        {t.home}
       </StyledLink>
       <StyledLink exact activeClassName="active" to="/farms">
-        Menu
+        {t.canteen}
       </StyledLink>
       <StyledLink exact activeClassName="active" to="/staking">
-        Staking
+        {t.auction}
       </StyledLink>
       <StyledAbsoluteLink
-        href="https://medium.com/sushiswap/the-sushiswap-project-c4049ea9941e"
+        href="https://resetDAO.com"
         target="_blank"
       >
-        About
+        {t.about}
       </StyledAbsoluteLink>
     </StyledNav>
   )

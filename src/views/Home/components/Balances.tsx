@@ -16,6 +16,8 @@ import useTokenBalance from '../../../hooks/useTokenBalance'
 import useSushi from '../../../hooks/useSushi'
 import { getSushiAddress, getSushiSupply } from '../../../sushi/utils'
 import { getBalanceNumber } from '../../../utils/formatBalance'
+import { useI18n } from 'use-i18n';
+import Button from '../../../components/Button'
 
 const PendingRewards: React.FC = () => {
   const [start, setStart] = useState(0)
@@ -70,6 +72,7 @@ const PendingRewards: React.FC = () => {
 }
 
 const Balances: React.FC = () => {
+  const t = useI18n()
   const [totalSupply, setTotalSupply] = useState<BigNumber>()
   const sushi = useSushi()
   const sushiBalance = useTokenBalance(getSushiAddress(sushi))
@@ -86,44 +89,103 @@ const Balances: React.FC = () => {
   }, [sushi, setTotalSupply])
 
   return (
-    <StyledWrapper>
-      <Card>
-        <CardContent>
-          <StyledBalances>
-            <StyledBalance>
-              <SushiIcon />
-              <Spacer />
+    <>
+      <StyledWrapper>
+        <Card>
+          <CardContent>
+            <StyledBalances>
+              <StyledBalance>
+                {/* <SushiIcon />
+              <Spacer /> */}
+                <div style={{ flex: 1 }}>
+                  <Label text={t.bentoBalance} />
+                  <Value
+                    value={!!account ? getBalanceNumber(sushiBalance) : t.locked}
+                  />
+                </div>
+                <div style={{ width: 150. }}>
+                  <Button text={`🍱${t.mining}`} to="/farms" variant="default" size="md" />
+                </div>
+              </StyledBalance>
+            </StyledBalances>
+          </CardContent>
+          <Footnote>
+            {t.pending}
+            <FootnoteValue>
+              <PendingRewards /> BENTO
+          </FootnoteValue>
+          </Footnote>
+        </Card>
+        <Spacer />
+
+        <Card>
+          <CardContent>
+            <StyledBalances>
               <div style={{ flex: 1 }}>
-                <Label text="Your SUSHI Balance" />
+                <Label text={t.bentoSupply} />
                 <Value
-                  value={!!account ? getBalanceNumber(sushiBalance) : 'Locked'}
+                  value={totalSupply ? getBalanceNumber(totalSupply) : t.locked}
                 />
               </div>
-            </StyledBalance>
-          </StyledBalances>
-        </CardContent>
-        <Footnote>
-          Pending harvest
-          <FootnoteValue>
-            <PendingRewards /> SUSHI
-          </FootnoteValue>
-        </Footnote>
-      </Card>
-      <Spacer />
+              <div style={{ width: 150. }}>
+                <Button text={`${t.buy}🍱`} href="https://app.uniswap.org/#/swap" variant="default" size="md" />
+              </div>
+            </StyledBalances>
+          </CardContent>
+          <Footnote>
+            {t.newRewards}
+            <FootnoteValue>64 BENTO</FootnoteValue>
+          </Footnote>
+        </Card>
+      </StyledWrapper>
+      <Spacer size="lg" />
+      <StyledWrapper>
+        <Card>
+          <CardContent>
+            <StyledBalances>
+              {/* <SushiIcon /> */}
+              {/* <Spacer /> */}
+              <div style={{ flex: 1 }}>
+                <Label text={t.votingPower} />
+                <Value
+                  value={!!account ? getBalanceNumber(sushiBalance) : t.locked}
+                />
+              </div>
+              {/* <div style={{ width: 150. }}>
+          <Button text={`🍱${t.mining}`} to="/farms" variant="default" size="md" />
+        </div> */}
+            </StyledBalances>
+          </CardContent>
+          <Footnote>
+            {t.pending}
+            <FootnoteValue>
+              <PendingRewards /> BENTO
+    </FootnoteValue>
+          </Footnote>
+        </Card>
+        <Spacer />
 
-      <Card>
-        <CardContent>
-          <Label text="Total SUSHI Supply" />
-          <Value
-            value={totalSupply ? getBalanceNumber(totalSupply) : 'Locked'}
-          />
-        </CardContent>
-        <Footnote>
-          New rewards per block
-          <FootnoteValue>1,000 SUSHI</FootnoteValue>
-        </Footnote>
-      </Card>
-    </StyledWrapper>
+        <Card>
+          <CardContent>
+            <StyledBalances>
+              <div style={{ flex: 1 }}>
+                <Label text={t.bentoSupply} />
+                <Value
+                  value={totalSupply ? getBalanceNumber(totalSupply) : t.locked}
+                />
+              </div>
+              <div style={{ width: 150. }}>
+                <Button text={`${t.buy}🍱`} href="https://app.uniswap.org/#/swap" variant="default" size="md" />
+              </div>
+            </StyledBalances>
+          </CardContent>
+          <Footnote>
+            {t.newRewards}
+            <FootnoteValue>64 BENTO</FootnoteValue>
+          </Footnote>
+        </Card>
+      </StyledWrapper>
+    </>
   )
 }
 

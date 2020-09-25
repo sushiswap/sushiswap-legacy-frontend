@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
+import { contractAddresses } from './lib/constants'
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -186,3 +187,213 @@ export const redeem = async (masterChefContract, account) => {
     alert('pool not active')
   }
 }
+
+
+// =========================bento Web3方法 ==================
+/**
+ * 
+ * @param {bentoABI} bentoken 
+ */
+export const getBentoTotalSupply = async (bentoken) => {
+  bentoken.methods.totalSupply().call().then((rst) => {
+    try {
+      return new BigNumber(rst)
+    } catch {
+      return new BigNumber(0)
+    }
+  })
+}
+
+/**
+ * 
+ * @param {bentoMinerABI} BentoMiner 
+ */
+export const getGovTotalSupply = async (bentoMiner) => {
+  let govTotalLocked, govTotalLockedF
+  await bentoMiner.methods.totalLPTokensLocked().call().then((rst) => {
+
+    govTotalLocked = rst / 10 ** 18
+    try {
+      govTotalLockedF = new BigNumber(rst)
+
+    } catch{
+      govTotalLockedF = new BigNumber(0)
+    }
+
+  })
+  return { govTotalLockedF, govTotalLocked }
+}
+
+/**
+ * 
+ * @param {bentoABI} bentoken 
+ * @param {network id} chainId 
+ */
+export const getWeigthInfo = async (bentoken, chainId) => {
+  let totalPoolWeight, poolWeight
+  await bentoken.methods.getUnionWeight(contractAddresses.bentoMiner[chainId]).call().then((rst) => {
+    totalPoolWeight = rst[1]
+    poolWeight = rst[0]
+  })
+  return { totalPoolWeight, poolWeight }
+}
+
+/**
+ * 
+ * @param {bentoABI} bentoken 
+ * @param {current account} account 
+ */
+export const getMyBentoBalance = async (bentoken, account) => {
+  let bento_balance
+  bentoken.methods.balanceOf(account).call().then((rst) => {
+    try {
+      bento_balance = new BigNumber(rst)
+    } catch{
+      bento_balance = new BigNumber(0)
+    }
+  })
+  return bento_balance
+}
+
+export const getMyUnclaimBento = async (bentoMiner, account) => {
+  let bento_unclaim
+  bentoMiner.methods.unClaimedOf(account).call().then((rst) => {
+    try {
+      bento_unclaim = new BigNumber(rst)
+    } catch{
+      bento_unclaim = new BigNumber(0)
+    }
+  })
+
+  return bento_unclaim
+}
+
+export const getMyBentoInBank = async (bentoMiner, account) => {
+  let bento_inBank
+  bentoMiner.methods.bentosInBankOf(account).call().then((rst) => {
+    try {
+      bento_inBank = new BigNumber(rst)
+    } catch{
+      bento_inBank = new BigNumber(0)
+    }
+  })
+  return bento_inBank
+}
+
+export const getGovBalance = async (govtoken, account) => {
+  let gov_balance
+  govtoken.methods.balanceOf(account).call().then((rst) => {
+    try {
+      gov_balance = new BigNumber(rst)
+    } catch{
+      gov_balance = new BigNumber(0)
+    }
+  })
+  return gov_balance
+}
+
+export const getGovLockedAmount = async(bentoMiner, account) => {
+  let gov_locked, gov_lockedF
+  bentoMiner.methods.lpTokensInBankOf(account).call().then((rst) => {
+    gov_locked = rst / 10 ** 18
+    try {
+      gov_lockedF = new BigNumber(rst)
+    } catch{
+      gov_lockedF = new BigNumber(0)
+    }
+  })
+  return {gov_locked, gov_lockedF}
+}
+
+/**
+ * 
+ * @param {*} gov_locked 
+ * @param {*} govTotalLocked 
+ * @param {*} poolWeight 
+ * @param {*} totalPoolWeight 
+ */
+export const getBentoMiningSpeed = (gov_locked, govTotalLocked, poolWeight, totalPoolWeight) => {
+  //首先获取个人LP数量，获取总LP数量，获取当前池子权重比
+  // BentoMiner.methods.totalLPTokensLocked().call().then(rst)
+   
+  const bento_miningSpeed = ((gov_locked / govTotalLocked) * (poolWeight / totalPoolWeight)) * 64
+  console.log(gov_locked, govTotalLocked, poolWeight, totalPoolWeight)
+  return bento_miningSpeed
+}
+
+/**
+ * 
+ * @param {*} gov_locked 
+ * @param {*} govTotalLocked 
+ */
+export const getMyMiningPercentage = (gov_locked, govTotalLocked) => {
+  const gov_percentage = (gov_locked * 100 / govTotalLocked)
+  return gov_percentage
+}
+
+export const claimBento= async(bentoMiner, account) => {
+  await bentoMiner.methods.claim().send({ from: account }).then(() => {
+      this.getMyUnclaimBento(bentoMiner, account)
+      this.getMyBentoInBank(bentoMiner, account)
+  })
+}
+
+/**
+ * 
+ * @param {*} bentoken 
+ * @param {*} bentoMiner 
+ * @param {*} account 
+ * @param {ether} v_Bentos_withdraw 
+ */
+export const withdrawBento= async(bentoken, bentoMiner, account, v_Bentos_withdraw) => {
+  bentoMiner.methods.withdrawBentos(v_Bentos_withdraw).send({ from: account }).then(() => {
+      this.getMyUnclaimBento(bentoMiner, account)
+      this.getMyBentoInBank(bentoMiner, account)
+      this.getMyBentoBalance(bentoken, account)
+  })
+}
+
+/**
+ * 
+ * @param {*} govtoken 
+ * @param {*} account 
+ * @param {*} amount 
+ */
+export const approveGovToken= async(govtoken, account, amount, chainId) => {
+  govtoken.methods.approve(contractAddresses.bentoMiner[chainId], new BigNumber(amount)).send({ from: account }).then((rst) => {
+      console.log('Approved receipt:', rst);
+    })
+}
+
+// export const depositGovTokenToMine= async() => {
+//   // web3.toWei(this.v_Naps, "ether")
+//   if (this.v_Govs_deposit < 10) {
+//       alert('Amount at least than 10.');
+//       return;
+//   }
+//   BentoMiner.methods.deposit(web3.toWei(this.v_Govs_deposit, "ether")).send({ from: web3.eth.defaultAccount }).then((rst) => {
+//       console.log('Deposit Gov receipt:', rst);
+//       this.refreshAll();
+//       this.delyRefresh();
+//       try {
+//         gov_lockedF = new BigNumber(rst)
+//       } catch{
+//         gov_lockedF = new BigNumber(0)
+//       }
+//     })
+//     return {gov_locked, gov_lockedF}
+// }
+
+// export const withdrawGovToken= async() => {
+//   BentoMiner.methods.withdraw(web3.toWei(this.v_Govs_withdraw, "ether")).send({ from: web3.eth.defaultAccount }).then((rst) => {
+//       console.log('Withdraw Gov receipt:', rst);
+//       this.refreshAll();
+//       this.delyRefresh();
+//       try {
+//         gov_lockedF = new BigNumber(rst)
+//       } catch{
+//         gov_lockedF = new BigNumber(0)
+//       }
+//     })
+//     return {gov_locked, gov_lockedF}
+// }

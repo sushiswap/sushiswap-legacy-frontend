@@ -7,14 +7,17 @@ import Page from '../../components/Page'
 import PageHeader from '../../components/PageHeader'
 import Spacer from '../../components/Spacer'
 import Balances from './components/Balances'
+import { useI18n  } from 'use-i18n';
 
 const Home: React.FC = () => {
+  const t = useI18n()
   return (
     <Page>
       <PageHeader
         icon={<img src={chef} height={120} />}
-        title="MasterChef is Ready"
-        subtitle="Stake Uniswap LP tokens to claim your very own yummy SUSHI!"
+        title={t.title}
+        subtitle={t.subtitle}
+        content={t.content}
       />
 
       <Container>
