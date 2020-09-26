@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import { tmpdir } from 'os'
 import React, { useEffect, useState } from 'react'
 import Countdown, { CountdownRenderProps } from 'react-countdown'
 import styled, { keyframes } from 'styled-components'
@@ -6,7 +7,7 @@ import { useWallet } from 'use-wallet'
 import Button from '../../../components/Button'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
-import CardIcon from '../../../components/CardIcon'
+import SidedCardIcon from '../../../components/CardIcon'
 import Loader from '../../../components/Loader'
 import Spacer from '../../../components/Spacer'
 import { Farm } from '../../../contexts/Farms'
@@ -17,6 +18,7 @@ import useFarms from '../../../hooks/useFarms'
 import useSushi from '../../../hooks/useSushi'
 import { getEarned, getMasterChefContract } from '../../../sushi/utils'
 import { bnToDec } from '../../../utils'
+import { useI18n  } from 'use-i18n';
 
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber
@@ -90,6 +92,8 @@ interface FarmCardProps {
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
+  const t = useI18n();
+
   const [startTime, setStartTime] = useState(0)
   const [harvestable, setHarvestable] = useState(0)
 
@@ -128,20 +132,69 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   return (
     <StyledCardWrapper>
-      {farm.tokenSymbol === 'SUSHI' && <StyledCardAccent />}
+      {/* {farm.tokenSymbol === 'SUSHI' && <StyledCardAccent />} */}
       <Card>
         <CardContent>
-          <StyledContent>
-            <CardIcon>{farm.icon}</CardIcon>
-            <StyledTitle>{farm.name}</StyledTitle>
+
+        <StyledContent>
+            
+            <StyledText>
+              <span style={{ textAlign: 'left' }}><SidedCardIcon>{farm.icon}</SidedCardIcon></span>
+              <span style={{ textAlign: 'center' }}><StyledTitle>{farm.name}</StyledTitle></span>
+            </StyledText>
             <StyledDetails>
-              <StyledDetail>Deposit {farm.lpToken.toUpperCase()}</StyledDetail>
-              <StyledDetail>Earn {farm.earnToken.toUpperCase()}</StyledDetail>
+              <StyledDetail>{t.buy} {farm.lpToken.toUpperCase()} {t.earn_profit} {farm.earnToken.toUpperCase()}</StyledDetail>
             </StyledDetails>
-            <Spacer />
+          </StyledContent>
+          <StyledContainer>
+            <StyledText>
+              <span>{farm.lpToken.toUpperCase()} {t.mining}</span>
+              <span style={{ textAlign: 'right' }}>
+                1234
+              </span>
+            </StyledText>
+            <StyledText>
+              <span>
+                <Button
+                  size='sm'
+                  disabled={!poolActive}
+                  text={t.mining}
+                  to={`/farms/${farm.id}`}
+                >
+                  {!poolActive && (
+                    <Countdown
+                      date={new Date(startTime * 1000)}
+                      renderer={renderer}
+                    />
+                  )}
+                </Button>
+              </span>
+              <span style={{ textAlign: 'right' }}>
+                <Button
+                  size='sm'
+                  disabled={!poolActive}
+                  text={t.redeem}
+                  to={`/farms/${farm.id}`}
+                >
+                  {!poolActive && (
+                    <Countdown
+                      date={new Date(startTime * 1000)}
+                      renderer={renderer}
+                    />
+                  )}
+                </Button>
+              </span>
+            </StyledText>
+          </StyledContainer>
+          <StyledContainer>
+            <StyledText>
+              <span>{t.get} BENTO</span>
+              <span style={{ textAlign: 'right' }}>1234</span>
+            </StyledText>
             <Button
+              size='sm'
               disabled={!poolActive}
-              text={poolActive ? 'Select' : undefined}
+              text={t.claim}
               to={`/farms/${farm.id}`}
             >
               {!poolActive && (
@@ -151,6 +204,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
                 />
               )}
             </Button>
+          </StyledContainer>
             <StyledInsight>
               <span>APY</span>
               <span>
@@ -175,7 +229,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
                 ETH
               </span> */}
             </StyledInsight>
-          </StyledContent>
         </CardContent>
       </Card>
     </StyledCardWrapper>
@@ -295,6 +348,31 @@ const StyledInsight = styled.div`
   border: 1px solid #e6dcd5;
   text-align: center;
   padding: 0 12px;
+`
+
+const StyledContainer = styled.div`
+  justify-content: space-between;
+  box-sizing: border-box;
+  border-radius: 8px;
+  color: #aa9584;
+  width: 100%;
+  margin-top: 12px;
+  line-height: 32px;
+  font-size: 13px;
+  border: 1px solid #e6dcd5;
+  text-align: center;
+  padding: 0 12px;
+  `
+
+const StyledText = styled.div`
+  display: flex;
+  justify-content: space-between;
+  color: #aa9584;
+  width: 100%;
+  margin-top: 12px;
+  line-height: 32px;
+  font-size: 13px;
+  text-align: center;
 `
 
 export default FarmCards

@@ -19,6 +19,7 @@
     "react-scripts": "3.4.1",
     "styled-components": "^5.1.1",
     "typescript": "^3.9.7",
+    "use-i18n": "^1.0.1",
     "use-wallet": "^0.8.0",
     "web3": "^1.2.11"
   },

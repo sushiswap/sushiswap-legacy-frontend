@@ -19,6 +19,15 @@ const i18n = {
         buy: "Buy",
         votingPower: "Voting Power",
 
+        deposit: "Deposit",
+        claim: "Claim",
+        redeem: "Redeem",
+        get: "Get",
+        earn_profit: "Earn rewards and ",
+
+        farm_subtitle: "Earn BENTO tokens by staking DAO Tokens.",
+        farm_title: "Select Your Favorite Dishes",
+        farm_UNI_title: "Earn BENTO tokens by staking UNI Tokens."
     },
     'zh-CN': {
         welcome: '你好',
@@ -39,6 +48,16 @@ const i18n = {
         mining: "挖矿",
         buy: "购买",
         votingPower: "获取的投票权",
+
+        deposit: "存",
+        claim: "领取",
+        redeem: "取回",
+        get: "获取",
+        earn_profit: "获取收益与",
+
+        farm_subtitle: "通过抵押治理代币，赚取利率与BENTO",
+        farm_title: "BENTO 合作社食堂",
+        farm_UNI_title: "存 UNI 代币，赚取收益与 BENTO"
     },
 };
 
