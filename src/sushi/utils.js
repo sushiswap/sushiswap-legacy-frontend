@@ -255,6 +255,7 @@ export const getMyBentoBalance = async (bentoken, account) => {
   return bento_balance
 }
 
+//食堂 - 获取便当info
 export const getMyUnclaimBento = async (bentoMiner, account) => {
   let bento_unclaim
   bentoMiner.methods.unClaimedOf(account).call().then((rst) => {
@@ -268,9 +269,10 @@ export const getMyUnclaimBento = async (bentoMiner, account) => {
   return bento_unclaim
 }
 
-export const getMyBentoInBank = async (bentoMiner, account) => {
+// 食堂 - 银行中的bento数量 (未添加)
+export const getMyBentoInBank = async (miner, account) => {
   let bento_inBank
-  bentoMiner.methods.bentosInBankOf(account).call().then((rst) => {
+  miner.methods.bentosInBankOf(account).call().then((rst) => {
     try {
       bento_inBank = new BigNumber(rst)
     } catch{
@@ -280,6 +282,7 @@ export const getMyBentoInBank = async (bentoMiner, account) => {
   return bento_inBank
 }
 
+//食堂 - 正在挖矿
 export const getGovBalance = async (govtoken, account) => {
   let gov_balance
   govtoken.methods.balanceOf(account).call().then((rst) => {
@@ -331,6 +334,7 @@ export const getMyMiningPercentage = (gov_locked, govTotalLocked) => {
   return gov_percentage
 }
 
+// 食堂 - (未添加) 声明便当按钮
 export const claimBento= async(bentoMiner, account) => {
   await bentoMiner.methods.claim().send({ from: account }).then(() => {
       this.getMyUnclaimBento(bentoMiner, account)
@@ -339,7 +343,7 @@ export const claimBento= async(bentoMiner, account) => {
 }
 
 /**
- * 
+ * 食堂 - 领取 按钮
  * @param {*} bentoken 
  * @param {*} bentoMiner 
  * @param {*} account 
@@ -359,8 +363,8 @@ export const withdrawBento= async(bentoken, bentoMiner, account, v_Bentos_withdr
  * @param {*} account 
  * @param {*} amount 
  */
-export const approveGovToken= async(govtoken, account, amount, chainId) => {
-  govtoken.methods.approve(contractAddresses.bentoMiner[chainId], new BigNumber(amount)).send({ from: account }).then((rst) => {
+export const approveGovToken= async(govtoken, account, amount) => {
+  govtoken.methods.approve(contractAddresses.bentoMiner, new BigNumber(amount)).send({ from: account }).then((rst) => {
       console.log('Approved receipt:', rst);
     })
 }
@@ -383,17 +387,42 @@ export const approveGovToken= async(govtoken, account, amount, chainId) => {
 //     })
 //     return {gov_locked, gov_lockedF}
 // }
+/**
+ * 食堂 - 取回治理代币按钮
+ * 
+ * web3.toWei(this.v_Govs_withdraw, "ether")
+ * 
+ */
+export const withdrawGovToken= async(bentoMiner) => {
+  // bentoMiner.methods.withdraw(web3.toWei(this.v_Govs_withdraw, "ether")).send({ from: web3.eth.defaultAccount }).then((rst) => {
+  //     console.log('Withdraw Gov receipt:', rst);
+  //     this.refreshAll();
+  //     this.delyRefresh();
+  //     try {
+  //       gov_lockedF = new BigNumber(rst)
+  //     } catch{
+  //       gov_lockedF = new BigNumber(0)
+  //     }
+  //   })
+  //   return {gov_locked, gov_lockedF}
+}
 
-// export const withdrawGovToken= async() => {
-//   BentoMiner.methods.withdraw(web3.toWei(this.v_Govs_withdraw, "ether")).send({ from: web3.eth.defaultAccount }).then((rst) => {
-//       console.log('Withdraw Gov receipt:', rst);
-//       this.refreshAll();
-//       this.delyRefresh();
-//       try {
-//         gov_lockedF = new BigNumber(rst)
-//       } catch{
-//         gov_lockedF = new BigNumber(0)
-//       }
-//     })
-//     return {gov_locked, gov_lockedF}
-// }
+/**
+ * 未添加方法:
+ * 获得对某提案投票的便当总数
+ * 参数 id 
+ * 
+ * function getVoteObjectInfo(uint256 _proposalid)
+        external
+        view
+        returns (
+            address originator,
+            bool voteResult,
+            uint32 endAtBlockNumber,
+            uint112 nowBentosInVote, //总数
+            uint256 trueOptionVotes,
+            uint256 falseOptionVotes,
+            voteState stateNow
+        )
+    
+ */

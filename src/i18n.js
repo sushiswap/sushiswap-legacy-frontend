@@ -32,7 +32,11 @@ const i18n = {
         farm_earn_bento: "Earn BENTO tokens by providing BENTO liquidity",
         farm_subtitle: "Earn BENTO tokens by staking DAO Tokens.",
         farm_title: "Select Your Favorite Dishes",
-        farm_UNI_title: "Earn BENTO tokens by staking UNI Tokens."
+        farm_UNI_title: "Earn BENTO tokens by staking UNI Tokens.",
+
+        burnedToken: "Burned",
+        stake: "Stake",
+        auctioning: "Auctioning",
     },
     'zh-CN': {
         welcome: '你好',
@@ -67,7 +71,11 @@ const i18n = {
         farm_earn_bento: "为BENTO提供流动性，赚取BENTO",
         farm_subtitle: "通过抵押治理代币，赚取利率与BENTO",
         farm_title: "BENTO 合作社食堂",
-        farm_UNI_title: "存 UNI 代币，赚取收益与 BENTO"
+        farm_UNI_title: "存 UNI 代币，赚取收益与 BENTO",
+
+        burnedToken: "已经销毁的",
+        stake: "抵押选票",
+        auctioning: "选票拍卖中",
     },
 };
 
