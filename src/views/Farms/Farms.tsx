@@ -14,8 +14,10 @@ import useModal from '../../hooks/useModal'
 import Farm from '../Farm'
 
 import FarmCards from './components/FarmCards'
+import { useI18n  } from 'use-i18n';
 
 const Farms: React.FC = () => {
+  const t = useI18n();
   const { path } = useRouteMatch()
   const { account } = useWallet()
   const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />)
@@ -27,8 +29,8 @@ const Farms: React.FC = () => {
             <Route exact path={path}>
               <PageHeader
                 icon={<img src={chef} height="120" />}
-                subtitle="Earn SUSHI tokens by staking Uniswap V2 LP Tokens."
-                title="Select Your Favorite Dishes"
+                subtitle={t.farm_subtitle}
+                title={t.farm_title}
               />
               <FarmCards />
             </Route>
@@ -45,10 +47,10 @@ const Farms: React.FC = () => {
               justifyContent: 'center',
             }}
           >
-            <Button
-              onClick={onPresentWalletProviderModal}
-              text="🔓 Unlock Wallet"
-            />
+          <Button
+            onClick={onPresentWalletProviderModal}
+            text="🔓 Unlock Wallet"
+          />
           </div>
         )}
       </Page>

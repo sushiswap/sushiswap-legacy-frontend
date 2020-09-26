@@ -36,6 +36,8 @@ export class Sushi {
     if (options.defaultAccount) {
       this.web3.eth.defaultAccount = options.defaultAccount
     }
+    const util = require('util')
+    console.log(`load contract ${util.inspect(realProvider)}, ${networkId}, ${util.inspect(options)}`)
     this.contracts = new Contracts(realProvider, networkId, this.web3, options)
     this.sushiAddress = contractAddresses.sushi[networkId]
     this.masterChefAddress = contractAddresses.masterChef[networkId]
