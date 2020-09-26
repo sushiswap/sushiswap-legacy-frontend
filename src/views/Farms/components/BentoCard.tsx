@@ -22,83 +22,16 @@ import { useI18n  } from 'use-i18n';
 import useModal from '../../../hooks/useModal'
 import useStake from '../../../hooks/useStake'
 import DepositModal from './DepositModal'
-import BentoCard from './BentoCard'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber
-}
-
-const FarmCards: React.FC = () => {
-  const [farms] = useFarms()
-  const { account } = useWallet()
-  const stakedValue = useAllStakedValue()
-
-  const sushiIndex = farms.findIndex(
-    ({ tokenSymbol }) => tokenSymbol === 'SUSHI',
-  )
-
-  const sushiPrice =
-    sushiIndex >= 0 && stakedValue[sushiIndex]
-      ? stakedValue[sushiIndex].tokenPriceInWeth
-      : new BigNumber(0)
-
-  const BLOCKS_PER_YEAR = new BigNumber(2336000)
-  const SUSHI_PER_BLOCK = new BigNumber(1000)
-
-  const rows = farms.reduce<FarmWithStakedValue[][]>(
-    (farmRows, farm, i) => {
-      const farmWithStakedValue = {
-        ...farm,
-        ...stakedValue[i],
-        apy: stakedValue[i]
-          ? sushiPrice
-              .times(SUSHI_PER_BLOCK)
-              .times(BLOCKS_PER_YEAR)
-              .times(stakedValue[i].poolWeight)
-              .div(stakedValue[i].totalWethValue)
-          : null,
-      }
-      const newFarmRows = [...farmRows]
-      if (newFarmRows[newFarmRows.length - 1].length === 3) {
-        newFarmRows.push([farmWithStakedValue])
-      } else {
-        newFarmRows[newFarmRows.length - 1].push(farmWithStakedValue)
-      }
-      return newFarmRows
-    },
-    [[]],
-  )
-
-  return (
-    <StyledCards>
-      {!!rows[0].length ? (
-        // rows.map((farmRow, i) => (
-          <StyledRow key={0}>
-            {rows[0].map((farm, j) => (
-              <React.Fragment key={j}>
-                <FarmCard farm={farm} />
-                {(j === 0 || j === 1) && <StyledSpacer />}
-              </React.Fragment>
-            ))}
-
-            <BentoCard farm={rows[0][0]} />
-            <StyledSpacer />
-          </StyledRow>
-        // ))
-      ) : (
-        <StyledLoadingWrapper>
-          <Loader text="Cooking the rice ..." />
-        </StyledLoadingWrapper>
-      )}
-    </StyledCards>
-  )
 }
 
 interface FarmCardProps {
   farm: FarmWithStakedValue
 }
 
-const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
+const BentoCard: React.FC<FarmCardProps> = ({ farm }) => {
   const t = useI18n();
 
   const [startTime, setStartTime] = useState(0)
@@ -150,7 +83,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   return (
     <StyledCardWrapper>
-      {/* {farm.tokenSymbol === 'SUSHI' && <StyledCardAccent />} */}
+      {/* <StyledCardAccent /> */}
       <Card>
         <CardContent>
 
@@ -158,52 +91,47 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
             
             <StyledText>
               <span style={{ textAlign: 'left' }}><SidedCardIcon>{farm.icon}</SidedCardIcon></span>
-              <span style={{ textAlign: 'center' }}><StyledTitle>{farm.name}</StyledTitle></span>
+              <span style={{ textAlign: 'center' }}><StyledTitle>BENTO{t.shop}</StyledTitle></span>
             </StyledText>
             <StyledDetails>
-              <StyledDetail>{t.buy} {farm.lpToken.toUpperCase()} {t.earn_profit} {farm.earnToken.toUpperCase()}</StyledDetail>
+              <StyledDetail>{t.farm_earn_bento}</StyledDetail>
             </StyledDetails>
           </StyledContent>
           <StyledContainer>
             <StyledText>
-              <span>{farm.lpToken.toUpperCase()} {t.mining}</span>
+              <span>{t.current}POWER</span>
               <span style={{ textAlign: 'right' }}>
                 1234
               </span>
             </StyledText>
-            <Spacer />
-            <StyledText>
-              <span>
-                <Button
-                  size='sm'
-                  disabled={!poolActive}
-                  text={t.mining}
-                  onClick={onPresentDeposit}
-                >
-                  {!poolActive && (
-                    <Countdown
-                      date={new Date(startTime * 1000)}
-                      renderer={renderer}
-                    />
-                  )}
-                </Button>
-              </span>
-              <span style={{ textAlign: 'right' }}>
-                <Button
-                  size='sm'
-                  disabled={!poolActive}
-                  text={t.redeem}
-                  to={`/farms/${farm.id}`}
-                >
-                  {!poolActive && (
-                    <Countdown
-                      date={new Date(startTime * 1000)}
-                      renderer={renderer}
-                    />
-                  )}
-                </Button>
-              </span>
-            </StyledText>
+            <StyledContent>
+              <Button
+                size='sm'
+                disabled={!poolActive}
+                text={t.farm_uniswap}
+                onClick={onPresentDeposit}
+              >
+                {!poolActive && (
+                  <Countdown
+                    date={new Date(startTime * 1000)}
+                    renderer={renderer}
+                  />
+                )}
+              </Button>
+              <Button
+                size='sm'
+                disabled={!poolActive}
+                text={t.farm_balancer}
+                to={`/farms/${farm.id}`}
+              >
+                {!poolActive && (
+                  <Countdown
+                    date={new Date(startTime * 1000)}
+                    renderer={renderer}
+                  />
+                )}
+              </Button>
+            </StyledContent>
           </StyledContainer>
           <StyledContainer>
             <StyledText>
@@ -235,18 +163,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
                       .slice(0, -1)}%`
                   : 'Loading ...'}
               </span>
-              {/* <span>
-                {farm.tokenAmount
-                  ? (farm.tokenAmount.toNumber() || 0).toLocaleString('en-US')
-                  : '-'}{' '}
-                {farm.tokenSymbol}
-              </span>
-              <span>
-                {farm.wethAmount
-                  ? (farm.wethAmount.toNumber() || 0).toLocaleString('en-US')
-                  : '-'}{' '}
-                ETH
-              </span> */}
             </StyledInsight>
         </CardContent>
       </Card>
@@ -394,4 +310,4 @@ const StyledText = styled.div`
   text-align: center;
 `
 
-export default FarmCards
+export default BentoCard

@@ -97,17 +97,4 @@ export const supportedPools = [
     tokenSymbol: 'BENTO',
     icon: '🐌',
   },
-  {
-    pid: 0,
-    lpAddresses: {
-      1: '0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852',
-    },
-    tokenAddresses: {
-      1: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-    },
-    name: 'BENTO小店',
-    symbol: 'BENTO LP',
-    tokenSymbol: 'BENTO',
-    icon: '🐢',
-  },
 ]
