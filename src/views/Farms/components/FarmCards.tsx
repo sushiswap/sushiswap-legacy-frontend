@@ -155,7 +155,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
       <Card>
       <StyledBadge badgeContent='X10' color="secondary">
         <CardContent>
-
         <StyledContent>
             
             <StyledText>
