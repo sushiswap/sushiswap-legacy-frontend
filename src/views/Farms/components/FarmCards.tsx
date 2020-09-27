@@ -23,6 +23,7 @@ import useModal from '../../../hooks/useModal'
 import useStake from '../../../hooks/useStake'
 import DepositModal from './DepositModal'
 import BentoCard from './BentoCard'
+import StyledBadge from './StyledBadge'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber
@@ -152,6 +153,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
     <StyledCardWrapper>
       {/* {farm.tokenSymbol === 'SUSHI' && <StyledCardAccent />} */}
       <Card>
+      <StyledBadge badgeContent='X10' color="secondary">
         <CardContent>
 
         <StyledContent>
@@ -206,23 +208,42 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
             </StyledText>
           </StyledContainer>
           <StyledContainer>
-            <StyledText>
-              <span>{t.get} BENTO</span>
-              <span style={{ textAlign: 'right' }}>1234</span>
-            </StyledText>
-            <Button
-              size='sm'
-              disabled={!poolActive}
-              text={t.claim}
-              to={`/farms/${farm.id}`}
-            >
-              {!poolActive && (
-                <Countdown
-                  date={new Date(startTime * 1000)}
-                  renderer={renderer}
-                />
-              )}
-            </Button>
+              <StyledText>
+                <span>
+                    <Button
+                        size='sm'
+                        disabled={!poolActive}
+                        text={t.unclaimed + 'BENTO'}
+                        to={`/farms/${farm.id}`}
+                      >
+                        {!poolActive && (
+                          <Countdown
+                            date={new Date(startTime * 1000)}
+                            renderer={renderer}
+                          />
+                        )}
+                      </Button>
+                </span>
+                <span style={{ textAlign: 'right' }}>456</span>
+              </StyledText>
+              <StyledText>
+                <span>
+                    <Button
+                        size='sm'
+                        disabled={!poolActive}
+                        text={t.inBank + 'BENTO'}
+                        to={`/farms/${farm.id}`}
+                      >
+                        {!poolActive && (
+                          <Countdown
+                            date={new Date(startTime * 1000)}
+                            renderer={renderer}
+                          />
+                        )}
+                      </Button>
+                </span>
+                <span style={{ textAlign: 'right' }}>456</span>
+              </StyledText>
           </StyledContainer>
             <StyledInsight>
               <span>APY</span>
@@ -249,6 +270,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
               </span> */}
             </StyledInsight>
         </CardContent>
+      </StyledBadge>
       </Card>
     </StyledCardWrapper>
   )

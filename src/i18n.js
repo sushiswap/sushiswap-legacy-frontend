@@ -26,13 +26,15 @@ const i18n = {
         earn_profit: "Earn rewards and ",
         current: "Current ",
         shop: " Shop",
+        unclaimed: "Un-claimed ",
+        inBank: "In bank ",
 
         farm_uniswap: "UniSwap mining",
         farm_balancer: "Balancer mining",
-        farm_earn_bento: "Earn BENTO tokens by providing BENTO liquidity",
-        farm_subtitle: "Earn BENTO tokens by staking DAO Tokens.",
+        farm_earn_bento: "Earn BENTO with BENTO liquidity",
+        farm_subtitle: "Earn BENTO by staking DAO Tokens.",
         farm_title: "Select Your Favorite Dishes",
-        farm_UNI_title: "Earn BENTO tokens by staking UNI Tokens.",
+        farm_UNI_title: "Earn BENTO by staking UNI Tokens.",
 
         burnedToken: "Burned",
         stake: "Stake",
@@ -65,6 +67,8 @@ const i18n = {
         earn_profit: "获取收益与",
         current: "当前",
         shop: "小店",
+        unclaimed: "未领取的",
+        inBank: "银行中的",
 
         farm_uniswap: "UniSwap挖矿",
         farm_balancer: "Balancer挖矿",

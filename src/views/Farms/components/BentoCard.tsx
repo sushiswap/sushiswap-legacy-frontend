@@ -22,6 +22,7 @@ import { useI18n  } from 'use-i18n';
 import useModal from '../../../hooks/useModal'
 import useStake from '../../../hooks/useStake'
 import DepositModal from './DepositModal'
+import StyledBadge from './StyledBadge'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber
@@ -83,89 +84,107 @@ const BentoCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   return (
     <StyledCardWrapper>
-      {/* <StyledCardAccent /> */}
-      <Card>
-        <CardContent>
-
-        <StyledContent>
-            
-            <StyledText>
-              <span style={{ textAlign: 'left' }}><SidedCardIcon>{farm.icon}</SidedCardIcon></span>
-              <span style={{ textAlign: 'center' }}><StyledTitle>BENTO{t.shop}</StyledTitle></span>
-            </StyledText>
-            <StyledDetails>
-              <StyledDetail>{t.farm_earn_bento}</StyledDetail>
-            </StyledDetails>
-          </StyledContent>
-          <StyledContainer>
-            <StyledText>
-              <span>{t.current}POWER</span>
-              <span style={{ textAlign: 'right' }}>
-                1234
-              </span>
-            </StyledText>
-            <StyledContent>
-              <Button
-                size='sm'
-                disabled={!poolActive}
-                text={t.farm_uniswap}
-                onClick={onPresentDeposit}
-              >
-                {!poolActive && (
-                  <Countdown
-                    date={new Date(startTime * 1000)}
-                    renderer={renderer}
-                  />
-                )}
-              </Button>
-              <Button
-                size='sm'
-                disabled={!poolActive}
-                text={t.farm_balancer}
-                to={`/farms/${farm.id}`}
-              >
-                {!poolActive && (
-                  <Countdown
-                    date={new Date(startTime * 1000)}
-                    renderer={renderer}
-                  />
-                )}
-              </Button>
+        <Card>
+          <StyledBadge badgeContent='X4' color="secondary">
+          <CardContent>
+          <StyledContent>
+              <StyledText>
+                <span style={{ textAlign: 'left' }}><SidedCardIcon>{farm.icon}</SidedCardIcon></span>
+                <span style={{ textAlign: 'center' }}><StyledTitle>BENTO{t.shop}</StyledTitle></span>
+              </StyledText>
+              <StyledDetails>
+                <StyledDetail>{t.farm_earn_bento}</StyledDetail>
+              </StyledDetails>
             </StyledContent>
-          </StyledContainer>
-          <StyledContainer>
-            <StyledText>
-              <span>{t.get} BENTO</span>
-              <span style={{ textAlign: 'right' }}>1234</span>
-            </StyledText>
-            <Button
-              size='sm'
-              disabled={!poolActive}
-              text={t.claim}
-              to={`/farms/${farm.id}`}
-            >
-              {!poolActive && (
-                <Countdown
-                  date={new Date(startTime * 1000)}
-                  renderer={renderer}
-                />
-              )}
-            </Button>
-          </StyledContainer>
-            <StyledInsight>
-              <span>APY</span>
-              <span>
-                {farm.apy
-                  ? `${farm.apy
-                      .times(new BigNumber(100))
-                      .toNumber()
-                      .toLocaleString('en-US')
-                      .slice(0, -1)}%`
-                  : 'Loading ...'}
-              </span>
-            </StyledInsight>
-        </CardContent>
-      </Card>
+            <StyledContainer>
+              <StyledText>
+                <span>{t.current}POWER</span>
+                <span style={{ textAlign: 'right' }}>
+                  1234
+                </span>
+              </StyledText>
+              <StyledContent>
+                <Button
+                  size='sm'
+                  disabled={!poolActive}
+                  text={t.farm_uniswap}
+                  onClick={onPresentDeposit}
+                >
+                  {!poolActive && (
+                    <Countdown
+                      date={new Date(startTime * 1000)}
+                      renderer={renderer}
+                    />
+                  )}
+                </Button>
+                <Button
+                  size='sm'
+                  disabled={!poolActive}
+                  text={t.farm_balancer}
+                  to={`/farms/${farm.id}`}
+                >
+                  {!poolActive && (
+                    <Countdown
+                      date={new Date(startTime * 1000)}
+                      renderer={renderer}
+                    />
+                  )}
+                </Button>
+              </StyledContent>
+            </StyledContainer>
+            <StyledContainer>
+              <StyledText>
+                <span>
+                    <Button
+                        size='sm'
+                        disabled={!poolActive}
+                        text={t.unclaimed + 'BENTO'}
+                        to={`/farms/${farm.id}`}
+                      >
+                        {!poolActive && (
+                          <Countdown
+                            date={new Date(startTime * 1000)}
+                            renderer={renderer}
+                          />
+                        )}
+                      </Button>
+                </span>
+                <span style={{ textAlign: 'right' }}>456</span>
+              </StyledText>
+              <StyledText>
+                <span>
+                    <Button
+                        size='sm'
+                        disabled={!poolActive}
+                        text={t.inBank + 'BENTO'}
+                        to={`/farms/${farm.id}`}
+                      >
+                        {!poolActive && (
+                          <Countdown
+                            date={new Date(startTime * 1000)}
+                            renderer={renderer}
+                          />
+                        )}
+                      </Button>
+                </span>
+                <span style={{ textAlign: 'right' }}>456</span>
+              </StyledText>
+            </StyledContainer>
+              <StyledInsight>
+                <span>APY</span>
+                <span>
+                  {farm.apy
+                    ? `${farm.apy
+                        .times(new BigNumber(100))
+                        .toNumber()
+                        .toLocaleString('en-US')
+                        .slice(0, -1)}%`
+                    : 'Loading ...'}
+                </span>
+              </StyledInsight>
+          </CardContent>
+          </StyledBadge>
+        </Card>
     </StyledCardWrapper>
   )
 }
