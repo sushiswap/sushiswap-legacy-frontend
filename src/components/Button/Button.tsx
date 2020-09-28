@@ -90,6 +90,80 @@ const Button: React.FC<ButtonProps> = ({
   )
 }
 
+export const StyledMiniButton: React.FC<ButtonProps> = ({
+  children,
+  disabled,
+  href,
+  onClick,
+  size,
+  text,
+  to,
+  variant,
+}) => {
+  const { color, spacing } = useContext(ThemeContext)
+
+  let buttonColor: string
+  switch (variant) {
+    case 'secondary':
+      buttonColor = color.grey[500]
+      break
+    case 'default':
+    default:
+      buttonColor = color.primary.main
+  }
+
+  let boxShadow: string
+  let buttonSize: number
+  let buttonPadding: number
+  let fontSize: number
+  switch (size) {
+    case 'sm':
+      boxShadow = `none`
+      buttonSize = 20
+      fontSize = 20
+      break
+    case 'lg':
+      boxShadow = `none`
+      buttonPadding = spacing[4]
+      buttonSize = 72
+      fontSize = 16
+      break
+    case 'md':
+    default:
+      boxShadow = `none`
+      buttonPadding = spacing[4]
+      buttonSize = 56
+      fontSize = 16
+  }
+
+  const ButtonChild = useMemo(() => {
+    if (to) {
+      return <StyledLink to={to}>{text}</StyledLink>
+    } else if (href) {
+      return <StyledExternalLink href={href} target="__blank">{text}</StyledExternalLink>
+    } else {
+      return text
+    }
+  }, [href, text, to])
+
+  return (
+    <StyledButton
+      boxShadow={boxShadow}
+      color={buttonColor}
+      disabled={disabled}
+      fontSize={fontSize}
+      onClick={onClick}
+      padding={buttonPadding}
+      size={buttonSize}
+    >
+      {children}
+      {ButtonChild}
+    </StyledButton>
+  )
+}
+
+export default Button
+
 interface StyledButtonProps {
   boxShadow: string,
   color: string,
@@ -145,5 +219,3 @@ const StyledExternalLink = styled.a`
   padding: 0 ${props => props.theme.spacing[4]}px;
   text-decoration: none;
 `
-
-export default Button

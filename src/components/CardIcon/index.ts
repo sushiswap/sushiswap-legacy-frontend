@@ -1,1 +1,1 @@
-export { default } from './CardIcon'
+export { default, MiniCardIcon } from './CardIcon'
