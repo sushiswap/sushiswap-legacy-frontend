@@ -195,8 +195,16 @@ export const redeem = async (bentoMinerContract, account) => {
  * 
  * @param {bentoABI} bentoken 
  */
-export const getBentoTotalSupply = async (bentoken) => {
-  return new BigNumber(bentoken.methods.totalSupply().call())
+export const getBentoTotalSupply = async (bento) => {
+  return new BigNumber(await bento.contracts.bento.methods.totalSupply().call())
+}
+
+/**
+ * 获得销毁的bento数量
+ * @param {*} bento 
+ */
+export const getBentoTotalBurned = async (bento) => {
+  return new BigNumber(await bento.contracts.bento.methods.totalBurned().call())
 }
 
 /**
@@ -204,19 +212,7 @@ export const getBentoTotalSupply = async (bentoken) => {
  * @param {bentoMinerABI} BentoMiner 
  */
 export const getGovTotalSupply = async (bentoMiner) => {
-  let govTotalLocked, govTotalLockedF
-  await bentoMiner.methods.totalLPTokensLocked().call().then((rst) => {
-
-    govTotalLocked = new BigNumber(rst).div(10).pow(18)
-    try {
-      govTotalLockedF = new BigNumber(rst)
-
-    } catch{
-      govTotalLockedF = new BigNumber(0)
-    }
-
-  })
-  return { govTotalLockedF, govTotalLocked }
+  return new BigNumber(await bentoMiner.methods.totalLPTokensLocked().call())
 }
 
 /**
@@ -238,22 +234,15 @@ export const getWeigthInfo = async (bentoken, chainId) => {
  * @param {bentoABI} bentoken 
  * @param {current account} account 
  */
-export const getMyBentoBalance = async (bentoken, account) => {
-  let bento_balance
-  bentoken.methods.balanceOf(account).call().then((rst) => {
-    try {
-      bento_balance = new BigNumber(rst)
-    } catch{
-      bento_balance = new BigNumber(0)
-    }
-  })
-  return bento_balance
+export const getMyBentoBalance = async (bento, account) => {
+  return new BigNumber(await bento.contracts.bento.methods.balanceOf(account).call())
+    
 }
 
 //食堂 - 获取便当info
 export const getMyUnclaimBento = async (bentoMiner, account) => {
   let bento_unclaim
-  bentoMiner.methods.unClaimedOf(account).call().then((rst) => {
+  await bentoMiner.contracts.bentoMiner.methods.unClaimedOf(account).call().then((rst) => {
     try {
       bento_unclaim = new BigNumber(rst)
     } catch{
@@ -265,9 +254,9 @@ export const getMyUnclaimBento = async (bentoMiner, account) => {
 }
 
 // 食堂 - 银行中的bento数量 (未添加)
-export const getMyBentoInBank = async (miner, account) => {
+export const getMyGovTokens = async (miner, account) => {
   let bento_inBank
-  miner.methods.bentosInBankOf(account).call().then((rst) => {
+  miner.methods.player2GovTokens(account).call().then((rst) => {
     try {
       bento_inBank = new BigNumber(rst)
     } catch{
@@ -421,3 +410,6 @@ export const withdrawGovToken = async (bentoMiner) => {
         )
 
  */
+const getVoteObjectInfo = async(bento, pid) => {
+  return await bento.contracts.bento.methods.getVoteObjectInfo(pid).call()
+}

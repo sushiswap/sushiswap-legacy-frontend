@@ -9,7 +9,11 @@ import Label from '../../../components/Label'
 import Spacer from '../../../components/Spacer'
 import Value from '../../../components/Value'
 import BentoIcon from '../../../components/BentoIcon'
-import useAllEarnings from '../../../bento_hooks/useAllEarnings'
+import useBentoSupply from '../../../bento_hooks/useBentoSupply'
+import usePendingRewards from '../../../bento_hooks/usePendingRewards'
+import useBentoBalance from '../../../bento_hooks/useBentoBalance'
+import useGovTokenStake from '../../../bento_hooks/useGovTokenStake'
+import useBentoTotalBurned from '../../../bento_hooks/useBentoTotalBurned'
 import useAllStakedValue from '../../../bento_hooks/useAllStakedValue'
 import useFarms from '../../../bento_hooks/useFarms'
 import useTokenBalance from '../../../bento_hooks/useTokenBalance'
@@ -25,28 +29,12 @@ const PendingRewards: React.FC = () => {
   const [end, setEnd] = useState(0)
   const [scale, setScale] = useState(1)
 
-  const allEarnings = useAllEarnings()
-  let sumEarning = 0
-  for (let earning of allEarnings) {
-    sumEarning += new BigNumber(earning)
-      .div(new BigNumber(10).pow(18))
-      .toNumber()
-  }
-
-  const [farms] = useFarms()
-  const allStakedValue = useAllStakedValue()
-
-  if (allStakedValue && allStakedValue.length) {
-    const sumWeth = farms.reduce(
-      (c, { id }, i) => c + (allStakedValue[i].totalWethValue.toNumber() || 0),
-      0,
-    )
-  }
+  const pendingRewards = getBalanceNumber(usePendingRewards())
 
   useEffect(() => {
     setStart(end)
-    setEnd(sumEarning)
-  }, [sumEarning])
+    setEnd(pendingRewards)
+  }, [pendingRewards])
 
   return (
     <span
@@ -76,24 +64,16 @@ const PendingRewards: React.FC = () => {
 const Balances: React.FC = () => {
   const t = useI18n()
 
-  const [totalSupply, setTotalSupply] = useState<BigNumber>()
+ 
   const bento = useBento()
-  console.log('bento_balances: bento: ', bento)
-  const bentoBalance = useTokenBalance(getBentoAddress(bento))
+  const bentoBalance = useBentoBalance()
+  //const bentoBurned = useBentoTotalBurned()
+  //console.log('bentoBurned:', bentoBurned.toNumber())
   const { account, ethereum }: { account: any; ethereum: any } = useWallet()
   const start = 0
   const end = 9837284.478278
-
-  useEffect(() => {
-    async function fetchTotalSupply() {
-      const supply = await getBentoSupply(bento)
-      setTotalSupply(supply)
-    }
-    if (bento) {
-      fetchTotalSupply()
-    }
-  }, [bento, setTotalSupply])
-
+  const totalSupply = useBentoSupply()
+  const napSupply = useGovTokenStake()
   return (
     <>
       <StyledWrapper>
@@ -128,7 +108,7 @@ const Balances: React.FC = () => {
               <div style={{ flex: 1 }}>
                 <Label text={t.bentoSupply} />
                 <Value
-                  value={totalSupply ? getBalanceNumber(totalSupply) : t.locked}
+                  value={totalSupply.toNumber() ? getBalanceNumber(totalSupply) : t.locked}
                 />
               </div>
               <div style={{ width: 150. }}>
@@ -159,6 +139,17 @@ const Balances: React.FC = () => {
 
             </StyledBalances>
             <StyledPools>
+
+            <StyledPool>
+                <StyledFlex>
+                  <BentoIcon meme={'🥮'} size={85}/>
+                  <StyledSubtitle>NAP</StyledSubtitle>
+                </StyledFlex>
+                <StyledSubtitle>
+                  {getBalanceNumber(napSupply) }
+                </StyledSubtitle>
+              </StyledPool>
+
               <StyledPool>
                 <StyledFlex>
                   <BentoIcon size={75} meme={'🍤'} />
@@ -198,6 +189,8 @@ const Balances: React.FC = () => {
                   6666
                 </StyledSubtitle>
               </StyledPool>
+              
+              
             </StyledPools>
           </CardContent>
           <Footnote>
@@ -213,16 +206,9 @@ const Balances: React.FC = () => {
               <div style={{ flex: 1 }}>
                 <StyledTitle>
                   <Label text={`🔥${t.burnedToken} $BENTO`} />
+                  <Value  value={t.locked}/>
                 </StyledTitle>
-                <StyledTitle>
-                  <CountUp
-                    start={start}
-                    end={end}
-                    decimals={end < 0 ? 4 : end > 1e5 ? 0 : 3}
-                    duration={3}
-                    separator=","
-                  />
-                </StyledTitle>
+                
               </div>
             </StyledBalances>
             <StyledAuctionEntrys>
