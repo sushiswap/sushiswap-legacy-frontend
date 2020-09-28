@@ -8,13 +8,13 @@ import CardContent from '../../../components/CardContent'
 import Label from '../../../components/Label'
 import Spacer from '../../../components/Spacer'
 import Value from '../../../components/Value'
-import SushiIcon from '../../../components/SushiIcon'
-import useAllEarnings from '../../../hooks/useAllEarnings'
-import useAllStakedValue from '../../../hooks/useAllStakedValue'
-import useFarms from '../../../hooks/useFarms'
-import useTokenBalance from '../../../hooks/useTokenBalance'
-import useSushi from '../../../hooks/useSushi'
-import { getSushiAddress, getSushiSupply } from '../../../sushi/utils'
+import BentoIcon from '../../../components/BentoIcon'
+import useAllEarnings from '../../../bento_hooks/useAllEarnings'
+import useAllStakedValue from '../../../bento_hooks/useAllStakedValue'
+import useFarms from '../../../bento_hooks/useFarms'
+import useTokenBalance from '../../../bento_hooks/useTokenBalance'
+import useBento from '../../../bento_hooks/useBento'
+import { getBentoAddress, getBentoSupply } from '../../../bento/utils'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import { useI18n } from 'use-i18n';
 import Button from '../../../components/Button'
@@ -75,24 +75,24 @@ const PendingRewards: React.FC = () => {
 
 const Balances: React.FC = () => {
   const t = useI18n()
- 
+
   const [totalSupply, setTotalSupply] = useState<BigNumber>()
-  const sushi = useSushi()
-  console.log('sushi:', sushi)
-  const sushiBalance = useTokenBalance(getSushiAddress(sushi))
+  const bento = useBento()
+  console.log('bento_balances: bento: ', bento)
+  const bentoBalance = useTokenBalance(getBentoAddress(bento))
   const { account, ethereum }: { account: any; ethereum: any } = useWallet()
   const start = 0
   const end = 9837284.478278
 
   useEffect(() => {
     async function fetchTotalSupply() {
-      const supply = await getSushiSupply(sushi)
+      const supply = await getBentoSupply(bento)
       setTotalSupply(supply)
     }
-    if (sushi) {
+    if (bento) {
       fetchTotalSupply()
     }
-  }, [sushi, setTotalSupply])
+  }, [bento, setTotalSupply])
 
   return (
     <>
@@ -100,12 +100,12 @@ const Balances: React.FC = () => {
         <Card>
           <CardContent>
             <StyledBalances>
-              {/* <SushiIcon /> */}
+              {/* <BentoIcon /> */}
               {/* <Spacer /> */}
               <div style={{ flex: 1 }}>
                 <Label text={t.bentoBalance} />
                 <Value
-                  value={!!account ? getBalanceNumber(sushiBalance) : t.locked}
+                  value={!!account ? getBalanceNumber(bentoBalance) : t.locked}
                 />
               </div>
               <div style={{ width: 150. }}>
@@ -161,7 +161,7 @@ const Balances: React.FC = () => {
             <StyledPools>
               <StyledPool>
                 <StyledFlex>
-                  <SushiIcon size={75} meme={'🍤'} />
+                  <BentoIcon size={75} meme={'🍤'} />
                   <StyledSubtitle>COMP</StyledSubtitle>
                 </StyledFlex>
                 <StyledSubtitle>
@@ -171,7 +171,7 @@ const Balances: React.FC = () => {
 
               <StyledPool>
                 <StyledFlex>
-                  <SushiIcon size={61} meme={'🥩'} />
+                  <BentoIcon size={61} meme={'🥩'} />
                   <StyledSubtitle>UNI</StyledSubtitle>
                 </StyledFlex>
                 <StyledSubtitle>
@@ -181,7 +181,7 @@ const Balances: React.FC = () => {
 
               <StyledPool>
                 <StyledFlex>
-                  <SushiIcon size={52} meme={'🍙'} />
+                  <BentoIcon size={52} meme={'🍙'} />
                   <StyledSubtitle>AAVE</StyledSubtitle>
                 </StyledFlex>
                 <StyledSubtitle>
@@ -191,7 +191,7 @@ const Balances: React.FC = () => {
 
               <StyledPool>
                 <StyledFlex>
-                  <SushiIcon meme={'🍔'} />
+                  <BentoIcon meme={'🍔'} />
                   <StyledSubtitle>MKR</StyledSubtitle>
                 </StyledFlex>
                 <StyledSubtitle>
