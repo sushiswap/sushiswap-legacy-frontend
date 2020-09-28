@@ -36,6 +36,10 @@ const i18n = {
         farm_title: "Select Your Favorite Dishes",
         farm_UNI_title: "Earn BENTO by staking UNI Tokens.",
 
+        auction_title: "Bid in Auction using BENTO",
+        auction_agree: "Agree",
+        auction_disagree: "Disagree",
+
         burnedToken: "Burned",
         stake: "Stake",
         auctioning: "Auctioning",
@@ -76,6 +80,10 @@ const i18n = {
         farm_subtitle: "通过抵押治理代币，赚取利率与BENTO",
         farm_title: "BENTO 合作社食堂",
         farm_UNI_title: "存 UNI 代币，赚取收益与 BENTO",
+
+        auction_title: "使用 BENTO 参与拍卖，控制选票",
+        auction_agree: "同意",
+        auction_disagree: "反对",
 
         burnedToken: "已经销毁的",
         stake: "抵押选票",

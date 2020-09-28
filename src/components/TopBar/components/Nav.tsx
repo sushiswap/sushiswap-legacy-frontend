@@ -13,7 +13,7 @@ const Nav: React.FC = () => {
       <StyledLink exact activeClassName="active" to="/farms">
         {t.canteen}
       </StyledLink>
-      <StyledLink exact activeClassName="active" to="/staking">
+      <StyledLink exact activeClassName="active" to="/auction">
         {t.auction}
       </StyledLink>
       <StyledAbsoluteLink
