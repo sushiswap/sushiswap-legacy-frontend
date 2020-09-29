@@ -29,7 +29,7 @@ export class Contracts {
       Object.assign(pool, {
         lpAddress: pool.lpAddresses[networkId],
         tokenAddress: pool.tokenAddresses[networkId],
-        lpContract: new this.web3.eth.Contract(UNIV2PairAbi),
+        lpContract: new this.web3.eth.Contract(BentoMinerAbi),
         tokenContract: new this.web3.eth.Contract(ERC20Abi),
       }),
     )

@@ -17,7 +17,7 @@ const useBentoTotalBurned = () => {
 
   const fetchBurned = useCallback(async () => {
     const balance = await getBentoTotalBurned(bento)
-    setBalance(new BigNumber(balance))
+    setBalance(balance)
   }, [account, bentoMinerContract, bento])
 
   useEffect(() => {

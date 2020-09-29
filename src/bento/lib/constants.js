@@ -85,7 +85,7 @@ export const supportedPools = [
     pid: 12,
     lpAddresses: {
       1: '0xce84867c3c02b05dc570d0135103d3fb9cc19433',
-      42: '0xb4a94DA855Da0B1174Bf10E9900D7001332C01Dd'
+      42: '0xBCcA45FA41c7eF29cB7B7e6d8b129FA5Eeaf6432'
     },
     tokenAddresses: {
       1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
@@ -94,8 +94,9 @@ export const supportedPools = [
     name: 'NAP',
     symbol: 'NAP',
     tokenSymbol: 'BENTO',
-    icon: '🍣',
+    icon: '🥮',
   },
+  
   // {
   //   pid: 1,
   //   lpAddresses: {

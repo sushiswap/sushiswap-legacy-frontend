@@ -11,6 +11,8 @@ import Value from '../../../components/Value'
 import BentoIcon from '../../../components/BentoIcon'
 import useBentoSupply from '../../../bento_hooks/useBentoSupply'
 import usePendingRewards from '../../../bento_hooks/usePendingRewards'
+//useAllGovTokenStake
+import useAllGovTokenStake from '../../../bento_hooks/useAllGovTokenStake'
 import useBentoBalance from '../../../bento_hooks/useBentoBalance'
 import useGovTokenStake from '../../../bento_hooks/useGovTokenStake'
 import useBentoTotalBurned from '../../../bento_hooks/useBentoTotalBurned'
@@ -64,7 +66,7 @@ const PendingRewards: React.FC = () => {
 const Balances: React.FC = () => {
   const t = useI18n()
 
- 
+
   const bento = useBento()
   const bentoBalance = useBentoBalance()
   //const bentoBurned = useBentoTotalBurned()
@@ -73,7 +75,9 @@ const Balances: React.FC = () => {
   const start = 0
   const end = 9837284.478278
   const totalSupply = useBentoSupply()
-  const napSupply = useGovTokenStake()
+ // const napSupply = useGovTokenStake()
+  const govRows = useAllGovTokenStake()
+  console.log("govRows:", govRows)
   return (
     <>
       <StyledWrapper>
@@ -140,15 +144,11 @@ const Balances: React.FC = () => {
             </StyledBalances>
             <StyledPools>
 
-            <StyledPool>
-                <StyledFlex>
-                  <BentoIcon meme={'🥮'} size={85}/>
-                  <StyledSubtitle>NAP</StyledSubtitle>
-                </StyledFlex>
-                <StyledSubtitle>
-                  {getBalanceNumber(napSupply) }
-                </StyledSubtitle>
-              </StyledPool>
+              {govRows.map((farm, j) => (
+                <React.Fragment key={j}>
+                  <Pool name={farm.name} size={farm.size} govTotalStake={getBalanceNumber(farm.govTotalStake)} icon={farm.icon} />
+                </React.Fragment>
+              ))}
 
               <StyledPool>
                 <StyledFlex>
@@ -189,8 +189,8 @@ const Balances: React.FC = () => {
                   6666
                 </StyledSubtitle>
               </StyledPool>
-              
-              
+
+
             </StyledPools>
           </CardContent>
           <Footnote>
@@ -206,13 +206,13 @@ const Balances: React.FC = () => {
               <div style={{ flex: 1 }}>
                 <StyledTitle>
                   <Label text={`🔥${t.burnedToken} $BENTO`} />
-                  <Value  value={t.locked}/>
+                  <Value value={t.locked} />
                 </StyledTitle>
-                
+
               </div>
             </StyledBalances>
             <StyledAuctionEntrys>
-              <Spacer size="sm"/>
+              <Spacer size="sm" />
               <StyledSubtitle>
                 <Label text={`${t.auctioning}`} />
               </StyledSubtitle>
@@ -267,6 +267,28 @@ const Balances: React.FC = () => {
     </>
   )
 }
+
+interface IFarm {
+  name: string
+  icon: string,
+  size: number,
+  govTotalStake: number,
+}
+const Pool: React.FC<IFarm> = ({ name, icon, size, govTotalStake}) => {
+  return (
+    <StyledPool>
+      <StyledFlex>
+        <BentoIcon meme={icon} size={size} />
+  <StyledSubtitle>{name}</StyledSubtitle>
+      </StyledFlex>
+      <StyledSubtitle>
+        {govTotalStake}
+      </StyledSubtitle>
+    </StyledPool>
+  )
+
+}
+
 const StyledAuctionEntrys = styled.div`
 margin-top: 10px;
   border-top: 2px solid #e6dcd5;

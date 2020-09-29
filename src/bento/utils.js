@@ -63,6 +63,37 @@ export const getFarms = (bento) => {
     : []
 }
 
+export const getGovs = (bento) => {
+  return bento
+    ? bento.contracts.pools.map(
+      ({
+        pid,
+        name,
+        symbol,
+        icon,
+        tokenAddress,
+        tokenSymbol,
+        tokenContract,
+        lpAddress,
+        lpContract,
+      }) => ({
+        pid,
+        id: symbol,
+        name,
+        govToken: symbol,
+        govTokenAddress: lpAddress,
+        govContract: lpContract,
+        tokenAddress,
+        tokenSymbol,
+        tokenContract,
+        earnToken: 'bento',
+        earnTokenAddress: bento.contracts.bento.options.address,
+        icon,
+      }),
+    )
+    : []
+}
+
 export const getPoolWeight = async (bentoMinerContract, pid) => {
   const { allocPoint } = await bentoMinerContract.methods.poolInfo(pid).call()
   const totalAllocPoint = await bentoMinerContract.methods

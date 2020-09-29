@@ -18,13 +18,13 @@ const useGovTokenStake = () => {
   const fetchGovTotalSupply = useCallback(async () => {
     const balance = await getGovTotalSupply(bentoMinerContract)
     setBalance(balance)
-  }, [account, bentoMinerContract, bento, balance, setBalance, getGovTotalSupply, block])
+  }, [account, bentoMinerContract, bento])
 
   useEffect(() => {
     if (bentoMinerContract) {
       fetchGovTotalSupply()
     }
-  })
+  }, [account, block, bentoMinerContract, setBalance, bento])
 
   return balance
 }
