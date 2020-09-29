@@ -8,13 +8,19 @@ import CardContent from '../../../components/CardContent'
 import Label from '../../../components/Label'
 import Spacer from '../../../components/Spacer'
 import Value from '../../../components/Value'
-import SushiIcon from '../../../components/SushiIcon'
-import useAllEarnings from '../../../hooks/useAllEarnings'
-import useAllStakedValue from '../../../hooks/useAllStakedValue'
-import useFarms from '../../../hooks/useFarms'
-import useTokenBalance from '../../../hooks/useTokenBalance'
-import useSushi from '../../../hooks/useSushi'
-import { getSushiAddress, getSushiSupply } from '../../../sushi/utils'
+import BentoIcon from '../../../components/BentoIcon'
+import useBentoSupply from '../../../bento_hooks/useBentoSupply'
+import usePendingRewards from '../../../bento_hooks/usePendingRewards'
+//useAllGovTokenStake
+import useAllGovTokenStake from '../../../bento_hooks/useAllGovTokenStake'
+import useBentoBalance from '../../../bento_hooks/useBentoBalance'
+import useGovTokenStake from '../../../bento_hooks/useGovTokenStake'
+import useBentoTotalBurned from '../../../bento_hooks/useBentoTotalBurned'
+import useAllStakedValue from '../../../bento_hooks/useAllStakedValue'
+import useFarms from '../../../bento_hooks/useFarms'
+import useTokenBalance from '../../../bento_hooks/useTokenBalance'
+import useBento from '../../../bento_hooks/useBento'
+import { getBentoAddress, getBentoSupply } from '../../../bento/utils'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import { useI18n } from 'use-i18n';
 import Button from '../../../components/Button'
@@ -25,28 +31,12 @@ const PendingRewards: React.FC = () => {
   const [end, setEnd] = useState(0)
   const [scale, setScale] = useState(1)
 
-  const allEarnings = useAllEarnings()
-  let sumEarning = 0
-  for (let earning of allEarnings) {
-    sumEarning += new BigNumber(earning)
-      .div(new BigNumber(10).pow(18))
-      .toNumber()
-  }
-
-  const [farms] = useFarms()
-  const allStakedValue = useAllStakedValue()
-
-  if (allStakedValue && allStakedValue.length) {
-    const sumWeth = farms.reduce(
-      (c, { id }, i) => c + (allStakedValue[i].totalWethValue.toNumber() || 0),
-      0,
-    )
-  }
+  const pendingRewards = getBalanceNumber(usePendingRewards())
 
   useEffect(() => {
     setStart(end)
-    setEnd(sumEarning)
-  }, [sumEarning])
+    setEnd(pendingRewards)
+  }, [pendingRewards])
 
   return (
     <span
@@ -75,37 +65,31 @@ const PendingRewards: React.FC = () => {
 
 const Balances: React.FC = () => {
   const t = useI18n()
- 
-  const [totalSupply, setTotalSupply] = useState<BigNumber>()
-  const sushi = useSushi()
-  console.log('sushi:', sushi)
-  const sushiBalance = useTokenBalance(getSushiAddress(sushi))
+
+
+  const bento = useBento()
+  const bentoBalance = useBentoBalance()
+  //const bentoBurned = useBentoTotalBurned()
+  //console.log('bentoBurned:', bentoBurned.toNumber())
   const { account, ethereum }: { account: any; ethereum: any } = useWallet()
   const start = 0
   const end = 9837284.478278
-
-  useEffect(() => {
-    async function fetchTotalSupply() {
-      const supply = await getSushiSupply(sushi)
-      setTotalSupply(supply)
-    }
-    if (sushi) {
-      fetchTotalSupply()
-    }
-  }, [sushi, setTotalSupply])
-
+  const totalSupply = useBentoSupply()
+ // const napSupply = useGovTokenStake()
+  const govRows = useAllGovTokenStake()
+  console.log("govRows:", govRows)
   return (
     <>
       <StyledWrapper>
         <Card>
           <CardContent>
             <StyledBalances>
-              {/* <SushiIcon /> */}
+              {/* <BentoIcon /> */}
               {/* <Spacer /> */}
               <div style={{ flex: 1 }}>
                 <Label text={t.bentoBalance} />
                 <Value
-                  value={!!account ? getBalanceNumber(sushiBalance) : t.locked}
+                  value={!!account ? getBalanceNumber(bentoBalance) : t.locked}
                 />
               </div>
               <div style={{ width: 150. }}>
@@ -128,7 +112,7 @@ const Balances: React.FC = () => {
               <div style={{ flex: 1 }}>
                 <Label text={t.bentoSupply} />
                 <Value
-                  value={totalSupply ? getBalanceNumber(totalSupply) : t.locked}
+                  value={totalSupply.toNumber() ? getBalanceNumber(totalSupply) : t.locked}
                 />
               </div>
               <div style={{ width: 150. }}>
@@ -159,9 +143,16 @@ const Balances: React.FC = () => {
 
             </StyledBalances>
             <StyledPools>
+
+              {govRows.map((farm, j) => (
+                <React.Fragment key={j}>
+                  <Pool name={farm.name} size={farm.size} govTotalStake={getBalanceNumber(farm.govTotalStake)} icon={farm.icon} />
+                </React.Fragment>
+              ))}
+
               <StyledPool>
                 <StyledFlex>
-                  <SushiIcon size={75} meme={'🍤'} />
+                  <BentoIcon size={75} meme={'🍤'} />
                   <StyledSubtitle>COMP</StyledSubtitle>
                 </StyledFlex>
                 <StyledSubtitle>
@@ -171,7 +162,7 @@ const Balances: React.FC = () => {
 
               <StyledPool>
                 <StyledFlex>
-                  <SushiIcon size={61} meme={'🥩'} />
+                  <BentoIcon size={61} meme={'🥩'} />
                   <StyledSubtitle>UNI</StyledSubtitle>
                 </StyledFlex>
                 <StyledSubtitle>
@@ -181,7 +172,7 @@ const Balances: React.FC = () => {
 
               <StyledPool>
                 <StyledFlex>
-                  <SushiIcon size={52} meme={'🍙'} />
+                  <BentoIcon size={52} meme={'🍙'} />
                   <StyledSubtitle>AAVE</StyledSubtitle>
                 </StyledFlex>
                 <StyledSubtitle>
@@ -191,13 +182,15 @@ const Balances: React.FC = () => {
 
               <StyledPool>
                 <StyledFlex>
-                  <SushiIcon meme={'🍔'} />
+                  <BentoIcon meme={'🍔'} />
                   <StyledSubtitle>MKR</StyledSubtitle>
                 </StyledFlex>
                 <StyledSubtitle>
                   6666
                 </StyledSubtitle>
               </StyledPool>
+
+
             </StyledPools>
           </CardContent>
           <Footnote>
@@ -213,20 +206,13 @@ const Balances: React.FC = () => {
               <div style={{ flex: 1 }}>
                 <StyledTitle>
                   <Label text={`🔥${t.burnedToken} $BENTO`} />
+                  <Value value={t.locked} />
                 </StyledTitle>
-                <StyledTitle>
-                  <CountUp
-                    start={start}
-                    end={end}
-                    decimals={end < 0 ? 4 : end > 1e5 ? 0 : 3}
-                    duration={3}
-                    separator=","
-                  />
-                </StyledTitle>
+
               </div>
             </StyledBalances>
             <StyledAuctionEntrys>
-              <Spacer size="sm"/>
+              <Spacer size="sm" />
               <StyledSubtitle>
                 <Label text={`${t.auctioning}`} />
               </StyledSubtitle>
@@ -281,6 +267,28 @@ const Balances: React.FC = () => {
     </>
   )
 }
+
+interface IFarm {
+  name: string
+  icon: string,
+  size: number,
+  govTotalStake: number,
+}
+const Pool: React.FC<IFarm> = ({ name, icon, size, govTotalStake}) => {
+  return (
+    <StyledPool>
+      <StyledFlex>
+        <BentoIcon meme={icon} size={size} />
+  <StyledSubtitle>{name}</StyledSubtitle>
+      </StyledFlex>
+      <StyledSubtitle>
+        {govTotalStake}
+      </StyledSubtitle>
+    </StyledPool>
+  )
+
+}
+
 const StyledAuctionEntrys = styled.div`
 margin-top: 10px;
   border-top: 2px solid #e6dcd5;

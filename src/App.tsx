@@ -6,9 +6,11 @@ import DisclaimerModal from './components/DisclaimerModal'
 import MobileMenu from './components/MobileMenu'
 import TopBar from './components/TopBar'
 import FarmsProvider from './contexts/Farms'
+import BentoFarmsProvider from './contexts/bento_Farms'
 import ModalsProvider from './contexts/Modals'
 import TransactionProvider from './contexts/Transactions'
 import SushiProvider from './contexts/SushiProvider'
+import BentoProvider from './contexts/BentoProvider'
 import useModal from './hooks/useModal'
 import theme from './theme'
 import Farms from './views/Farms'
@@ -55,7 +57,7 @@ const App: React.FC = () => {
 const Providers: React.FC = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
-      <UseWalletProvider
+      {/* <UseWalletProvider
         chainId={1}
         connectors={{
           //walletconnect: { rpcUrl: 'https://mainnet.eth.aragon.network/' },
@@ -69,7 +71,25 @@ const Providers: React.FC = ({ children }) => {
             </FarmsProvider>
           </TransactionProvider>
         </SushiProvider>
+
+      </UseWalletProvider> */}
+      <UseWalletProvider
+        chainId={42}
+        connectors={{
+          //walletconnect: { rpcUrl: 'https://mainnet.eth.aragon.network/' },
+          walletconnect: { rpcUrl: 'https://api.infura.io/v1/jsonrpc/kovan' },
+        }}
+      >
+      <BentoProvider>
+          <TransactionProvider>
+            <BentoFarmsProvider>
+              <ModalsProvider>{children}</ModalsProvider>
+            </BentoFarmsProvider>
+          </TransactionProvider>
+        </BentoProvider>
       </UseWalletProvider>
+      
+      
     </ThemeProvider>
   )
 }

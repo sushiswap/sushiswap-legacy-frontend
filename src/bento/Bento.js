@@ -1,15 +1,15 @@
 import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
-import { Contracts } from './lib/contracts.js'
+import { Contracts } from './lib/bento_contracts.js'
 import { Account } from './lib/accounts.js'
 import { EVM } from './lib/evm.js'
 
 import { contractAddresses } from './lib/constants'
 
-export class Sushi {
+export class Bento {
   constructor(provider, networkId, testing, options) {
     var realProvider
-    console.log('==================== class Sushi start ===================')
+    console.log('===========Bento constructor start==========')
     if (typeof provider === 'string') {
       if (provider.includes('wss')) {
         realProvider = new Web3.providers.WebsocketProvider(
@@ -39,9 +39,10 @@ export class Sushi {
     const util = require('util')
     console.log(`load contract ${util.inspect(realProvider)}, ${networkId}, ${util.inspect(options)}`)
     this.contracts = new Contracts(realProvider, networkId, this.web3, options)
-    this.sushiAddress = contractAddresses.sushi[networkId]
-    this.masterChefAddress = contractAddresses.masterChef[networkId]
+    this.bentoAddress = contractAddresses.bento[networkId]
+    this.bentoMinerAddress = contractAddresses.bentoMiner[networkId]
     this.wethAddress = contractAddresses.weth[networkId]
+    console.log('===========Bento constructor start==========')
   }
 
   async resetEVM() {

@@ -23,36 +23,38 @@ export const INTEGERS = {
 }
 
 export const addressMap = {
-  uniswapFactory: '0xc0a47dFe034B400B47bDaD5FecDa2621de6c4d95',
-  uniswapFactoryV2: '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f',
-  YFI: '0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e',
-  YCRV: '0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8',
-  UNIAmpl: '0xc5be99a02c6857f9eac67bbce58df5572498f40c',
-  WETH: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-  UNIRouter: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
-  LINK: '0x514910771AF9Ca656af840dff83E8264EcF986CA',
-  MKR: '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2',
-  SNX: '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F',
-  COMP: '0xc00e94Cb662C3520282E6f5717214004A7f26888',
-  LEND: '0x80fB784B7eD66730e8b1DBd9820aFD29931aab03',
-  SUSHIYCRV: '0x2C7a51A357d5739C5C74Bf3C96816849d2c9F726',
+  // uniswapFactory: '0xc0a47dFe034B400B47bDaD5FecDa2621de6c4d95',
+  // uniswapFactoryV2: '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f',
+  // YFI: '0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e',
+  // YCRV: '0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8',
+  // UNIAmpl: '0xc5be99a02c6857f9eac67bbce58df5572498f40c',
+  WETH: '0x5eCA15B12d959dfcf9c71c59F8B467Eb8c6efD0b',
+  // UNIRouter: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
+  // LINK: '0x514910771AF9Ca656af840dff83E8264EcF986CA',
+  // MKR: '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2',
+  // SNX: '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F',
+  // COMP: '0xc00e94Cb662C3520282E6f5717214004A7f26888',
+  // LEND: '0x80fB784B7eD66730e8b1DBd9820aFD29931aab03',
+  // SUSHIYCRV: '0x2C7a51A357d5739C5C74Bf3C96816849d2c9F726',
+  NAP: '0xb4a94DA855Da0B1174Bf10E9900D7001332C01Dd',
 }
 
 export const contractAddresses = {
   sushi: {
     1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
-    42: '0xb4a94DA855Da0B1174Bf10E9900D7001332C01Dd'
+    //42: '0xb4a94DA855Da0B1174Bf10E9900D7001332C01Dd'
   },
   masterChef: {
     1: '0xc2edad668740f1aa35e4d8f227fb8e17dca888cd',
-    42: '0xBCcA45FA41c7eF29cB7B7e6d8b129FA5Eeaf6432'
+    //42: '0xBCcA45FA41c7eF29cB7B7e6d8b129FA5Eeaf6432'
   },
   weth: {
     1: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+    42: '0x5eCA15B12d959dfcf9c71c59F8B467Eb8c6efD0b'
   },
   bento: {
     1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
-    42: '0xb4a94DA855Da0B1174Bf10E9900D7001332C01Dd',
+    42: '0x9403CAcff32735F354327d2283cf2CFcba94842D',
   },
   bentoMiner: {
     1: '0xc2edad668740f1aa35e4d8f227fb8e17dca888cd',
@@ -83,26 +85,29 @@ export const supportedPools = [
     pid: 12,
     lpAddresses: {
       1: '0xce84867c3c02b05dc570d0135103d3fb9cc19433',
+      42: '0xBCcA45FA41c7eF29cB7B7e6d8b129FA5Eeaf6432'
     },
     tokenAddresses: {
       1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
+      42: '0xb4a94DA855Da0B1174Bf10E9900D7001332C01Dd'
     },
-    name: 'COMP',
-    symbol: 'COMP',
+    name: 'NAP',
+    symbol: 'NAP',
     tokenSymbol: 'BENTO',
-    icon: '🍣',
+    icon: '🥮',
   },
-  {
-    pid: 1,
-    lpAddresses: {
-      1: '0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc',
-    },
-    tokenAddresses: {
-      1: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-    },
-    name: 'UNI',
-    symbol: 'UNI',
-    tokenSymbol: 'BENTO',
-    icon: '🐌',
-  },
+  
+  // {
+  //   pid: 1,
+  //   lpAddresses: {
+  //     1: '0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc',
+  //   },
+  //   tokenAddresses: {
+  //     1: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+  //   },
+  //   name: 'UNI',
+  //   symbol: 'UNI',
+  //   tokenSymbol: 'BENTO',
+  //   icon: '🐌',
+  // },
 ]

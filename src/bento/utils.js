@@ -14,27 +14,27 @@ const GAS_LIMIT = {
   },
 }
 
-export const getMasterChefAddress = (sushi) => {
-  console.log('getMasterChefAddress sushi:', sushi)
-  return sushi && sushi.masterChefAddress
+export const getBentoMinerAddress = (bento) => {
+  return bento && bento.bentoMinerAddress
 }
-export const getSushiAddress = (sushi) => {
-  return sushi && sushi.sushiAddress
+export const getBentoAddress = (bento) => {
+  console.log('bento.bentoAddress: ', bento)
+  return bento && bento.bentoAddress
 }
-export const getWethContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.weth
-}
-
-export const getMasterChefContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.masterChef
-}
-export const getSushiContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.sushi
+export const getWethContract = (bento) => {
+  return bento && bento.contracts && bento.contracts.weth
 }
 
-export const getFarms = (sushi) => {
-  return sushi
-    ? sushi.contracts.pools.map(
+export const getBentoMinerContract = (bento) => {
+  return bento && bento.contracts && bento.contracts.bentoMiner
+}
+export const getBentoContract = (bento) => {
+  return bento && bento.contracts && bento.contracts.bento
+}
+
+export const getFarms = (bento) => {
+  return bento
+    ? bento.contracts.pools.map(
       ({
         pid,
         name,
@@ -55,28 +55,59 @@ export const getFarms = (sushi) => {
         tokenAddress,
         tokenSymbol,
         tokenContract,
-        earnToken: 'sushi',
-        earnTokenAddress: sushi.contracts.sushi.options.address,
+        earnToken: 'bento',
+        earnTokenAddress: bento.contracts.bento.options.address,
         icon,
       }),
     )
     : []
 }
 
-export const getPoolWeight = async (masterChefContract, pid) => {
-  const { allocPoint } = await masterChefContract.methods.poolInfo(pid).call()
-  const totalAllocPoint = await masterChefContract.methods
+export const getGovs = (bento) => {
+  return bento
+    ? bento.contracts.pools.map(
+      ({
+        pid,
+        name,
+        symbol,
+        icon,
+        tokenAddress,
+        tokenSymbol,
+        tokenContract,
+        lpAddress,
+        lpContract,
+      }) => ({
+        pid,
+        id: symbol,
+        name,
+        govToken: symbol,
+        govTokenAddress: lpAddress,
+        govContract: lpContract,
+        tokenAddress,
+        tokenSymbol,
+        tokenContract,
+        earnToken: 'bento',
+        earnTokenAddress: bento.contracts.bento.options.address,
+        icon,
+      }),
+    )
+    : []
+}
+
+export const getPoolWeight = async (bentoMinerContract, pid) => {
+  const { allocPoint } = await bentoMinerContract.methods.poolInfo(pid).call()
+  const totalAllocPoint = await bentoMinerContract.methods
     .totalAllocPoint()
     .call()
   return new BigNumber(allocPoint).div(new BigNumber(totalAllocPoint))
 }
 
-export const getEarned = async (masterChefContract, pid, account) => {
-  return masterChefContract.methods.pendingSushi(pid, account).call()
+export const getEarned = async (bentoMinerContract, pid, account) => {
+  return bentoMinerContract.methods.pendingBento(pid, account).call()
 }
 
 export const getTotalLPWethValue = async (
-  masterChefContract,
+  bentoMinerContract,
   wethContract,
   lpContract,
   tokenContract,
@@ -87,9 +118,9 @@ export const getTotalLPWethValue = async (
     .balanceOf(lpContract.options.address)
     .call()
   const tokenDecimals = await tokenContract.methods.decimals().call()
-  // Get the share of lpContract that masterChefContract owns
+  // Get the share of lpContract that bentoMinerContract owns
   const balance = await lpContract.methods
-    .balanceOf(masterChefContract.options.address)
+    .balanceOf(bentoMinerContract.options.address)
     .call()
   // Convert that into the portion of total lpContract = p1
   const totalSupply = await lpContract.methods.totalSupply().call()
@@ -114,22 +145,22 @@ export const getTotalLPWethValue = async (
     wethAmount,
     totalWethValue: totalLpWethValue.div(new BigNumber(10).pow(18)),
     tokenPriceInWeth: wethAmount.div(tokenAmount),
-    poolWeight: await getPoolWeight(masterChefContract, pid),
+    poolWeight: await getPoolWeight(bentoMinerContract, pid),
   }
 }
 
-export const approve = async (lpContract, masterChefContract, account) => {
+export const approve = async (lpContract, bentoMinerContract, account) => {
   return lpContract.methods
-    .approve(masterChefContract.options.address, ethers.constants.MaxUint256)
+    .approve(bentoMinerContract.options.address, ethers.constants.MaxUint256)
     .send({ from: account })
 }
 
-export const getSushiSupply = async (sushi) => {
-  return new BigNumber(await sushi.contracts.sushi.methods.totalSupply().call())
+export const getBentoSupply = async (bento) => {
+  return new BigNumber(await bento.contracts.bento.methods.totalSupply().call())
 }
 
-export const stake = async (masterChefContract, pid, amount, account) => {
-  return masterChefContract.methods
+export const stake = async (bentoMinerContract, pid, amount, account) => {
+  return bentoMinerContract.methods
     .deposit(
       pid,
       new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
@@ -141,8 +172,8 @@ export const stake = async (masterChefContract, pid, amount, account) => {
     })
 }
 
-export const unstake = async (masterChefContract, pid, amount, account) => {
-  return masterChefContract.methods
+export const unstake = async (bentoMinerContract, pid, amount, account) => {
+  return bentoMinerContract.methods
     .withdraw(
       pid,
       new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
@@ -153,8 +184,8 @@ export const unstake = async (masterChefContract, pid, amount, account) => {
       return tx.transactionHash
     })
 }
-export const harvest = async (masterChefContract, pid, account) => {
-  return masterChefContract.methods
+export const harvest = async (bentoMinerContract, pid, account) => {
+  return bentoMinerContract.methods
     .deposit(pid, '0')
     .send({ from: account })
     .on('transactionHash', (tx) => {
@@ -163,9 +194,9 @@ export const harvest = async (masterChefContract, pid, account) => {
     })
 }
 
-export const getStaked = async (masterChefContract, pid, account) => {
+export const getStaked = async (bentoMinerContract, pid, account) => {
   try {
-    const { amount } = await masterChefContract.methods
+    const { amount } = await bentoMinerContract.methods
       .userInfo(pid, account)
       .call()
     return new BigNumber(amount)
@@ -174,10 +205,10 @@ export const getStaked = async (masterChefContract, pid, account) => {
   }
 }
 
-export const redeem = async (masterChefContract, account) => {
+export const redeem = async (bentoMinerContract, account) => {
   let now = new Date().getTime() / 1000
   if (now >= 1597172400) {
-    return masterChefContract.methods
+    return bentoMinerContract.methods
       .exit()
       .send({ from: account })
       .on('transactionHash', (tx) => {
@@ -195,14 +226,16 @@ export const redeem = async (masterChefContract, account) => {
  * 
  * @param {bentoABI} bentoken 
  */
-export const getBentoTotalSupply = async (bentoken) => {
-  bentoken.methods.totalSupply().call().then((rst) => {
-    try {
-      return new BigNumber(rst)
-    } catch {
-      return new BigNumber(0)
-    }
-  })
+export const getBentoTotalSupply = async (bento) => {
+  return new BigNumber(await bento.contracts.bento.methods.totalSupply().call())
+}
+
+/**
+ * 获得销毁的bento数量
+ * @param {*} bento 
+ */
+export const getBentoTotalBurned = async (bento) => {
+  return new BigNumber(await bento.contracts.bento.methods.totalBurned().call())
 }
 
 /**
@@ -210,19 +243,7 @@ export const getBentoTotalSupply = async (bentoken) => {
  * @param {bentoMinerABI} BentoMiner 
  */
 export const getGovTotalSupply = async (bentoMiner) => {
-  let govTotalLocked, govTotalLockedF
-  await bentoMiner.methods.totalLPTokensLocked().call().then((rst) => {
-
-    govTotalLocked = new BigNumber(rst).div(10).pow(18)
-    try {
-      govTotalLockedF = new BigNumber(rst)
-
-    } catch{
-      govTotalLockedF = new BigNumber(0)
-    }
-
-  })
-  return { govTotalLockedF, govTotalLocked }
+  return new BigNumber(await bentoMiner.methods.totalLPTokensLocked().call())
 }
 
 /**
@@ -244,22 +265,15 @@ export const getWeigthInfo = async (bentoken, chainId) => {
  * @param {bentoABI} bentoken 
  * @param {current account} account 
  */
-export const getMyBentoBalance = async (bentoken, account) => {
-  let bento_balance
-  bentoken.methods.balanceOf(account).call().then((rst) => {
-    try {
-      bento_balance = new BigNumber(rst)
-    } catch{
-      bento_balance = new BigNumber(0)
-    }
-  })
-  return bento_balance
+export const getMyBentoBalance = async (bento, account) => {
+  return new BigNumber(await bento.contracts.bento.methods.balanceOf(account).call())
+    
 }
 
 //食堂 - 获取便当info
 export const getMyUnclaimBento = async (bentoMiner, account) => {
   let bento_unclaim
-  bentoMiner.methods.unClaimedOf(account).call().then((rst) => {
+  await bentoMiner.contracts.bentoMiner.methods.unClaimedOf(account).call().then((rst) => {
     try {
       bento_unclaim = new BigNumber(rst)
     } catch{
@@ -271,9 +285,9 @@ export const getMyUnclaimBento = async (bentoMiner, account) => {
 }
 
 // 食堂 - 银行中的bento数量 (未添加)
-export const getMyBentoInBank = async (miner, account) => {
+export const getMyGovTokens = async (miner, account) => {
   let bento_inBank
-  miner.methods.bentosInBankOf(account).call().then((rst) => {
+  miner.methods.player2GovTokens(account).call().then((rst) => {
     try {
       bento_inBank = new BigNumber(rst)
     } catch{
@@ -427,3 +441,6 @@ export const withdrawGovToken = async (bentoMiner) => {
         )
 
  */
+const getVoteObjectInfo = async(bento, pid) => {
+  return await bento.contracts.bento.methods.getVoteObjectInfo(pid).call()
+}
