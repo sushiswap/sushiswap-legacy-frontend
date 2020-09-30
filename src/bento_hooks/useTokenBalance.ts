@@ -8,7 +8,6 @@ import { getBalance } from '../utils/erc20'
 import useBlock from './useBlock'
 
 const useTokenBalance = (tokenAddress: string) => {
-  console.log('tokenAddress:', tokenAddress)
   const [balance, setBalance] = useState(new BigNumber(0))
   const {
     account,

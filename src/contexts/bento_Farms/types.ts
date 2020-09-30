@@ -12,6 +12,8 @@ export interface Farm {
   icon: React.ReactNode
   id: string
   tokenSymbol: string
+
+  govToken: string
 }
 
 export interface FarmsContext {

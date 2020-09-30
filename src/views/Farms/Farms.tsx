@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
 
-import chef from '../../assets/img/chef.png'
+import womenChef from '../../assets/img/womenChef.png'
 
 import Button from '../../components/Button'
 import Page from '../../components/Page'
@@ -28,7 +28,7 @@ const Farms: React.FC = () => {
           <>
             <Route exact path={path}>
               <PageHeader
-                icon={<img src={chef} height="120" />}
+                icon={<img src={womenChef} height="120" />}
                 subtitle={t.farm_subtitle}
                 title={t.farm_title}
               />

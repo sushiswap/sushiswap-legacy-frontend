@@ -138,7 +138,7 @@ const BentoCard: React.FC<FarmCardProps> = ({ farm }) => {
                     <Button
                         size='sm'
                         disabled={!poolActive}
-                        text={t.unclaimed + 'BENTO'}
+                        text={t.unclaimed + 'BENTO 456'}
                         to={`/farms/${farm.id}`}
                       >
                         {!poolActive && (
@@ -149,25 +149,6 @@ const BentoCard: React.FC<FarmCardProps> = ({ farm }) => {
                         )}
                       </Button>
                 </span>
-                <span style={{ textAlign: 'right' }}>456</span>
-              </StyledText>
-              <StyledText>
-                <span>
-                    <Button
-                        size='sm'
-                        disabled={!poolActive}
-                        text={t.inBank + 'BENTO'}
-                        to={`/farms/${farm.id}`}
-                      >
-                        {!poolActive && (
-                          <Countdown
-                            date={new Date(startTime * 1000)}
-                            renderer={renderer}
-                          />
-                        )}
-                      </Button>
-                </span>
-                <span style={{ textAlign: 'right' }}>456</span>
               </StyledText>
             </StyledContainer>
               <StyledInsight>
