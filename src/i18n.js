@@ -43,6 +43,12 @@ const i18n = {
         burnedToken: "Burned",
         stake: "Stake",
         auctioning: "Auctioning",
+        myAccount:"My Account",
+        walletEtherScan: "View on Etherscan",
+        walletSignOut: "Sign out",
+        walletCancle: "Cancle",
+        sellectWallet: "Select a wallet provider.",
+        walletConnect: "Connect",
     },
     'zh-CN': {
         welcome: '你好',
@@ -60,8 +66,8 @@ const i18n = {
         bentoSupply: "$BENTO流通总量",
         pending: "等待收获",
         newRewards:"每块奖励",
-        mining: "挖矿",
-        buy: "购买",
+        mining: "挖🍱",
+        buy: "买🍱",
         votingPower: "获取的投票权",
 
         deposit: "存",
@@ -88,6 +94,13 @@ const i18n = {
         burnedToken: "已经销毁的",
         stake: "抵押选票",
         auctioning: "选票拍卖中",
+        myAccount:"我的钱包",
+        walletEtherScan: "去Etherscan查看",
+        walletSignOut: "退出",
+        walletCancle: "关闭",
+        sellectWallet: "请选择钱包",
+        walletConnect: "连接钱包",
+
     },
 };
 

@@ -13,6 +13,7 @@ import useBentoSupply from '../../../bento_hooks/useBentoSupply'
 import usePendingRewards from '../../../bento_hooks/usePendingRewards'
 //useAllGovTokenStake
 import useAllGovTokenStake from '../../../bento_hooks/useAllGovTokenStake'
+import useBlock from '../../../bento_hooks/useBlock'
 import useBentoBalance from '../../../bento_hooks/useBentoBalance'
 import useGovTokenStake from '../../../bento_hooks/useGovTokenStake'
 import useBentoTotalBurned from '../../../bento_hooks/useBentoTotalBurned'
@@ -22,9 +23,10 @@ import useTokenBalance from '../../../bento_hooks/useTokenBalance'
 import useBento from '../../../bento_hooks/useBento'
 import { getBentoAddress, getBentoSupply } from '../../../bento/utils'
 import { getBalanceNumber } from '../../../utils/formatBalance'
-import { useI18n } from 'use-i18n';
+import { useI18n } from 'use-i18n'
 import Button from '../../../components/Button'
 import Logo from '../../../components/Logo'
+import { govCastVote, getBentoMinerContract, govLaunchVote } from '../../../bento/utils'
 const PendingRewards: React.FC = () => {
   const t = useI18n()
   const [start, setStart] = useState(0)
@@ -65,9 +67,10 @@ const PendingRewards: React.FC = () => {
 
 const Balances: React.FC = () => {
   const t = useI18n()
-
-
+  const [pid, setPid] = useState(0)
+  const block = useBlock()
   const bento = useBento()
+  const bentoMiner = getBentoMinerContract(bento)
   const bentoBalance = useBentoBalance()
   //const bentoBurned = useBentoTotalBurned()
   //console.log('bentoBurned:', bentoBurned.toNumber())
@@ -75,7 +78,7 @@ const Balances: React.FC = () => {
   const start = 0
   const end = 9837284.478278
   const totalSupply = useBentoSupply()
- // const napSupply = useGovTokenStake()
+  // const napSupply = useGovTokenStake()
   const govRows = useAllGovTokenStake()
   console.log("govRows:", govRows)
   return (
@@ -92,9 +95,9 @@ const Balances: React.FC = () => {
                   value={!!account ? getBalanceNumber(bentoBalance) : t.locked}
                 />
               </div>
-              <div style={{ width: 150. }}>
-                <Button text={`🍱${t.mining}`} to="/farms" variant="default" size="md" />
-              </div>
+              <ButtonStyle>
+                <Button text={`${t.mining}`} to="/farms" variant="default" size="md" />
+              </ButtonStyle>
             </StyledBalances>
           </CardContent>
           <Footnote>
@@ -115,9 +118,9 @@ const Balances: React.FC = () => {
                   value={totalSupply.toNumber() ? getBalanceNumber(totalSupply) : t.locked}
                 />
               </div>
-              <div style={{ width: 150. }}>
-                <Button text={`${t.buy}🍱`} href="https://app.uniswap.org/#/swap" variant="default" size="md" />
-              </div>
+              <ButtonStyle>
+                <Button text={`${t.buy}`} href="https://app.uniswap.org/#/swap" variant="default" size="md" />
+              </ButtonStyle>
             </StyledBalances>
           </CardContent>
           <Footnote>
@@ -230,6 +233,53 @@ const Balances: React.FC = () => {
                 </StyledAuctionEntryContent>
               </StyledAuctionEntry>
               <Spacer size="sm"></Spacer>
+
+
+              {/* <StyledAuctionEntry>
+                <StyledAuctionEntryName>
+                  <Label text="launch a vote" />
+                </StyledAuctionEntryName>
+                <Spacer></Spacer>
+                <StyledAuctionEntryContent>
+                  <Label text="$BENTO"></Label>
+                  <input value={pid} onChange={(e) =>
+                    setPid(Number(e.target.value))
+                  }></input>
+                </StyledAuctionEntryContent>
+                <Spacer size="sm"></Spacer>
+                <StyledAuctionEntryContent>
+                  <Button size="sm" text="launch Vote" onClick={async () => {
+                    if (bentoMiner) {
+                      let flag = await govLaunchVote(bentoMiner, pid, block+2002 , account)
+                      console.log('launch vote:', flag)
+                    }
+                  }} />
+                </StyledAuctionEntryContent>
+              </StyledAuctionEntry>
+
+              <StyledAuctionEntry>
+                <StyledAuctionEntryName>
+                  <Label text="castVote" />
+                </StyledAuctionEntryName>
+                <Spacer></Spacer>
+                <StyledAuctionEntryContent>
+                  <Label text="$BENTO"></Label>
+                  <input value={pid} onChange={(e) =>
+                    setPid(Number(e.target.value))
+                  }></input>
+                </StyledAuctionEntryContent>
+                <Spacer size="sm"></Spacer>
+                <StyledAuctionEntryContent>
+                  <Button size="sm" text="Cast Vote" onClick={async () => {
+                    if (bentoMiner) {
+                      let flag = await govCastVote(bentoMiner, pid, account)
+                      console.log('flagflagflagflagflag:', flag)
+                    }
+                  }} />
+                </StyledAuctionEntryContent>
+              </StyledAuctionEntry> */}
+
+
               <StyledAuctionEntry>
                 <StyledAuctionEntryName>
                   <Label text="UNI-IP333" />
@@ -268,18 +318,19 @@ const Balances: React.FC = () => {
   )
 }
 
+
 interface IFarm {
   name: string
   icon: string,
   size: number,
   govTotalStake: number,
 }
-const Pool: React.FC<IFarm> = ({ name, icon, size, govTotalStake}) => {
+const Pool: React.FC<IFarm> = ({ name, icon, size, govTotalStake }) => {
   return (
     <StyledPool>
       <StyledFlex>
         <BentoIcon meme={icon} size={size} />
-  <StyledSubtitle>{name}</StyledSubtitle>
+        <StyledSubtitle>{name}</StyledSubtitle>
       </StyledFlex>
       <StyledSubtitle>
         {govTotalStake}
@@ -288,6 +339,10 @@ const Pool: React.FC<IFarm> = ({ name, icon, size, govTotalStake}) => {
   )
 
 }
+
+const ButtonStyle = styled.div`
+  width: 30%
+`
 
 const StyledAuctionEntrys = styled.div`
 margin-top: 10px;
