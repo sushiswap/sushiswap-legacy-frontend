@@ -24,6 +24,7 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
     reset()
   }, [onDismiss, reset])
 
+
   const bentoBalance = useBentoBalance()
 
   return (

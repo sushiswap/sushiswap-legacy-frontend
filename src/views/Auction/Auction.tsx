@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
 
-import womenChef from '../../assets/img/womenChef.png'
+import chef from '../../assets/img/chef.png'
 
 import Button from '../../components/Button'
 import Page from '../../components/Page'
@@ -13,10 +13,10 @@ import useModal from '../../hooks/useModal'
 
 import Farm from '../Farm'
 
-import FarmCards from './components/FarmCards'
+import Auctions from './components/Auctions'
 import { useI18n  } from 'use-i18n';
 
-const Farms: React.FC = () => {
+const Auction: React.FC = () => {
   const t = useI18n();
   const { path } = useRouteMatch()
   const { account } = useWallet()
@@ -28,14 +28,11 @@ const Farms: React.FC = () => {
           <>
             <Route exact path={path}>
               <PageHeader
-                icon={<img src={womenChef} height="120" />}
-                subtitle={t.farm_subtitle}
-                title={t.farm_title}
+                icon={<img src={chef} height="120" />}
+                subtitle={t.auction_subtitle}
+                title={t.auction_title}
               />
-              <FarmCards />
-            </Route>
-            <Route path={`${path}/:farmId`}>
-              <Farm />
+              <Auctions />
             </Route>
           </>
         ) : (
@@ -58,4 +55,4 @@ const Farms: React.FC = () => {
   )
 }
 
-export default Farms
+export default Auction

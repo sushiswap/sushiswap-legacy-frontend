@@ -1,6 +1,6 @@
 import { Contract } from 'web3-eth-contract'
 
-export interface Farm {
+export interface Auction {
   pid: number
   name: string
   lpToken: string
@@ -12,11 +12,9 @@ export interface Farm {
   icon: React.ReactNode
   id: string
   tokenSymbol: string
-
-  govToken: string
 }
 
-export interface FarmsContext {
-  farms: Farm[]
+export interface AuctionsContext {
+  auctions: Auction[]
   unharvested: number
 }

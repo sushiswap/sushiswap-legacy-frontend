@@ -1,27 +1,28 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import { useWallet } from 'use-wallet'
-import useBento from '../../bento_hooks/useBento'
+import useSushi from '../../hooks/useSushi'
 
 import { bnToDec } from '../../utils'
 import { getMasterChefContract, getEarned } from '../../sushi/utils'
-import { getGovs } from '../../bento/utils'
+import { getFarms } from '../../sushi/utils'
 
 import Context from './context'
-import { Farm } from './types'
+import { Auction } from './types'
 
-const Farms: React.FC = ({ children }) => {
+const Auctions: React.FC = ({ children }) => {
   const [unharvested, setUnharvested] = useState(0)
 
-  const bento = useBento()
+  const sushi = useSushi()
   const { account } = useWallet()
 
-  const farms = getGovs(bento)
+  const auctions = getFarms(sushi)
+  console.log(`auctions ${auctions}`)
 
   return (
     <Context.Provider
       value={{
-        farms,
+        auctions,
         unharvested,
       }}
     >
@@ -30,4 +31,4 @@ const Farms: React.FC = ({ children }) => {
   )
 }
 
-export default Farms
+export default Auctions

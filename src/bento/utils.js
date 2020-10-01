@@ -163,7 +163,7 @@ export const getBentoSupply = async (bento) => {
 export const stake = async (bentoMinerContract, pid, amount, account) => {
   return bentoMinerContract.methods
     .deposit(
-      pid,
+      // pid,
       new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
     )
     .send({ from: account })
@@ -176,7 +176,6 @@ export const stake = async (bentoMinerContract, pid, amount, account) => {
 export const unstake = async (bentoMinerContract, pid, amount, account) => {
   return bentoMinerContract.methods
     .withdraw(
-      pid,
       new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
     )
     .send({ from: account })
@@ -313,15 +312,17 @@ export const getGovBalance = async (govtoken, account) => {
 
 export const getGovLockedAmount = async (bentoMiner, account) => {
   let gov_locked, gov_lockedF
-  bentoMiner.methods.lpTokensInBankOf(account).call().then((rst) => {
+  
+  return await bentoMiner.methods.lpTokensInBankOf(account).call().then((rst) => {
     gov_locked = rst / 10 ** 18
     try {
       gov_lockedF = new BigNumber(rst)
     } catch{
       gov_lockedF = new BigNumber(0)
     }
+    console.log(`getGovLockedAmount ${gov_locked} ${gov_lockedF}`)
+    return { gov_locked, gov_lockedF }
   })
-  return { gov_locked, gov_lockedF }
 }
 
 /**
@@ -352,9 +353,11 @@ export const getMyMiningPercentage = (gov_locked, govTotalLocked) => {
 
 // 食堂 - (未添加) 声明便当按钮
 export const claimBento = async (bentoMiner, account) => {
+  console.log(`claim bento ${account}`)
   await bentoMiner.methods.claim().send({ from: account }).then(() => {
-    this.getMyUnclaimBento(bentoMiner, account)
-    this.getMyBentoInBank(bentoMiner, account)
+    // this.getMyUnclaimBento(bentoMiner, account)
+    // this.getMyBentoInBank(bentoMiner, account)
+    console.log(`claimBento successfully`)
   })
 }
 

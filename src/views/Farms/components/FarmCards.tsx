@@ -10,22 +10,31 @@ import CardContent from '../../../components/CardContent'
 import SidedCardIcon from '../../../components/CardIcon'
 import Loader from '../../../components/Loader'
 import Spacer from '../../../components/Spacer'
-import { Farm } from '../../../contexts/Farms'
+import { Farm } from '../../../contexts/bento_Farms'
 import useAllStakedValue, {
   StakedValue,
 } from '../../../hooks/useAllStakedValue'
-import useFarms from '../../../hooks/useFarms'
-import useSushi from '../../../hooks/useSushi'
-import { getEarned, getMasterChefContract } from '../../../sushi/utils'
+import useFarms from '../../../bento_hooks/useFarms'
+import useBento from '../../../bento_hooks/useBento'
+import { getEarned, getBentoMinerContract } from '../../../bento/utils'
 import { bnToDec } from '../../../utils'
 import { useI18n  } from 'use-i18n';
 import useModal from '../../../hooks/useModal'
-import useStake from '../../../hooks/useStake'
+import useStake from '../../../bento_hooks/useStake'
 import DepositModal from './DepositModal'
+import WithdrawModal from './WithdrawModal'
 import BentoCard from './BentoCard'
+import StyledBadge from './StyledBadge'
+import useGovTokenStake from '../../../bento_hooks/useGovTokenStake'
+import useClaimMinedToken from '../../../bento_hooks/useClaimMinedToken'
+import usePendingRewards from '../../../bento_hooks/usePendingRewards'
+import useTokenBalance from '../../../bento_hooks/useTokenBalance'
+import { getBalanceNumber } from '../../../utils/formatBalance'
+import useUnstake from '../../../bento_hooks/useUnstake'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber
+  govToken: string
 }
 
 const FarmCards: React.FC = () => {
@@ -33,30 +42,32 @@ const FarmCards: React.FC = () => {
   const { account } = useWallet()
   const stakedValue = useAllStakedValue()
 
-  const sushiIndex = farms.findIndex(
-    ({ tokenSymbol }) => tokenSymbol === 'SUSHI',
+  const bentoIndex = farms.findIndex(
+    ({ tokenSymbol }) => tokenSymbol === 'BENTO',
   )
 
-  const sushiPrice =
-    sushiIndex >= 0 && stakedValue[sushiIndex]
-      ? stakedValue[sushiIndex].tokenPriceInWeth
+  const bentoPrice =
+    bentoIndex >= 0 && stakedValue[bentoIndex]
+      ? stakedValue[bentoIndex].tokenPriceInWeth
       : new BigNumber(0)
 
   const BLOCKS_PER_YEAR = new BigNumber(2336000)
-  const SUSHI_PER_BLOCK = new BigNumber(1000)
+  const BENTO_PER_BLOCK = new BigNumber(1000)
 
   const rows = farms.reduce<FarmWithStakedValue[][]>(
     (farmRows, farm, i) => {
       const farmWithStakedValue = {
         ...farm,
         ...stakedValue[i],
-        apy: stakedValue[i]
-          ? sushiPrice
-              .times(SUSHI_PER_BLOCK)
-              .times(BLOCKS_PER_YEAR)
-              .times(stakedValue[i].poolWeight)
-              .div(stakedValue[i].totalWethValue)
-          : null,
+        govToken: farm.govToken,
+        apy: null,
+        // apy: stakedValue[i]
+        //   ? bentoPrice
+        //       .times(BENTO_PER_BLOCK)
+        //       .times(BLOCKS_PER_YEAR)
+        //       .times(stakedValue[i].poolWeight)
+        //       .div(stakedValue[i].totalWethValue)
+        //   : null,
       }
       const newFarmRows = [...farmRows]
       if (newFarmRows[newFarmRows.length - 1].length === 3) {
@@ -103,10 +114,18 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   const [startTime, setStartTime] = useState(0)
   const [harvestable, setHarvestable] = useState(0)
+  const [pendingTx, setPendingTx] = useState(false)
 
   const { account } = useWallet()
   const { lpTokenAddress } = farm
-  const sushi = useSushi()
+  const bento = useBento()
+
+  const tokenLocked = useGovTokenStake()
+  const pendingRewrds = usePendingRewards()
+  const tokenBalance = useTokenBalance(farm.tokenAddress);
+  const { onStake } = useStake(farm.pid)
+  const { onUnstake } = useUnstake(farm.pid)
+  const { onClaimMinedToken } = useClaimMinedToken(farm.pid)
 
   const renderer = (countdownProps: CountdownRenderProps) => {
     const { hours, minutes, seconds } = countdownProps
@@ -122,27 +141,32 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   useEffect(() => {
     async function fetchEarned() {
-      if (sushi) return
+      if (bento) return
       const earned = await getEarned(
-        getMasterChefContract(sushi),
+        getBentoMinerContract(bento),
         lpTokenAddress,
         account,
       )
       setHarvestable(bnToDec(earned))
     }
-    if (sushi && account) {
+    if (bento && account) {
       fetchEarned()
     }
-  }, [sushi, lpTokenAddress, account, setHarvestable])
+  }, [bento, lpTokenAddress, account, setHarvestable])
 
-  const tokenBalance = new BigNumber(0);
-  const { onStake } = useStake(1)
-  const tokenName = 'NAP'
   const [onPresentDeposit] = useModal(
     <DepositModal
       max={tokenBalance}
       onConfirm={onStake}
-      tokenName={tokenName}
+      tokenName={farm.govToken}
+    />,
+  )
+  
+  const [onPresentWithdraw] = useModal(
+    <WithdrawModal
+      max={tokenLocked}
+      onConfirm={onUnstake}
+      tokenName={farm.govToken}
     />,
   )
 
@@ -150,10 +174,10 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   return (
     <StyledCardWrapper>
-      {/* {farm.tokenSymbol === 'SUSHI' && <StyledCardAccent />} */}
+      {/* {farm.tokenSymbol === 'BENTO' && <StyledCardAccent />} */}
       <Card>
+      <StyledBadge badgeContent='X10' color="secondary">
         <CardContent>
-
         <StyledContent>
             
             <StyledText>
@@ -161,14 +185,14 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
               <span style={{ textAlign: 'center' }}><StyledTitle>{farm.name}</StyledTitle></span>
             </StyledText>
             <StyledDetails>
-              <StyledDetail>{t.buy} {farm.lpToken.toUpperCase()} {t.earn_profit} {farm.earnToken.toUpperCase()}</StyledDetail>
+              <StyledDetail>{t.buy} {farm.govToken.toUpperCase()} {t.earn_profit} {farm.earnToken.toUpperCase()}</StyledDetail>
             </StyledDetails>
           </StyledContent>
           <StyledContainer>
             <StyledText>
-              <span>{farm.lpToken.toUpperCase()} {t.mining}</span>
+              <span>{farm.govToken.toUpperCase()} {t.mining}</span>
               <span style={{ textAlign: 'right' }}>
-                1234
+              {getBalanceNumber(tokenLocked) }
               </span>
             </StyledText>
             <Spacer />
@@ -191,9 +215,9 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
               <span style={{ textAlign: 'right' }}>
                 <Button
                   size='sm'
-                  disabled={!poolActive}
+                  disabled={pendingTx}
                   text={t.redeem}
-                  to={`/farms/${farm.id}`}
+                  onClick={onPresentWithdraw}
                 >
                   {!poolActive && (
                     <Countdown
@@ -205,24 +229,23 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
               </span>
             </StyledText>
           </StyledContainer>
+          <Spacer size='sm' />
           <StyledContainer>
-            <StyledText>
-              <span>{t.get} BENTO</span>
-              <span style={{ textAlign: 'right' }}>1234</span>
-            </StyledText>
-            <Button
-              size='sm'
-              disabled={!poolActive}
-              text={t.claim}
-              to={`/farms/${farm.id}`}
-            >
-              {!poolActive && (
-                <Countdown
-                  date={new Date(startTime * 1000)}
-                  renderer={renderer}
-                />
-              )}
-            </Button>
+              <StyledText>
+                <span>
+                    <Button
+                        size='sm'
+                        disabled={pendingTx}
+                        text={t.unclaimed + 'BENTO\n' + getBalanceNumber(pendingRewrds)} 
+                        onClick={async () => {
+                          setPendingTx(true)
+                          await onClaimMinedToken(farm.id)
+                          setPendingTx(false)
+                        }}
+                      >
+                      </Button>
+                </span>
+              </StyledText>
           </StyledContainer>
             <StyledInsight>
               <span>APY</span>
@@ -235,20 +258,9 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
                       .slice(0, -1)}%`
                   : 'Loading ...'}
               </span>
-              {/* <span>
-                {farm.tokenAmount
-                  ? (farm.tokenAmount.toNumber() || 0).toLocaleString('en-US')
-                  : '-'}{' '}
-                {farm.tokenSymbol}
-              </span>
-              <span>
-                {farm.wethAmount
-                  ? (farm.wethAmount.toNumber() || 0).toLocaleString('en-US')
-                  : '-'}{' '}
-                ETH
-              </span> */}
             </StyledInsight>
         </CardContent>
+      </StyledBadge>
       </Card>
     </StyledCardWrapper>
   )
