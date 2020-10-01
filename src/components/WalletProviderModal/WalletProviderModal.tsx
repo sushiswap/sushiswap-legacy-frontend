@@ -11,10 +11,12 @@ import ModalActions from '../ModalActions'
 import ModalContent from '../ModalContent'
 import ModalTitle from '../ModalTitle'
 import Spacer from '../Spacer'
+import { useI18n } from 'use-i18n'
 
 import WalletCard from './components/WalletCard'
 
 const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
+  const t = useI18n()
   const { account, connect } = useWallet()
 
   useEffect(() => {
@@ -25,7 +27,7 @@ const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
 
   return (
     <Modal>
-      <ModalTitle text="Select a wallet provider." />
+      <ModalTitle text={t.sellectWallet} />
 
       <ModalContent>
         <StyledWalletsWrapper>
@@ -48,7 +50,7 @@ const WalletProviderModal: React.FC<ModalProps> = ({ onDismiss }) => {
       </ModalContent>
 
       <ModalActions>
-        <Button text="Cancel" variant="secondary" onClick={onDismiss} />
+        <Button text={t.walletCancle} variant="secondary" onClick={onDismiss} />
       </ModalActions>
     </Modal>
   )

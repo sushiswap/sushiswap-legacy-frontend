@@ -37,6 +37,12 @@ const i18n = {
         burnedToken: "Burned",
         stake: "Stake",
         auctioning: "Auctioning",
+        myAccount:"My Account",
+        walletEtherScan: "View on Etherscan",
+        walletSignOut: "Sign out",
+        walletCancle: "Cancle",
+        sellectWallet: "Select a wallet provider.",
+        walletConnect: "Connect",
     },
     'zh-CN': {
         welcome: '你好',
@@ -76,6 +82,13 @@ const i18n = {
         burnedToken: "已经销毁的",
         stake: "抵押选票",
         auctioning: "选票拍卖中",
+        myAccount:"我的钱包",
+        walletEtherScan: "去Etherscan查看",
+        walletSignOut: "退出",
+        walletCancle: "关闭",
+        sellectWallet: "请选择钱包",
+        walletConnect: "连接钱包",
+
     },
 };
 

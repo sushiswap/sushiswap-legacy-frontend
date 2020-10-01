@@ -23,7 +23,7 @@ import useTokenBalance from '../../../bento_hooks/useTokenBalance'
 import useBento from '../../../bento_hooks/useBento'
 import { getBentoAddress, getBentoSupply } from '../../../bento/utils'
 import { getBalanceNumber } from '../../../utils/formatBalance'
-import { useI18n } from 'use-i18n';
+import { useI18n } from 'use-i18n'
 import Button from '../../../components/Button'
 import Logo from '../../../components/Logo'
 import { govCastVote, getBentoMinerContract, govLaunchVote } from '../../../bento/utils'

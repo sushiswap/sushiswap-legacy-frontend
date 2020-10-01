@@ -2,8 +2,7 @@ import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
 import useTokenBalance from '../../../hooks/useTokenBalance'
-import useSushi from '../../../hooks/useSushi'
-import { getSushiAddress } from '../../../sushi/utils'
+import useBentoBalance from '../../../bento_hooks/useBentoBalance'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import Button from '../../Button'
 import CardIcon from '../../CardIcon'
@@ -14,8 +13,10 @@ import ModalContent from '../../ModalContent'
 import ModalTitle from '../../ModalTitle'
 import Spacer from '../../Spacer'
 import Value from '../../Value'
+import { useI18n } from 'use-i18n'
 
 const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
+  const t = useI18n()
   const { account, reset } = useWallet()
 
   const handleSignOutClick = useCallback(() => {
@@ -23,23 +24,22 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
     reset()
   }, [onDismiss, reset])
 
-  const sushi = useSushi()
-  const sushiBalance = useTokenBalance(getSushiAddress(sushi))
+  const bentoBalance = useBentoBalance()
 
   return (
     <Modal>
-      <ModalTitle text="My Account" />
+      <ModalTitle text={t.myAccount} />
       <ModalContent>
         <Spacer />
 
         <div style={{ display: 'flex' }}>
           <StyledBalanceWrapper>
             <CardIcon>
-              <span>🍣</span>
+              <span>🍱</span>
             </CardIcon>
             <StyledBalance>
-              <Value value={getBalanceNumber(sushiBalance)} />
-              <Label text="SUSHI Balance" />
+              <Value value={getBalanceNumber(bentoBalance)} />
+              <Label text={t.bentoBalance} />
             </StyledBalance>
           </StyledBalanceWrapper>
         </div>
@@ -47,18 +47,18 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
         <Spacer />
         <Button
           href={`https://etherscan.io/address/${account}`}
-          text="View on Etherscan"
+          text={t.walletEtherScan}
           variant="secondary"
         />
         <Spacer />
         <Button
           onClick={handleSignOutClick}
-          text="Sign out"
+          text={t.walletSignOut}
           variant="secondary"
         />
       </ModalContent>
       <ModalActions>
-        <Button onClick={onDismiss} text="Cancel" />
+        <Button onClick={onDismiss} text={t.walletCancle} />
       </ModalActions>
     </Modal>
   )
