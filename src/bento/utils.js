@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { contractAddresses } from './lib/constants'
+import Web3 from 'web3'
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -443,4 +444,24 @@ export const withdrawGovToken = async (bentoMiner) => {
  */
 const getVoteObjectInfo = async(bento, pid) => {
   return await bento.contracts.bento.methods.getVoteObjectInfo(pid).call()
+}
+
+const getCastingVoteByContract = async(govToken, bentoMiner) => {
+  //get bentoMiner
+  const votesCreatedStream = await bentoMiner.getPastEvents('voteCreated', { fromBlock:0 ,toBlock:'latest'})
+  const votesCreated = votesCreatedStream.map((event) => event.returnValues)
+  return votesCreated
+}
+
+//test castvote
+export const govCastVote = async( bentoMiner, id, account) => {
+  //get bentoMiner
+  return await bentoMiner.methods.castVote(id, true).send({from: account})
+}
+
+//test launchvote
+export const govLaunchVote = async( bentoMiner, id, height, account) => {
+  //get bentoMiner
+  console.log('id, height, account:', id, height, account)
+  return await bentoMiner.methods.launchVote(id, height).send({from: account})
 }

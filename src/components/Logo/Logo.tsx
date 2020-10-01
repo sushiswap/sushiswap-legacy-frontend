@@ -9,7 +9,7 @@ const Logo: React.FC = () => {
     <StyledLogo to="/">
       <img src={womenChef} height="32" style={{ marginTop: -4 }} />
       <StyledText>
-        Bento <MasterChefText>MasterChef's wife</MasterChefText>
+        <MasterChefText>MasterChef's wife   </MasterChefText>🍱
       </StyledText>
     </StyledLogo>
   )
