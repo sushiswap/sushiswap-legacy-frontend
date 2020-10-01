@@ -95,9 +95,9 @@ const Balances: React.FC = () => {
                   value={!!account ? getBalanceNumber(bentoBalance) : t.locked}
                 />
               </div>
-              <div style={{ width: 150. }}>
-                <Button text={`🍱${t.mining}`} to="/farms" variant="default" size="md" />
-              </div>
+              <ButtonStyle>
+                <Button text={`${t.mining}`} to="/farms" variant="default" size="md" />
+              </ButtonStyle>
             </StyledBalances>
           </CardContent>
           <Footnote>
@@ -118,9 +118,9 @@ const Balances: React.FC = () => {
                   value={totalSupply.toNumber() ? getBalanceNumber(totalSupply) : t.locked}
                 />
               </div>
-              <div style={{ width: 150. }}>
-                <Button text={`${t.buy}🍱`} href="https://app.uniswap.org/#/swap" variant="default" size="md" />
-              </div>
+              <ButtonStyle>
+                <Button text={`${t.buy}`} href="https://app.uniswap.org/#/swap" variant="default" size="md" />
+              </ButtonStyle>
             </StyledBalances>
           </CardContent>
           <Footnote>
@@ -339,6 +339,10 @@ const Pool: React.FC<IFarm> = ({ name, icon, size, govTotalStake }) => {
   )
 
 }
+
+const ButtonStyle = styled.div`
+  width: 30%
+`
 
 const StyledAuctionEntrys = styled.div`
 margin-top: 10px;

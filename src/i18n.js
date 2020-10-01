@@ -60,8 +60,8 @@ const i18n = {
         bentoSupply: "$BENTO流通总量",
         pending: "等待收获",
         newRewards:"每块奖励",
-        mining: "挖矿",
-        buy: "购买",
+        mining: "挖🍱",
+        buy: "买🍱",
         votingPower: "获取的投票权",
 
         deposit: "存",
