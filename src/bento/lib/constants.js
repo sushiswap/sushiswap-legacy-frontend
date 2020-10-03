@@ -54,11 +54,11 @@ export const contractAddresses = {
   },
   bento: {
     1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
-    42: '0x9403CAcff32735F354327d2283cf2CFcba94842D',
+    42: '0xe7221fd1f893342a433ebd4bcb9B672822fC7401',
   },
   bentoMiner: {
     1: '0xc2edad668740f1aa35e4d8f227fb8e17dca888cd',
-    42: '0xBCcA45FA41c7eF29cB7B7e6d8b129FA5Eeaf6432'
+    42: '0xFFa9CDE0e63dcA206A559e825DE02EE9041e89Af'
   },
 }
 
@@ -78,24 +78,53 @@ UNI-V2 LP Address on mainnet for reference
 10 AMPL 0xc5be99a02c6857f9eac67bbce58df5572498f40c
 11 YFI  0x2fdbadf3c4d5a8666bc06645b8358ab803996e28
 12 SUSHI 0xce84867c3c02b05dc570d0135103d3fb9cc19433
+
+
+kovan NAP    0x4268A742ae9bA78B07d1679665B208392f63f746 
+kovan bento  0x88c663A367647252Aa9192078A9Ae11D7f4ccFa3
 */
 
 export const supportedPools = [
+  
   {
-    pid: 12,
+    pid: 0,
+    lpAddresses: {
+      1: '',
+      42: '0x88c663A367647252Aa9192078A9Ae11D7f4ccFa3'
+    },
+    tokenAddresses: {
+      1: '',
+      42: '0xe7221fd1f893342a433ebd4bcb9B672822fC7401'
+    },
+    govAddresses: {
+      1:'',
+      42: '0xFFa9CDE0e63dcA206A559e825DE02EE9041e89Af',
+    },
+    name: 'BENTO',
+    symbol: 'BENTO',
+    tokenSymbol: 'BENTO',
+    icon: '🍱',
+  },
+  {
+    pid: 1,
     lpAddresses: {
       1: '0xce84867c3c02b05dc570d0135103d3fb9cc19433',
-      42: '0xBCcA45FA41c7eF29cB7B7e6d8b129FA5Eeaf6432'
+      42: '0x4268A742ae9bA78B07d1679665B208392f63f746'
     },
     tokenAddresses: {
       1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
       42: '0xb4a94DA855Da0B1174Bf10E9900D7001332C01Dd'
+    },
+    govAddresses: {
+      1:'',
+      42: '0xFFa9CDE0e63dcA206A559e825DE02EE9041e89Af',
     },
     name: 'NAP',
     symbol: 'NAP',
     tokenSymbol: 'BENTO',
     icon: '🥮',
   },
+  
   
   // {
   //   pid: 1,

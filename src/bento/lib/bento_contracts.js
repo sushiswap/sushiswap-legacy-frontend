@@ -1,6 +1,8 @@
 import BigNumber from 'bignumber.js/bignumber'
 import ERC20Abi from './abi/erc20.json'
 import BentoMinerAbi from './abi/ABI_BentoMiner.json'
+//ABI_NAPToken.json
+import ABI_NAPToken from './abi/ABI_NAPToken.json'
 import BentoAbi from './abi/ABI_Bentoken.json'
 import UNIV2PairAbi from './abi/uni_v2_lp.json'
 import WETHAbi from './abi/weth_kovan.json'
@@ -24,12 +26,14 @@ export class Contracts {
     this.bento = new this.web3.eth.Contract(BentoAbi)
     this.bentoMiner = new this.web3.eth.Contract(BentoMinerAbi)
     this.weth = new this.web3.eth.Contract(WETHAbi)
-
+    this.bentoLP =  new this.web3.eth.Contract(UNIV2PairAbi)
     this.pools = supportedPools.map((pool) =>
       Object.assign(pool, {
         lpAddress: pool.lpAddresses[networkId],
         tokenAddress: pool.tokenAddresses[networkId],
-        lpContract: new this.web3.eth.Contract(BentoMinerAbi),
+        govAddress: pool.govAddresses[networkId],
+        lpContract: new this.web3.eth.Contract(UNIV2PairAbi),
+        govContract: new this.web3.eth.Contract(BentoMinerAbi),
         tokenContract: new this.web3.eth.Contract(ERC20Abi),
       }),
     )
@@ -39,6 +43,7 @@ export class Contracts {
   }
 
   setProvider(provider, networkId) {
+    let bentoLPAddress
     const setProvider = (contract, address) => {
       contract.setProvider(provider)
       if (address) contract.options.address = address
@@ -48,13 +53,18 @@ export class Contracts {
     setProvider(this.bento, contractAddresses.bento[networkId])
     setProvider(this.bentoMiner, contractAddresses.bentoMiner[networkId])
     setProvider(this.weth, contractAddresses.weth[networkId])
-
     this.pools.forEach(
-      ({ lpContract, lpAddress, tokenContract, tokenAddress }) => {
+      ({ lpContract, lpAddress, tokenContract, tokenAddress, govContract, govAddress, pid }) => {
+        if(pid === 0) {
+          bentoLPAddress = lpAddress
+        }
         setProvider(lpContract, lpAddress)
         setProvider(tokenContract, tokenAddress)
+        setProvider(govContract, govAddress)
       },
     )
+
+    setProvider(this.bentoLP, bentoLPAddress)
   }
 
   setDefaultAccount(account) {

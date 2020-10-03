@@ -1,4 +1,4 @@
-var NAPToken_ABI = [
+[
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",

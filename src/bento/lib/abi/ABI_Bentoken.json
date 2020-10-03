@@ -1,4 +1,4 @@
- [
+[
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -79,6 +79,19 @@
 	},
 	{
 		"inputs": [],
+		"name": "MaxSupply",
+		"outputs": [
+			{
+				"internalType": "uint248",
+				"name": "",
+				"type": "uint248"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "acceptOwnership",
 		"outputs": [],
 		"stateMutability": "nonpayable",
@@ -114,11 +127,6 @@
 				"internalType": "address",
 				"name": "_unionAddress",
 				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_amount",
-				"type": "uint256"
 			}
 		],
 		"name": "addUnionContractFunds",
@@ -229,8 +237,27 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_minerContractAddress",
+				"type": "address"
+			}
+		],
 		"name": "bentoProduction",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "bentoTeamFunds",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -293,6 +320,13 @@
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "getMyBentoTeamMemberFunds",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -318,7 +352,20 @@
 	},
 	{
 		"inputs": [],
-		"name": "halfMaxSupply",
+		"name": "investor",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "investorFunds",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -330,13 +377,19 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "maxSupply",
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_addr",
+				"type": "address"
+			}
+		],
+		"name": "isContract",
 		"outputs": [
 			{
-				"internalType": "uint248",
+				"internalType": "bool",
 				"name": "",
-				"type": "uint248"
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -384,6 +437,72 @@
 	{
 		"inputs": [
 			{
+				"internalType": "bool",
+				"name": "_onOroff",
+				"type": "bool"
+			}
+		],
+		"name": "pauseContract",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "realizeInvestorFunds",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "realizeResetDAOFunds",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "reductionPoint",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "resetDAO",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "resetDAO_Funds",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
 				"name": "_unionAddress",
 				"type": "address"
@@ -406,6 +525,32 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_investor",
+				"type": "address"
+			}
+		],
+		"name": "setInvestor",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_resetDAO",
+				"type": "address"
+			}
+		],
+		"name": "setResetDAO",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "symbol",
 		"outputs": [
@@ -413,6 +558,19 @@
 				"internalType": "string",
 				"name": "",
 				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalBurned",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",

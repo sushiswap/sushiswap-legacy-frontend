@@ -3,12 +3,12 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_BentoTokenAddress",
+				"name": "_bentoTokenAddress",
 				"type": "address"
 			},
 			{
 				"internalType": "address",
-				"name": "_pairAddress",
+				"name": "_govAddress",
 				"type": "address"
 			},
 			{
@@ -18,7 +18,7 @@
 			},
 			{
 				"internalType": "uint256",
-				"name": "_StartMineDelay",
+				"name": "_startMineDelay",
 				"type": "uint256"
 			}
 		],
@@ -139,14 +139,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "acceptOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "accumulatedBentoPerLPToken",
+		"name": "_accumulatedBentoPerGovToken1e18",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -158,14 +151,15 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_player",
-				"type": "address"
-			}
-		],
-		"name": "bentosInBankOf",
+		"inputs": [],
+		"name": "acceptOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "accumulatedBentoPerGovToken",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -213,7 +207,7 @@
 				"type": "address"
 			}
 		],
-		"name": "checkVoteOfPlayer",
+		"name": "checkVotesOfPlayer",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -243,8 +237,14 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "claimAndWithdraw",
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_govsAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "claimAllBentoAndWithdrawGovs",
 		"outputs": [
 			{
 				"internalType": "bool",
@@ -289,7 +289,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "getHoeAddress",
+		"name": "getGovAddress",
 		"outputs": [
 			{
 				"internalType": "address",
@@ -364,13 +364,6 @@
 	},
 	{
 		"inputs": [],
-		"name": "kill",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
 		"name": "lastUpdateBlockNumber",
 		"outputs": [
 			{
@@ -420,25 +413,6 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_player",
-				"type": "address"
-			}
-		],
-		"name": "lpTokensInBankOf",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"name": "newOwner",
 		"outputs": [
@@ -467,12 +441,25 @@
 	{
 		"inputs": [
 			{
+				"internalType": "bool",
+				"name": "_onoroff",
+				"type": "bool"
+			}
+		],
+		"name": "pauseContract",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
 				"name": "",
 				"type": "address"
 			}
 		],
-		"name": "player2Bentos",
+		"name": "playerToGovTokens",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -491,26 +478,7 @@
 				"type": "address"
 			}
 		],
-		"name": "player2LPTokens",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "player2RealizedBentoPerLPToken1e18",
+		"name": "playerToRealizedBentoPerGovToken1e18",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -581,11 +549,11 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_newPairAddress",
+				"name": "_newGovAddress",
 				"type": "address"
 			}
 		],
-		"name": "setHoeContract",
+		"name": "setGovContract",
 		"outputs": [
 			{
 				"internalType": "bool",
@@ -630,7 +598,7 @@
 				"type": "address"
 			}
 		],
-		"name": "setVoteContract",
+		"name": "setVoterContract",
 		"outputs": [
 			{
 				"internalType": "bool",
@@ -656,7 +624,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "totalLPTokensLocked",
+		"name": "totalGovTokensLocked",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -761,38 +729,19 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "_amount",
+				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "withdraw",
+		"name": "votingList",
 		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "_amount",
+				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "withdrawBentos",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]

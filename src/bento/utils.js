@@ -77,13 +77,17 @@ export const getGovs = (bento) => {
         tokenContract,
         lpAddress,
         lpContract,
+        govAddress,
+        govContract,
       }) => ({
         pid,
         id: symbol,
         name,
         govToken: symbol,
-        govTokenAddress: lpAddress,
-        govContract: lpContract,
+        govTokenAddress: govAddress,
+        govContract: govContract,
+        lpContract,
+        lpAddress,
         tokenAddress,
         tokenSymbol,
         tokenContract,
@@ -106,6 +110,8 @@ export const getPoolWeight = async (bentoMinerContract, pid) => {
 export const getEarned = async (bentoMinerContract, pid, account) => {
   return bentoMinerContract.methods.pendingBento(pid, account).call()
 }
+
+
 
 export const getTotalLPWethValue = async (
   bentoMinerContract,
@@ -267,7 +273,7 @@ export const getWeigthInfo = async (bentoken, chainId) => {
  */
 export const getMyBentoBalance = async (bento, account) => {
   return new BigNumber(await bento.contracts.bento.methods.balanceOf(account).call())
-    
+
 }
 
 //食堂 - 获取便当info
@@ -310,19 +316,20 @@ export const getGovBalance = async (govtoken, account) => {
   return gov_balance
 }
 
-export const getGovLockedAmount = async (bentoMiner, account) => {
-  let gov_locked, gov_lockedF
-  
-  return await bentoMiner.methods.lpTokensInBankOf(account).call().then((rst) => {
-    gov_locked = rst / 10 ** 18
-    try {
-      gov_lockedF = new BigNumber(rst)
-    } catch{
-      gov_lockedF = new BigNumber(0)
-    }
-    console.log(`getGovLockedAmount ${gov_locked} ${gov_lockedF}`)
-    return { gov_locked, gov_lockedF }
-  })
+/**
+ * getGovTokensLockInBento
+* @param {} bentoMiner 
+ * @param {*} account 
+ */
+export const playerToGovTokens = async (bentoMiner, account) => {
+  let gov_locked
+
+  gov_locked = await bentoMiner.methods.playerToGovTokens(account).call()
+  if(gov_locked){
+    return new BigNumber(gov_locked)
+  }else{
+    return new BigNumber(0)
+  }
 }
 
 /**
@@ -370,9 +377,9 @@ export const claimBento = async (bentoMiner, account) => {
  */
 export const withdrawBento = async (bentoken, bentoMiner, account, v_Bentos_withdraw) => {
   bentoMiner.methods.withdrawBentos(v_Bentos_withdraw).send({ from: account }).then(() => {
-    this.getMyUnclaimBento(bentoMiner, account)
-    this.getMyBentoInBank(bentoMiner, account)
-    this.getMyBentoBalance(bentoken, account)
+    getMyUnclaimBento(bentoMiner, account)
+    //getMyBentoInBank(bentoMiner, account)
+    getMyBentoBalance(bentoken, account)
   })
 }
 
@@ -383,11 +390,107 @@ export const withdrawBento = async (bentoken, bentoMiner, account, v_Bentos_with
  * @param {*} amount 
  */
 export const approveGovToken = async (govtoken, account, amount) => {
-  govtoken.methods.approve(contractAddresses.bentoMiner, new BigNumber(amount)).send({ from: account }).then((rst) => {
+  await govtoken.methods.approve(contractAddresses.bentoMiner, new BigNumber(amount)).send({ from: account }).then((rst) => {
     console.log('Approved receipt:', rst);
   })
 }
 
+
+/**
+ * 
+ * @param {gov token contract} govTokenContract 
+ * @param {gov lp token contract} lpContract 
+ * @param {*} wethContract 
+ */
+export const getGovPriceInWeth = async (tokenContract, lpContract, wethContract
+  ) => {
+  
+    const govTokenAmountWholeLP = await tokenContract.methods
+      .balanceOf(lpContract.options.address).call()
+    
+    const tokenDecimals = await tokenContract.methods.decimals().call()
+  
+    const govAmount = new BigNumber(govTokenAmountWholeLP)
+      .div(new BigNumber(10).pow(tokenDecimals))
+  
+    const wethAmountWholeLP = await wethContract.methods
+      .balanceOf(lpContract.options.address).call()
+    
+    const wethAmount = new BigNumber(wethAmountWholeLP)
+    .div(new BigNumber(10).pow(18))
+  
+    return wethAmount.div(govAmount)
+  }
+  
+  export const getBentoPriceInWeth = async (
+    bento,
+    lpContract,
+    wethContract,
+  ) => {
+    return await getGovPriceInWeth(bento, lpContract, wethContract)
+  }
+
+  // export const getUnionWeight = async(bento, govToken) => {
+  //    return await bento.contracts.bento.methods.getUnionWeight(govToken.options.address).call()
+  // }
+  
+  export const getApyByPool = async (
+    tokenContract,
+    bento,
+    govContract,
+    lpContract,
+    wethContract,
+    blocksInYear,
+    account,
+    name,
+    icon,
+  ) => {
+
+    const govPrice = await getGovPriceInWeth(tokenContract, lpContract, wethContract)
+    
+   
+   
+    const govAmount = await totalGovTokensLocked(govContract)
+
+    
+
+    const bentoPrice = await getBentoPriceInWeth(bento.contracts.bento, bento.contracts.bentoLP, wethContract)
+    
+    
+    
+    const bp = await getBentoProduction(bento.contracts.bento, govContract)
+
+
+    const apy = bp.times(new BigNumber(blocksInYear))
+    .times(bentoPrice)
+    .div(govPrice.times(govAmount))
+    
+    return {
+      icon,
+      name,
+      apy: apy.toNumber(),
+    }
+  }
+  
+  export const getBentoProduction = async(bentoMiner, govContract) => {
+    let bp = await bentoMiner.methods.bentoProduction(govContract.options.address).call()
+    if(bp){
+      return new BigNumber(bp)
+    }else{
+      return new BigNumber(0)
+    }
+  }
+
+  export const totalGovTokensLocked = async(bentoMiner) => {
+    let total  = await bentoMiner.methods.totalGovTokensLocked().call()
+    if(total){
+      return new BigNumber(total)
+    }else{
+      return new BigNumber(0)
+    }
+  }
+
+  
 // export const depositGovTokenToMine= async() => {
 //   // web3.toWei(this.v_Naps, "ether")
 //   if (this.v_Govs_deposit < 10) {
@@ -445,26 +548,26 @@ export const withdrawGovToken = async (bentoMiner) => {
         )
 
  */
-const getVoteObjectInfo = async(bento, pid) => {
+const getVoteObjectInfo = async (bento, pid) => {
   return await bento.contracts.bento.methods.getVoteObjectInfo(pid).call()
 }
 
-const getCastingVoteByContract = async(govToken, bentoMiner) => {
+const getCastingVoteByContract = async (govToken, bentoMiner) => {
   //get bentoMiner
-  const votesCreatedStream = await bentoMiner.getPastEvents('voteCreated', { fromBlock:0 ,toBlock:'latest'})
+  const votesCreatedStream = await bentoMiner.getPastEvents('voteCreated', { fromBlock: 0, toBlock: 'latest' })
   const votesCreated = votesCreatedStream.map((event) => event.returnValues)
   return votesCreated
 }
 
 //test castvote
-export const govCastVote = async( bentoMiner, id, account) => {
+export const govCastVote = async (bentoMiner, id, account) => {
   //get bentoMiner
-  return await bentoMiner.methods.castVote(id, true).send({from: account})
+  return await bentoMiner.methods.castVote(id, true).send({ from: account })
 }
 
 //test launchvote
-export const govLaunchVote = async( bentoMiner, id, height, account) => {
+export const govLaunchVote = async (bentoMiner, id, height, account) => {
   //get bentoMiner
   console.log('id, height, account:', id, height, account)
-  return await bentoMiner.methods.launchVote(id, height).send({from: account})
+  return await bentoMiner.methods.launchVote(id, height).send({ from: account })
 }
