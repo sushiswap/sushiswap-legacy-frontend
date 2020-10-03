@@ -1,0 +1,22 @@
+import { IClientMeta } from "@walletconnect/types";
+import { BrowserInfo, BotInfo, NodeInfo, SearchBotDeviceInfo, ReactNativeInfo } from "detect-browser";
+export declare function detectEnv(userAgent?: string): BrowserInfo | BotInfo | NodeInfo | SearchBotDeviceInfo | ReactNativeInfo | null;
+export declare function detectOS(): "iOS" | "Android OS" | "BlackBerry OS" | "Windows Mobile" | "Amazon OS" | "Windows 3.11" | "Windows 95" | "Windows 98" | "Windows 2000" | "Windows XP" | "Windows Server 2003" | "Windows Vista" | "Windows 7" | "Windows 8" | "Windows 8.1" | "Windows 10" | "Windows ME" | "Open BSD" | "Sun OS" | "Linux" | "Mac OS" | "QNX" | "BeOS" | "OS/2" | "Chrome OS" | "aix" | "android" | "darwin" | "freebsd" | "linux" | "openbsd" | "sunos" | "win32" | "cygwin" | "netbsd" | undefined;
+export declare function isIOS(): boolean;
+export declare function isMobile(): boolean;
+export declare function isNode(): boolean;
+export declare function isBrowser(): boolean;
+export declare function unsafeGetFromWindow<T>(name: string): T | undefined;
+export declare function safeGetFromWindow<T>(name: string): T;
+export declare function getDocument(): Document;
+export declare function getDocumentUnsafe(): Document | undefined;
+export declare function getNavigator(): Navigator;
+export declare function getNavigatorUnsafe(): Navigator | undefined;
+export declare function getLocation(): Location;
+export declare function getLocationUnsafe(): Location | undefined;
+export declare function getCrypto(): Crypto;
+export declare function getCryptoUnsafe(): Crypto | undefined;
+export declare function getLocalStorage(): Storage;
+export declare function getLocalStorageUnsafe(): Storage | undefined;
+export declare function getMeta(): IClientMeta | null;
+//# sourceMappingURL=browser.d.ts.map

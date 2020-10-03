@@ -28,7 +28,7 @@ interface StyledButtonProps {
 
 const StyledButton = styled.button<StyledButtonProps>`
   align-items: center;
-  background-color: ${(props) => props.theme.color.grey[200]};
+  // background-color: ${(props) => props.theme.color.grey[200]};
   border: 0;
   border-radius: 28px;
   box-shadow: 6px 6px 12px ${(props) => props.theme.color.grey[300]},

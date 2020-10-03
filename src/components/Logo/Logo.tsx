@@ -1,14 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import chef from '../../assets/img/chef.png'
+import fire from '../../assets/img/fire.png'
 
 const Logo: React.FC = () => {
   return (
     <StyledLogo to="/">
-      <img src={chef} height="32" style={{ marginTop: -4 }} />
+      <img src={fire} height="32" style={{ marginTop: -4 }} />
       <StyledText>
-        SushiSwap <MasterChefText>MasterChef</MasterChefText>
+        Dumpster Fire
       </StyledText>
     </StyledLogo>
   )
@@ -26,7 +26,7 @@ const StyledLogo = styled(Link)`
 `
 
 const StyledText = styled.span`
-  color: ${(props) => props.theme.color.grey[600]};
+  color: #F05A26;
   font-family: 'Reem Kufi', sans-serif;
   font-size: 20px;
   font-weight: 700;

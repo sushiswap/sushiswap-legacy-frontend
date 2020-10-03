@@ -1,0 +1,51 @@
+{
+  "name": "ethereum-public-key-to-address",
+  "version": "0.0.1",
+  "description": "Convert an Ethereum public key to an address",
+  "main": "index.js",
+  "bin": {
+    "ethereum_public_key_to_address": "bin/ethereum_public_key_to_address"
+  },
+  "scripts": {
+    "test": "tape test/*.js",
+    "lint": "standard --fix index.js test/test.js example/example.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/miguelmota/ethereum-public-key-to-address"
+  },
+  "bugs": {
+    "url": "https://github.com/miguelmota/ethereum-public-key-to-address/issues"
+  },
+  "homepage": "https://github.com/miguelmota/ethereum-public-key-to-address",
+  "author": {
+    "name": "Miguel Mota",
+    "email": "hello@miguelmota.com",
+    "url": "https://miguelmota.com/"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/miguelmota/ethereum-public-key-to-address/blob/master/LICENSE"
+  },
+  "dependencies": {
+    "ethereum-checksum-address": "0.0.2",
+    "keccak256": "^1.0.0",
+    "meow": "^5.0.0",
+    "secp256k1": "^3.7.1"
+  },
+  "keywords": [
+    "ethereum",
+    "eth",
+    "blockchain",
+    "private",
+    "key",
+    "public",
+    "address",
+    "converter",
+    "checksum"
+  ],
+  "devDependencies": {
+    "standard": "^12.0.1",
+    "tape": "^4.10.2"
+  }
+}

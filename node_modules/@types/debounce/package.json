@@ -1,0 +1,33 @@
+{
+    "name": "@types/debounce",
+    "version": "1.2.0",
+    "description": "TypeScript definitions for debounce",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Denis Sokolov",
+            "url": "https://github.com/denis-sokolov",
+            "githubUsername": "denis-sokolov"
+        },
+        {
+            "name": "Josh Goldberg",
+            "url": "https://github.com/joshuakgoldberg",
+            "githubUsername": "joshuakgoldberg"
+        },
+        {
+            "name": "Wayne Carson",
+            "url": "https://github.com/wcarson",
+            "githubUsername": "wcarson"
+        }
+    ],
+    "main": "",
+    "types": "index",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+    },
+    "scripts": {},
+    "dependencies": {},
+    "typesPublisherContentHash": "05afadfa42b5bff7e3555e79c46669ae5acf82cf464bcf0c725f3799dff3dc5f",
+    "typeScriptVersion": "2.0"
+}
