@@ -31,6 +31,11 @@ interface FarmWithStakedValue extends Farm, StakedValue {
 interface FarmCardProps {
   farm: FarmWithStakedValue
 }
+interface Apy{
+  icon: string,
+  name: string,
+  apy: BigNumber
+}
 
 const BentoCard: React.FC<FarmCardProps> = ({ farm }) => {
   const t = useI18n();

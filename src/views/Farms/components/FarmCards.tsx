@@ -31,13 +31,19 @@ import usePendingRewards from '../../../bento_hooks/usePendingRewards'
 import useTokenBalance from '../../../bento_hooks/useTokenBalance'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import useUnstake from '../../../bento_hooks/useUnstake'
+import useApyByPool from '../../../bento_hooks/useApyByPool'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber
   govToken: string
 }
 
+
+
 const FarmCards: React.FC = () => {
+  const apys = useApyByPool()
+  console.log('apys:', apys)
+
   const [farms] = useFarms()
   const { account } = useWallet()
   const stakedValue = useAllStakedValue()
@@ -54,6 +60,7 @@ const FarmCards: React.FC = () => {
   const BLOCKS_PER_YEAR = new BigNumber(2336000)
   const BENTO_PER_BLOCK = new BigNumber(1000)
 
+
   const rows = farms.reduce<FarmWithStakedValue[][]>(
     (farmRows, farm, i) => {
       const farmWithStakedValue = {
@@ -69,6 +76,12 @@ const FarmCards: React.FC = () => {
         //       .div(stakedValue[i].totalWethValue)
         //   : null,
       }
+
+      apys.forEach(({name, apy}) => {
+        if(name == farmWithStakedValue.name)
+          farmWithStakedValue.apy = apy
+      })
+
       const newFarmRows = [...farmRows]
       if (newFarmRows[newFarmRows.length - 1].length === 3) {
         newFarmRows.push([farmWithStakedValue])
@@ -79,6 +92,8 @@ const FarmCards: React.FC = () => {
     },
     [[]],
   )
+
+
 
   return (
     <StyledCards>

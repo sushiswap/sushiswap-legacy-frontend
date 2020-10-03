@@ -21,11 +21,13 @@ import Card, { GreyCard, LightCard } from './Card'
 import { Auction } from '../../../contexts/Auctions'
 import useAuctions from '../../../hooks/useAuctions'
 
+
 interface AuctionList extends Auction, StakedValue {
   apy: BigNumber
 }
 
 const Auctions: React.FC = () => {
+  
   const [auctions] = useAuctions()
   const { account } = useWallet()
   const stakedValue = useAllStakedValue()
