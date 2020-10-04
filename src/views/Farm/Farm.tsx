@@ -78,7 +78,7 @@ const Farm: React.FC = () => {
         <Spacer size="lg" />
         <StyledInfo>
           Every time you stake and unstake LP tokens, the contract will
-          automagically pump out DUMP rewards for you!
+          automagically pump out BRRN rewards for you!
         </StyledInfo>
         <Spacer size="lg" />
       </StyledFarm>
