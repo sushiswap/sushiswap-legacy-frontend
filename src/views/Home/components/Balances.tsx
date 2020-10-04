@@ -50,7 +50,7 @@ const PendingRewards: React.FC = () => {
       style={{
         transform: `scale(${scale})`,
         transformOrigin: 'right bottom',
-        transition: 'transform 0.5s',
+        transition: 'transform 0.25s',
         display: 'inline-block',
       }}
     >
@@ -92,7 +92,7 @@ const Balances: React.FC = () => {
           <StyledBalances>
             <StyledBalance>
               <div style={{ flex: 1 }}>
-                <Label text="Your DUMP Tokens" />
+                <Label text="Your BRRN Tokens" />
                 <Value
                   value={!!account ? getBalanceNumber(sushiBalance) : 'Locked'}
                 />
@@ -103,7 +103,7 @@ const Balances: React.FC = () => {
         <Footnote>
           Pending burn
           <FootnoteValue>
-            <PendingRewards /> DUMP
+            <PendingRewards /> BRRN
           </FootnoteValue>
         </Footnote>
       </Card>
@@ -111,14 +111,14 @@ const Balances: React.FC = () => {
 
       <Card>
         <CardContent>
-          <Label text="Total DUMP Supply" />
+          <Label text="All the BRRN" />
           <Value
             value={totalSupply ? getBalanceNumber(totalSupply) : 'Locked'}
           />
         </CardContent>
         <Footnote>
           New rewards per block
-          <FootnoteValue>1,000 DUMP</FootnoteValue>
+          <FootnoteValue>1,000 BRRN</FootnoteValue>
         </Footnote>
       </Card>
     </StyledWrapper>
@@ -128,11 +128,13 @@ const Balances: React.FC = () => {
 const Footnote = styled.div`
   font-size: 14px;
   padding: 8px 16px;
-  color: ${(props) => props.theme.color.grey[400]};
-  border-top: solid 1px ${(props) => props.theme.color.grey[300]};
+  // color: ${(props) => props.theme.color.grey[400]};
+  color: #fff;
+  // border-top: solid 1px ${(props) => props.theme.color.grey[300]};
+  border-top: 1px solid rgba(0,0,0, .5);
 `
 const FootnoteValue = styled.div`
-  font-family: 'Roboto Mono', monospace;
+  // font-family: 'Roboto Mono', monospace;
   float: right;
 `
 

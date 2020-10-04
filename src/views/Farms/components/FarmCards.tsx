@@ -78,7 +78,7 @@ const FarmCards: React.FC = () => {
         ))
       ) : (
         <StyledLoadingWrapper>
-          <Loader text="Starting the 🔥..." />
+          <Loader text="Lighting the 🔥..." />
         </StyledLoadingWrapper>
       )}
     </StyledCards>
@@ -128,14 +128,14 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   return (
     <StyledCardWrapper>
-      {farm.tokenSymbol === 'DUMP' && <StyledCardAccent />}
+      {farm.tokenSymbol === 'BRRN' && <StyledCardAccent />}
       <Card>
         <CardContent>
           <StyledContent>
             <CardIcon>{farm.icon}</CardIcon>
             <StyledTitle>{farm.name}</StyledTitle>
             <StyledDetails>
-              <StyledDetail>Burn {farm.lpToken.toUpperCase()}</StyledDetail>
+              <StyledDetail>BRRN {farm.lpToken.toUpperCase()}</StyledDetail>
               <StyledDetail>Earn {farm.earnToken.toUpperCase()}</StyledDetail>
             </StyledDetails>
             <Spacer />
@@ -226,7 +226,8 @@ const StyledCardWrapper = styled.div`
 `
 
 const StyledTitle = styled.h4`
-  color: ${(props) => props.theme.color.grey[600]};
+  // color: ${(props) => props.theme.color.grey[600]};
+  color: #fff;
   font-size: 24px;
   font-weight: 700;
   margin: ${(props) => props.theme.spacing[2]}px 0 0;
@@ -250,21 +251,23 @@ const StyledDetails = styled.div`
 `
 
 const StyledDetail = styled.div`
-  color: ${(props) => props.theme.color.grey[500]};
+  // color: ${(props) => props.theme.color.grey[500]};
+  color: rgba(255,255,255, .75);
 `
 
 const StyledInsight = styled.div`
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
-  border-radius: 8px;
-  background: #fffdfa;
+  // border-radius: 8px;
+  // background: #fffdfa;
   color: #aa9584;
+  color: #fff;
   width: 100%;
   margin-top: 12px;
   line-height: 32px;
   font-size: 13px;
-  border: 1px solid #e6dcd5;
+  // border: 1px solid #e6dcd5;
   text-align: center;
   padding: 0 12px;
 `

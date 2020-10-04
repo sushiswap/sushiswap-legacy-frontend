@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import dumpster from '../../assets/img/dumpster.png'
+import fire from '../../assets/img/fire.png'
 import Button from '../../components/Button'
 import Container from '../../components/Container'
 import Page from '../../components/Page'
@@ -12,7 +12,7 @@ const Home: React.FC = () => {
   return (
     <Page>
       <PageHeader
-        icon={<img src={dumpster} height={120} />}
+        icon={<img src={fire} height={120} />}
       />
 
       <Container>

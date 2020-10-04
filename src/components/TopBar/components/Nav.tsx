@@ -36,8 +36,10 @@ const StyledLink = styled(NavLink)`
   padding-left: ${(props) => props.theme.spacing[3]}px;
   padding-right: ${(props) => props.theme.spacing[3]}px;
   text-decoration: none;
+  transition: all .25s;
   &:hover {
-    color: ${(props) => props.theme.color.grey[500]};
+    // color: ${(props) => props.theme.color.grey[500]};
+    color: rgba(255,255,255, .8);
   }
   &.active {
     // color: ${(props) => props.theme.color.primary.main};
