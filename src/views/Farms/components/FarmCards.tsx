@@ -152,7 +152,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
               )}
             </Button>
             <StyledInsight>
-              <span>APY</span>
+              <span>Earnings (APY)</span>
               <span>
                 {farm.apy
                   ? `${farm.apy
@@ -261,7 +261,7 @@ const StyledInsight = styled.div`
   box-sizing: border-box;
   // border-radius: 8px;
   // background: #fffdfa;
-  color: #aa9584;
+  // color: #aa9584;
   color: #fff;
   width: 100%;
   margin-top: 12px;
@@ -269,7 +269,7 @@ const StyledInsight = styled.div`
   font-size: 13px;
   // border: 1px solid #e6dcd5;
   text-align: center;
-  padding: 0 12px;
+  padding: 0;
 `
 
 export default FarmCards

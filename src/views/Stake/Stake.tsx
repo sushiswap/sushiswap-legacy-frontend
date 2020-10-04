@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import chef from '../../assets/img/chef.png'
+import fire from '../../assets/img/fire.png'
 
 import { useParams } from 'react-router-dom'
 import { useWallet } from 'use-wallet'
@@ -52,9 +52,9 @@ const Farm: React.FC = () => {
       {!!account ? (
         <>
           <PageHeader
-            icon={<img src={chef} height="120" />}
-            title="Stake Sushi Tokens & Earn Fees"
-            subtitle="0.05% of all SushiSwap trades are rewarded to SUSHI stakers"
+            icon={<img src={fire} height="120" />}
+            title="It BRRNs to Earn"
+            subtitle="0.05% of all BRRN trades are rewarded to BRRN stakers"
           />
           {/* <FarmCards /> */}
           <div>TBD</div>
