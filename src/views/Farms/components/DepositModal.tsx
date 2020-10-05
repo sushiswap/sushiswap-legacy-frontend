@@ -6,19 +6,25 @@ import ModalActions from '../../../components/ModalActions'
 import ModalTitle from '../../../components/ModalTitle'
 import TokenInput from '../../../components/TokenInput'
 import { getFullDisplayBalance } from '../../../utils/formatBalance'
+import { useI18n  } from 'use-i18n';
+import { Contract } from 'web3-eth-contract';
 
 interface DepositModalProps extends ModalProps {
   max: BigNumber
   onConfirm: (amount: string) => void
+  onApprove: (amount: string) => void
   tokenName?: string
 }
 
 const DepositModal: React.FC<DepositModalProps> = ({
   max,
   onConfirm,
+  onApprove,
   onDismiss,
   tokenName = '',
 }) => {
+  const t = useI18n();
+
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
 
@@ -39,7 +45,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
 
   return (
     <Modal>
-      <ModalTitle text={`Deposit ${tokenName} Tokens`} />
+      <ModalTitle text={`${t.deposit} ${tokenName}`} />
       <TokenInput
         value={val}
         onSelectMax={handleSelectMax}
@@ -48,10 +54,19 @@ const DepositModal: React.FC<DepositModalProps> = ({
         symbol={tokenName}
       />
       <ModalActions>
-        <Button text="Cancel" variant="secondary" onClick={onDismiss} />
+        <Button 
+          text={t.approval} 
+          variant="secondary" 
+          onClick={async () => {
+            setPendingTx(true)
+            await onApprove(val)
+            setPendingTx(false)
+            onDismiss()
+           }} 
+        />
         <Button
           disabled={pendingTx}
-          text={pendingTx ? 'Pending Confirmation' : 'Confirm'}
+          text={pendingTx ? t.pending_confirmation : t.deposit}
           onClick={async () => {
             setPendingTx(true)
             await onConfirm(val)

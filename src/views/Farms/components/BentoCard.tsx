@@ -21,11 +21,16 @@ import { bnToDec } from '../../../utils'
 import { useI18n  } from 'use-i18n';
 import useModal from '../../../hooks/useModal'
 import useStake from '../../../hooks/useStake'
+import useApprove from '../../../bento_hooks/useApprove'
 import DepositModal from './DepositModal'
 import StyledBadge from './StyledBadge'
+import { Contract } from 'web3-eth-contract'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber
+  govToken: string
+  govAddress: string
+  tokenContract: Contract
 }
 
 interface FarmCardProps {
@@ -76,12 +81,13 @@ const BentoCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   const tokenBalance = new BigNumber(0);
   const { onStake } = useStake(1)
-  const tokenName = 'NAP'
+  const { onApprove } = useApprove(farm.tokenContract)
   const [onPresentDeposit] = useModal(
     <DepositModal
       max={tokenBalance}
       onConfirm={onStake}
-      tokenName={tokenName}
+      onApprove={onApprove}
+      tokenName={farm.govToken}
     />,
   )
 

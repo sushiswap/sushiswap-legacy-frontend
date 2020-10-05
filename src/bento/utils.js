@@ -167,6 +167,8 @@ export const getBentoSupply = async (bento) => {
 }
 
 export const stake = async (bentoMinerContract, pid, amount, account) => {
+  const util = require('util')
+  console.log(`bentoMinerContract ${util.inspect(bentoMinerContract)}`)
   return bentoMinerContract.methods
     .deposit(
       // pid,
@@ -280,6 +282,8 @@ export const getMyBentoBalance = async (bento, account) => {
 export const getMyUnclaimBento = async (bentoMiner, account) => {
   let bento_unclaim
   await bentoMiner.contracts.bentoMiner.methods.unClaimedOf(account).call().then((rst) => {
+    const util = require('util')
+    console.log(`bento ${util.inspect(rst)}`)
     try {
       bento_unclaim = new BigNumber(rst)
     } catch{
@@ -325,6 +329,7 @@ export const playerToGovTokens = async (bentoMiner, account) => {
   let gov_locked
 
   gov_locked = await bentoMiner.methods.playerToGovTokens(account).call()
+  console.log(`gov_locked ${gov_locked}`)
   if(gov_locked){
     return new BigNumber(gov_locked)
   }else{
@@ -390,9 +395,17 @@ export const withdrawBento = async (bentoken, bentoMiner, account, v_Bentos_with
  * @param {*} amount 
  */
 export const approveGovToken = async (govtoken, account, amount) => {
-  await govtoken.methods.approve(contractAddresses.bentoMiner, new BigNumber(amount)).send({ from: account }).then((rst) => {
-    console.log('Approved receipt:', rst);
-  })
+  try {
+
+    await govtoken.methods.approve(govtoken.options.address, new BigNumber(amount).times(new BigNumber(10).pow(18))).send({ from: account }).then((rst) => {
+      console.log('Approved receipt:', rst);
+
+      return true
+    })
+  } catch (e) {
+    console.log(`failed to approve ${e} amount ${amount} govtoken ${govtoken.options.address} account ${account}`)
+    return false
+  }
 }
 
 
