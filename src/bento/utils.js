@@ -84,8 +84,8 @@ export const getGovs = (bento) => {
         id: symbol,
         name,
         govToken: symbol,
-        govTokenAddress: govAddress,
-        govContract: govContract,
+        govAddress,
+        govContract,
         lpContract,
         lpAddress,
         tokenAddress,
@@ -389,8 +389,8 @@ export const withdrawBento = async (bentoken, bentoMiner, account, v_Bentos_with
  * @param {*} account 
  * @param {*} amount 
  */
-export const approveGovToken = async (govtoken, account, amount) => {
-  await govtoken.methods.approve(contractAddresses.bentoMiner, new BigNumber(amount)).send({ from: account }).then((rst) => {
+export const approveGovToken = async (tokenContract, govAddress, account, amount) => {
+  await tokenContract.methods.approve(govAddress, ethers.constants.MaxUint256).send({ from: account }).then((rst) => {
     console.log('Approved receipt:', rst);
   })
 }
@@ -408,14 +408,22 @@ export const getGovPriceInWeth = async (tokenContract, lpContract, wethContract
     const govTokenAmountWholeLP = await tokenContract.methods
       .balanceOf(lpContract.options.address).call()
     
-    const tokenDecimals = await tokenContract.methods.decimals().call()
-  
-    const govAmount = new BigNumber(govTokenAmountWholeLP)
+      console.log('govTokenAmountWholeLP:', govTokenAmountWholeLP)
+    
+      const tokenDecimals = await tokenContract.methods.decimals().call()
+    
+      console.log('tokenDecimals:', tokenDecimals)
+    
+      const govAmount = new BigNumber(govTokenAmountWholeLP)
       .div(new BigNumber(10).pow(tokenDecimals))
   
-    const wethAmountWholeLP = await wethContract.methods
+      console.log('govAmount:', govAmount.toNumber())
+      
+      const wethAmountWholeLP = await wethContract.methods
       .balanceOf(lpContract.options.address).call()
-    
+
+      console.log('wethAmountWholeLP:', wethAmountWholeLP)
+
     const wethAmount = new BigNumber(wethAmountWholeLP)
     .div(new BigNumber(10).pow(18))
   
@@ -448,15 +456,15 @@ export const getGovPriceInWeth = async (tokenContract, lpContract, wethContract
 
     const govPrice = await getGovPriceInWeth(tokenContract, lpContract, wethContract)
     
-   
+    console.log('getApyByPool govPrice: ', govPrice.toNumber())
    
     const govAmount = await totalGovTokensLocked(govContract)
 
-    
+    console.log('getApyByPool govAmount: ', govAmount.toNumber())
 
     const bentoPrice = await getBentoPriceInWeth(bento.contracts.bento, bento.contracts.bentoLP, wethContract)
     
-    
+    console.log('getApyByPool bentoPrice: ', bentoPrice.toNumber())
     
     const bp = await getBentoProduction(bento.contracts.bento, govContract)
 
@@ -464,11 +472,11 @@ export const getGovPriceInWeth = async (tokenContract, lpContract, wethContract
     const apy = bp.times(new BigNumber(blocksInYear))
     .times(bentoPrice)
     .div(govPrice.times(govAmount))
-    
+    console.log(' apy.toNumber(): ', apy.toNumber())
     return {
       icon,
       name,
-      apy: apy.toNumber(),
+      apy: apy,
     }
   }
   

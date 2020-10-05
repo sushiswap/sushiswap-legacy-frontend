@@ -50,7 +50,7 @@ export const contractAddresses = {
   },
   weth: {
     1: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-    42: '0x5eCA15B12d959dfcf9c71c59F8B467Eb8c6efD0b'
+    42: '0xd0a1e359811322d97991e03f863a0c30c2cf029c'
   },
   bento: {
     1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
