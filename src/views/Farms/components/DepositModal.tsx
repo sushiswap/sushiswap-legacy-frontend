@@ -11,8 +11,8 @@ import { Contract } from 'web3-eth-contract';
 
 interface DepositModalProps extends ModalProps {
   max: BigNumber
-  onConfirm: (amount: string) => void
-  onApprove: (amount: string) => void
+  onConfirm: (amount: string) => Promise<any>
+  onApprove: (amount: string) => Promise<any>
   tokenName?: string
 }
 
@@ -27,6 +27,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
 
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
+  const [approved, setApproved] = useState(false)
 
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(max)
@@ -55,25 +56,47 @@ const DepositModal: React.FC<DepositModalProps> = ({
       />
       <ModalActions>
         <Button 
-          text={t.approval} 
+          text={t.cancel} 
           variant="secondary" 
           onClick={async () => {
-            setPendingTx(true)
-            await onApprove(val)
-            setPendingTx(false)
             onDismiss()
            }} 
         />
+
+        {!approved 
+          ? 
+          <Button 
+            disabled={pendingTx}
+            text={t.approval} 
+            variant="secondary" 
+            onClick={() => {
+              setPendingTx(true)
+              onApprove(val).then((result) => {
+                if (result === true) {
+                  setApproved(true)
+                } 
+
+                setPendingTx(false)
+              })
+          }} 
+        />
+        :
         <Button
           disabled={pendingTx}
           text={pendingTx ? t.pending_confirmation : t.deposit}
           onClick={async () => {
             setPendingTx(true)
-            await onConfirm(val)
-            setPendingTx(false)
-            onDismiss()
+            onConfirm(val).then((result) => {
+              if (result && result.transactionHash && result.transactionHash.length > 0) {
+                console.log('deposit successfully txHash: ', result.transactionHash)
+                setPendingTx(false)
+                onDismiss()
+              }
+              setPendingTx(false)
+            })
           }}
         />
+        }
       </ModalActions>
     </Modal>
   )

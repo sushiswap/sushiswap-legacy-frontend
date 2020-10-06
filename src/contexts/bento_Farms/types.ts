@@ -15,6 +15,7 @@ export interface Farm {
 
   govToken: string
   govAddress: string
+  govContract: Contract
   tokenContract: Contract
 }
 

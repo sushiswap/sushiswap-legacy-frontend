@@ -29,6 +29,8 @@ const i18n = {
         shop: " Shop",
         unclaimed: "Un-claimed ",
         inBank: "In bank ",
+        pending_confirmation: "Pending confirmation..",
+        cancel: "Cancel",
 
         farm_mining: "Mining amount",
         farm_wallet: "Wallet amount",
@@ -49,7 +51,7 @@ const i18n = {
         myAccount:"My Account",
         walletEtherScan: "View on Etherscan",
         walletSignOut: "Sign out",
-        walletCancle: "Cancle",
+        walletCancle: "Cancel",
         sellectWallet: "Select a wallet provider.",
         walletConnect: "Connect",
     },
@@ -83,6 +85,8 @@ const i18n = {
         shop: "小店",
         unclaimed: "未领取的",
         inBank: "银行中的",
+        pending_confirmation: "等待确认。。",
+        cancel: "取消",
 
         farm_mining: "正在挖矿",
         farm_wallet: "钱包中余额",

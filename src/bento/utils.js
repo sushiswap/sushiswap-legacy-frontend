@@ -84,8 +84,8 @@ export const getGovs = (bento) => {
         id: symbol,
         name,
         govToken: symbol,
-        govTokenAddress: govAddress,
-        govContract: govContract,
+        govAddress,
+        govContract,
         lpContract,
         lpAddress,
         tokenAddress,
@@ -166,12 +166,9 @@ export const getBentoSupply = async (bento) => {
   return new BigNumber(await bento.contracts.bento.methods.totalSupply().call())
 }
 
-export const stake = async (bentoMinerContract, pid, amount, account) => {
-  const util = require('util')
-  console.log(`bentoMinerContract ${util.inspect(bentoMinerContract)}`)
+export const stake = async (bentoMinerContract, amount, account) => {
   return bentoMinerContract.methods
     .deposit(
-      // pid,
       new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
     )
     .send({ from: account })
@@ -181,7 +178,7 @@ export const stake = async (bentoMinerContract, pid, amount, account) => {
     })
 }
 
-export const unstake = async (bentoMinerContract, pid, amount, account) => {
+export const unstake = async (bentoMinerContract, amount, account) => {
   return bentoMinerContract.methods
     .withdraw(
       new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
@@ -395,17 +392,18 @@ export const withdrawBento = async (bentoken, bentoMiner, account, v_Bentos_with
  * @param {*} amount 
  */
 export const approveGovToken = async (govtoken, account, amount) => {
-  try {
+    return govtoken.methods
+      .approve(govtoken.options.address, new BigNumber(amount).times(new BigNumber(10).pow(18)))
+      .send({ from: account })
+      .then((rst) => {
+        console.log('Approved receipt:', rst);
 
-    await govtoken.methods.approve(govtoken.options.address, new BigNumber(amount).times(new BigNumber(10).pow(18))).send({ from: account }).then((rst) => {
-      console.log('Approved receipt:', rst);
-
-      return true
-    })
-  } catch (e) {
-    console.log(`failed to approve ${e} amount ${amount} govtoken ${govtoken.options.address} account ${account}`)
-    return false
-  }
+        return true
+      })
+      .catch((e) => {
+        console.log(`failed to approve ${e} amount ${amount} govtoken ${govtoken.options.address} account ${account}`)
+        return false
+      })
 }
 
 
@@ -458,21 +456,13 @@ export const getGovPriceInWeth = async (tokenContract, lpContract, wethContract
     name,
     icon,
   ) => {
-
     const govPrice = await getGovPriceInWeth(tokenContract, lpContract, wethContract)
-    
-   
-   
+       
     const govAmount = await totalGovTokensLocked(govContract)
-
-    
 
     const bentoPrice = await getBentoPriceInWeth(bento.contracts.bento, bento.contracts.bentoLP, wethContract)
     
-    
-    
     const bp = await getBentoProduction(bento.contracts.bento, govContract)
-
 
     const apy = bp.times(new BigNumber(blocksInYear))
     .times(bentoPrice)
@@ -481,7 +471,7 @@ export const getGovPriceInWeth = async (tokenContract, lpContract, wethContract
     return {
       icon,
       name,
-      apy: apy.toNumber(),
+      apy: apy,
     }
   }
   

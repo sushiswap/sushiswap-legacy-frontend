@@ -46,7 +46,6 @@ interface FarmWithStakedValue extends Farm, StakedValue {
 
 const FarmCards: React.FC = () => {
   const apys = useApyByPool()
-  console.log('apys:', apys)
 
   const [farms] = useFarms()
   const { account } = useWallet()
@@ -72,18 +71,14 @@ const FarmCards: React.FC = () => {
         ...stakedValue[i],
         govToken: farm.govToken,
         apy: null,
-        // apy: stakedValue[i]
-        //   ? bentoPrice
-        //       .times(BENTO_PER_BLOCK)
-        //       .times(BLOCKS_PER_YEAR)
-        //       .times(stakedValue[i].poolWeight)
-        //       .div(stakedValue[i].totalWethValue)
-        //   : null,
       }
 
       apys.forEach(({name, apy}) => {
-        if(name == farmWithStakedValue.name)
+        if(name == farmWithStakedValue.name){
           farmWithStakedValue.apy = apy
+          // console.log('apy.name:', name)
+          // console.log('apy.apy:', apy)
+        }
       })
 
       const newFarmRows = [...farmRows]
@@ -141,10 +136,10 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 
   const tokenLocked = useGovTokenStake()
   const pendingRewrds = usePendingRewards()
-  const tokenBalance = useTokenBalance(farm.tokenAddress);
-  const { onStake } = useStake(farm.pid)
+  const tokenBalance = useTokenBalance(farm.tokenAddress)
+  const { onStake } = useStake(farm)
   const { onApprove } = useApprove(farm.tokenContract)
-  const { onUnstake } = useUnstake(farm.pid)
+  const { onUnstake } = useUnstake(farm)
   const { onClaimMinedToken } = useClaimMinedToken(farm.pid)
   // console.log(`farm.tokenAddress ${tokenLocked}`)
   // console.log(`farm.govAddress ${useTokenBalance(account)}`)
