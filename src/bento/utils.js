@@ -180,7 +180,7 @@ export const stake = async (bentoMinerContract, amount, account) => {
 
 export const unstake = async (bentoMinerContract, amount, account) => {
   return bentoMinerContract.methods
-    .withdraw(
+    .claimAllBentoAndWithdrawGovs(
       new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
     )
     .send({ from: account })
