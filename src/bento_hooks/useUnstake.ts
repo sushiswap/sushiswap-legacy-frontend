@@ -4,18 +4,26 @@ import useBento from './useBento'
 import { useWallet } from 'use-wallet'
 
 import { unstake, getBentoMinerContract } from '../bento/utils'
+import { Farm } from '../contexts/bento_Farms/types'
 
-const useUnstake = (pid: number) => {
+const useUnstake = (farm: Farm) => {
   const { account } = useWallet()
   const bento = useBento()
-  const bentoMinerContract = getBentoMinerContract(bento)
+  const util = require('util')
+  console.log(`contract is , ${util.inspect(getBentoMinerContract(bento))}`)
 
   const handleUnstake = useCallback(
     async (amount: string) => {
-      const txHash = await unstake(bentoMinerContract, pid, amount, account)
-      console.log(txHash)
+      return await unstake(
+        getBentoMinerContract(bento), 
+        amount, 
+        account,
+        )
+        .then((rst) => {
+          return rst
+        })
     },
-    [account, pid, bento],
+    [account, farm, bento],
   )
 
   return { onUnstake: handleUnstake }

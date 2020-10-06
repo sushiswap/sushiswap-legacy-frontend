@@ -17,6 +17,8 @@ const Farms: React.FC = ({ children }) => {
   const { account } = useWallet()
 
   const farms = getGovs(bento)
+  // const util = require('util')
+  // console.log(`farms ${util.inspect(farms)}`)
 
   return (
     <Context.Provider

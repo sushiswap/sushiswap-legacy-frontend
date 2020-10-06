@@ -6,10 +6,11 @@ import ModalActions from '../../../components/ModalActions'
 import ModalTitle from '../../../components/ModalTitle'
 import TokenInput from '../../../components/TokenInput'
 import { getFullDisplayBalance } from '../../../utils/formatBalance'
+import { useI18n  } from 'use-i18n';
 
 interface WithdrawModalProps extends ModalProps {
   max: BigNumber
-  onConfirm: (amount: string) => void
+  onConfirm: (amount: string) => Promise<any>
   tokenName?: string
 }
 
@@ -19,6 +20,8 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
   max,
   tokenName = '',
 }) => {
+  const t = useI18n();
+
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
 
@@ -48,15 +51,21 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
         symbol={tokenName}
       />
       <ModalActions>
-        <Button text="Cancel" variant="secondary" onClick={onDismiss} />
+        <Button 
+          disabled={pendingTx}
+          text={t.cancel} 
+          variant="secondary" onClick={onDismiss} />
         <Button
           disabled={pendingTx}
-          text={pendingTx ? 'Pending Confirmation' : 'Confirm'}
+          text={pendingTx ? t.pending_confirmation : t.redeem}
           onClick={async () => {
             setPendingTx(true)
-            await onConfirm(val)
-            setPendingTx(false)
-            onDismiss()
+            onConfirm(val).then((result) => {
+              if (result && result.transactionHash && result.transactionHash.length > 0) {
+                setPendingTx(false)
+                onDismiss()
+              }
+            })
           }}
         />
       </ModalActions>

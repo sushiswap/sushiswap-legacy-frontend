@@ -19,6 +19,7 @@ const i18n = {
         buy: "Buy",
         votingPower: "Voting Power",
 
+        approval: "Approve ",
         deposit: "Deposit",
         claim: "Claim",
         redeem: "Redeem",
@@ -28,7 +29,11 @@ const i18n = {
         shop: " Shop",
         unclaimed: "Un-claimed ",
         inBank: "In bank ",
+        pending_confirmation: "Pending confirmation..",
+        cancel: "Cancel",
 
+        farm_mining: "Mining amount",
+        farm_wallet: "Wallet amount",
         farm_uniswap: "UniSwap mining",
         farm_balancer: "Balancer mining",
         farm_earn_bento: "Earn BENTO with BENTO liquidity",
@@ -46,7 +51,7 @@ const i18n = {
         myAccount:"My Account",
         walletEtherScan: "View on Etherscan",
         walletSignOut: "Sign out",
-        walletCancle: "Cancle",
+        walletCancle: "Cancel",
         sellectWallet: "Select a wallet provider.",
         walletConnect: "Connect",
     },
@@ -70,6 +75,7 @@ const i18n = {
         buy: "买🍱",
         votingPower: "获取的投票权",
 
+        approval: "授权",
         deposit: "存",
         claim: "领取",
         redeem: "取回",
@@ -79,7 +85,11 @@ const i18n = {
         shop: "小店",
         unclaimed: "未领取的",
         inBank: "银行中的",
+        pending_confirmation: "等待确认。。",
+        cancel: "取消",
 
+        farm_mining: "正在挖矿",
+        farm_wallet: "钱包中余额",
         farm_uniswap: "UniSwap挖矿",
         farm_balancer: "Balancer挖矿",
         farm_earn_bento: "为BENTO提供流动性，赚取BENTO",

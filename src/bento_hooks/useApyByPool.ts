@@ -16,7 +16,6 @@ interface Apy{
   apy: BigNumber
 }
 const useApyByPool = () => {
-  console.log('=================================')
   const [govsApy, setGovsApy] = useState([{} as Apy])
   const { account }: { account: string; ethereum: provider } = useWallet()
   const bento = useBento()
