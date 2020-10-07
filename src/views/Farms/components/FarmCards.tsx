@@ -21,6 +21,7 @@ import { bnToDec } from '../../../utils'
 import { useI18n  } from 'use-i18n';
 import useModal from '../../../hooks/useModal'
 import useStake from '../../../bento_hooks/useStake'
+import useApprove from '../../../bento_hooks/useApprove'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import BentoCard from './BentoCard'
@@ -32,17 +33,19 @@ import useTokenBalance from '../../../bento_hooks/useTokenBalance'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import useUnstake from '../../../bento_hooks/useUnstake'
 import useApyByPool from '../../../bento_hooks/useApyByPool'
+import { Contract } from 'web3-eth-contract'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber
   govToken: string
+  govAddress: string
+  tokenContract: Contract
 }
 
 
 
 const FarmCards: React.FC = () => {
   const apys = useApyByPool()
-  console.log('apys:', apys)
 
   const [farms] = useFarms()
   const { account } = useWallet()
@@ -68,19 +71,11 @@ const FarmCards: React.FC = () => {
         ...stakedValue[i],
         govToken: farm.govToken,
         apy: null,
-        // apy: stakedValue[i]
-        //   ? bentoPrice
-        //       .times(BENTO_PER_BLOCK)
-        //       .times(BLOCKS_PER_YEAR)
-        //       .times(stakedValue[i].poolWeight)
-        //       .div(stakedValue[i].totalWethValue)
-        //   : null,
       }
 
       apys.forEach(({name, apy}) => {
         if(name == farmWithStakedValue.name){
           farmWithStakedValue.apy = apy
-          console.log('forEach apy:', apy.toNumber())
         }
       })
 
@@ -141,8 +136,13 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
   const pendingRewrds = usePendingRewards()
   const tokenBalance = useTokenBalance(farm.tokenAddress)
   const { onStake } = useStake(farm)
-  const { onUnstake } = useUnstake(farm.pid)
+
+  const { onApprove } = useApprove(farm.tokenContract)
+  const { onUnstake } = useUnstake(farm)
   const { onClaimMinedToken } = useClaimMinedToken(farm.pid)
+  // console.log(`farm.tokenAddress ${tokenLocked}`)
+  // console.log(`farm.govAddress ${useTokenBalance(account)}`)
+  // console.log(`current ${account}`)
 
   const renderer = (countdownProps: CountdownRenderProps) => {
     const { hours, minutes, seconds } = countdownProps
@@ -175,6 +175,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
     <DepositModal
       max={tokenBalance}
       onConfirm={onStake}
+      onApprove={onApprove}
       tokenName={farm.govToken}
     />,
   )
@@ -207,12 +208,17 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
           </StyledContent>
           <StyledContainer>
             <StyledText>
-              <span>{farm.govToken.toUpperCase()} {t.mining}</span>
+              <span>{t.farm_mining}</span>
               <span style={{ textAlign: 'right' }}>
               {getBalanceNumber(tokenLocked) }
               </span>
             </StyledText>
-            <Spacer />
+            <StyledText>
+              <span>{t.farm_wallet}</span>
+              <span style={{ textAlign: 'right' }}>
+              {getBalanceNumber(tokenBalance) }
+              </span>
+            </StyledText>
             <StyledText>
               <span>
                 <Button
