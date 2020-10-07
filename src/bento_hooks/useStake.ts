@@ -1,10 +1,11 @@
 import { useCallback } from 'react'
-import { Farm } from '../contexts/bento_Farms/types'
+
+import {Farm} from '../contexts/bento_Farms/types'
 
 import useBento from './useBento'
 import { useWallet } from 'use-wallet'
 
-import { stake, getBentoMinerContract } from '../bento/utils'
+import { stake, getBentoMinerContract, approveGovToken } from '../bento/utils'
 
 const useStake = (farm: Farm) => {
   const { account } = useWallet()
@@ -12,6 +13,7 @@ const useStake = (farm: Farm) => {
 
   const handleStake = useCallback(
     async (amount: string) => {
+
       return await stake(
         getBentoMinerContract(bento),
         amount,

@@ -70,12 +70,6 @@
 				"internalType": "uint256",
 				"name": "CasterReward",
 				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "OriginatorReward",
-				"type": "uint256"
 			}
 		],
 		"name": "voteCasted",
@@ -252,6 +246,19 @@
 				"type": "bool"
 			}
 		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_proposalid",
+				"type": "uint256"
+			}
+		],
+		"name": "closeExpiredVoteEvent",
+		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
@@ -533,19 +540,6 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "requiredMortgages",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -573,19 +567,6 @@
 			}
 		],
 		"name": "setLoopRewardPercentage",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_newRequiredMortgages",
-				"type": "uint256"
-			}
-		],
-		"name": "setRequiredMortgages",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -723,25 +704,6 @@
 			}
 		],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "votingList",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	}
 ]

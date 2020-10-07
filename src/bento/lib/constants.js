@@ -54,11 +54,13 @@ export const contractAddresses = {
   },
   bento: {
     1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
-    42: '0xe7221fd1f893342a433ebd4bcb9B672822fC7401',
+    //42: '0xe7221fd1f893342a433ebd4bcb9B672822fC7401',
+    42: '0xeAD76d0E8902992420564F67F04Fb32232C27158',
   },
   bentoMiner: {
     1: '0xc2edad668740f1aa35e4d8f227fb8e17dca888cd',
-    42: '0xFFa9CDE0e63dcA206A559e825DE02EE9041e89Af'
+    //42: '0xFFa9CDE0e63dcA206A559e825DE02EE9041e89Af'
+    42: '0xfB9e1591f67d4f9c32995252aEfe8A6EE798fAd7',
   },
 }
 
@@ -98,7 +100,7 @@ export const supportedPools = [
     },
     govAddresses: {
       1:'',
-      42: '0xFFa9CDE0e63dcA206A559e825DE02EE9041e89Af',
+      42: '0xfB9e1591f67d4f9c32995252aEfe8A6EE798fAd7',
     },
     name: 'BENTO',
     symbol: 'BENTO',
@@ -117,7 +119,7 @@ export const supportedPools = [
     },
     govAddresses: {
       1:'',
-      42: '0xFFa9CDE0e63dcA206A559e825DE02EE9041e89Af',
+      42: '0xfB9e1591f67d4f9c32995252aEfe8A6EE798fAd7',
     },
     name: 'NAP',
     symbol: 'NAP',

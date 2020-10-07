@@ -12,8 +12,10 @@ export interface Farm {
   icon: React.ReactNode
   id: string
   tokenSymbol: string
+  tokenContract: Contract
 
   govToken: string
+
   govAddress: string
   govContract: Contract
   tokenContract: Contract

@@ -76,8 +76,6 @@ const FarmCards: React.FC = () => {
       apys.forEach(({name, apy}) => {
         if(name == farmWithStakedValue.name){
           farmWithStakedValue.apy = apy
-          // console.log('apy.name:', name)
-          // console.log('apy.apy:', apy)
         }
       })
 
@@ -138,6 +136,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
   const pendingRewrds = usePendingRewards()
   const tokenBalance = useTokenBalance(farm.tokenAddress)
   const { onStake } = useStake(farm)
+
   const { onApprove } = useApprove(farm.tokenContract)
   const { onUnstake } = useUnstake(farm)
   const { onClaimMinedToken } = useClaimMinedToken(farm.pid)

@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useEffect, useState } from 'react'
 import CountUp from 'react-countup'
-import styled from 'styled-components'
+import styled, { AnyStyledComponent } from 'styled-components'
 import { useWallet } from 'use-wallet'
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
@@ -11,9 +11,9 @@ import Value from '../../../components/Value'
 import BentoIcon from '../../../components/BentoIcon'
 import useBentoSupply from '../../../bento_hooks/useBentoSupply'
 import usePendingRewards from '../../../bento_hooks/usePendingRewards'
-//useAllGovTokenStake
 import useAllGovTokenStake from '../../../bento_hooks/useAllGovTokenStake'
 import useBlock from '../../../bento_hooks/useBlock'
+import {default as useVotes, IVote} from '../../../bento_hooks/useVotes'
 import useBentoBalance from '../../../bento_hooks/useBentoBalance'
 import useGovTokenStake from '../../../bento_hooks/useGovTokenStake'
 import useBentoTotalBurned from '../../../bento_hooks/useBentoTotalBurned'
@@ -26,7 +26,7 @@ import { getBalanceNumber } from '../../../utils/formatBalance'
 import { useI18n } from 'use-i18n'
 import Button from '../../../components/Button'
 import Logo from '../../../components/Logo'
-import { govCastVote, getBentoMinerContract, govLaunchVote } from '../../../bento/utils'
+import { govCastVote, getBentoMinerContract, getCastingVoteByContract, govLaunchVote, depositBento2Miner } from '../../../bento/utils'
 const PendingRewards: React.FC = () => {
   const t = useI18n()
   const [start, setStart] = useState(0)
@@ -66,8 +66,10 @@ const PendingRewards: React.FC = () => {
 }
 
 const Balances: React.FC = () => {
+
   const t = useI18n()
   const [pid, setPid] = useState(0)
+  const [depositAmount, setDepositAmount] = useState(0)
   const block = useBlock()
   const bento = useBento()
   const bentoMiner = getBentoMinerContract(bento)
@@ -81,6 +83,7 @@ const Balances: React.FC = () => {
   // const napSupply = useGovTokenStake()
   const govRows = useAllGovTokenStake()
   console.log("govRows:", govRows)
+  const votes = useVotes()
   return (
     <>
       <StyledWrapper>
@@ -219,23 +222,37 @@ const Balances: React.FC = () => {
               <StyledSubtitle>
                 <Label text={`${t.auctioning}`} />
               </StyledSubtitle>
-              <StyledAuctionEntry>
+              <Spacer size="sm"></Spacer>
+
+              {votes.map((vote, j) => (
+                <React.Fragment key={j}>
+                  <Vote vote={vote} />
+                </React.Fragment>
+              ))}
+
+              {/* <StyledAuctionEntry>
                 <StyledAuctionEntryName>
-                  <Label text="COMP-IP221" />
+                  <Label text="stake bento to miner" />
                 </StyledAuctionEntryName>
                 <Spacer></Spacer>
                 <StyledAuctionEntryContent>
                   <Label text="$BENTO"></Label>
+                  <input value={depositAmount} onChange={(e) =>
+                    setDepositAmount(Number(e.target.value))
+                  }></input>
                 </StyledAuctionEntryContent>
                 <Spacer size="sm"></Spacer>
                 <StyledAuctionEntryContent>
-                  <Label text="88888" />
+                  <Button size="sm" text="stake" onClick={async () => {
+                    if (bento) {
+                      let flag = await depositBento2Miner(bento, depositAmount, account)
+                      console.log('launch vote:', flag)
+                    }
+                  }} />
                 </StyledAuctionEntryContent>
               </StyledAuctionEntry>
-              <Spacer size="sm"></Spacer>
 
-
-              {/* <StyledAuctionEntry>
+              <StyledAuctionEntry>
                 <StyledAuctionEntryName>
                   <Label text="launch a vote" />
                 </StyledAuctionEntryName>
@@ -249,8 +266,8 @@ const Balances: React.FC = () => {
                 <Spacer size="sm"></Spacer>
                 <StyledAuctionEntryContent>
                   <Button size="sm" text="launch Vote" onClick={async () => {
-                    if (bentoMiner) {
-                      let flag = await govLaunchVote(bentoMiner, pid, block+2002 , account)
+                    if (bento) {
+                      let flag = await govLaunchVote(bento, pid, block + 2002, account)
                       console.log('launch vote:', flag)
                     }
                   }} />
@@ -279,34 +296,6 @@ const Balances: React.FC = () => {
                 </StyledAuctionEntryContent>
               </StyledAuctionEntry> */}
 
-
-              <StyledAuctionEntry>
-                <StyledAuctionEntryName>
-                  <Label text="UNI-IP333" />
-                </StyledAuctionEntryName>
-                <Spacer></Spacer>
-                <StyledAuctionEntryContent>
-                  <Label text="$BENTO"></Label>
-                </StyledAuctionEntryContent>
-                <Spacer size="sm"></Spacer>
-                <StyledAuctionEntryContent>
-                  <Label text="77777" />
-                </StyledAuctionEntryContent>
-              </StyledAuctionEntry>
-              <Spacer size="sm"></Spacer>
-              <StyledAuctionEntry>
-                <StyledAuctionEntryName>
-                  <Label text="AIP 123" />
-                </StyledAuctionEntryName>
-                <Spacer></Spacer>
-                <StyledAuctionEntryContent>
-                  <Label text="$BENTO"></Label>
-                </StyledAuctionEntryContent>
-                <Spacer size="sm"></Spacer>
-                <StyledAuctionEntryContent>
-                  <Label text="58589" />
-                </StyledAuctionEntryContent>
-              </StyledAuctionEntry>
             </StyledAuctionEntrys>
           </CardContent>
           <Footnote>
@@ -324,6 +313,31 @@ interface IFarm {
   icon: string,
   size: number,
   govTotalStake: number,
+}
+
+export interface Vote {
+  vote: IVote
+}
+
+const Vote: React.FC<Vote> = ({vote}) => {
+  return (
+    <>
+    <StyledAuctionEntry>
+      <StyledAuctionEntryName>
+        <Label text={`${vote.name} ${vote.proposal_id}`} />
+      </StyledAuctionEntryName>
+      <Spacer></Spacer>
+      <StyledAuctionEntryContent>
+        <Label text="$BENTO"></Label>
+      </StyledAuctionEntryContent>
+      <Spacer size="sm"></Spacer>
+      <StyledAuctionEntryContent>
+        <Label text={getBalanceNumber(vote.nowBentosInVote).toString()} />
+      </StyledAuctionEntryContent>
+    </StyledAuctionEntry>
+    <Spacer size="sm"></Spacer>
+    </>
+  )
 }
 const Pool: React.FC<IFarm> = ({ name, icon, size, govTotalStake }) => {
   return (
