@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import { provider } from 'web3-core'
 import { Contract } from 'web3-eth-contract'
 
@@ -17,6 +17,7 @@ export interface GovValue {
 }
 const useAllGovTokenStake = () => {
   const iconSize = [85, 75, 65, 55, 47]
+  const _isMounted = useRef(true);
   const [govValues, setGovValues] = useState([] as Array<GovValue>)
   const { account }: { account: string; ethereum: provider } = useWallet()
   const bento = useBento()
@@ -24,10 +25,11 @@ const useAllGovTokenStake = () => {
   const block = useBlock()
   const govs = getGovs(bento)
 
-  const fetchAllGovTotalSupply = useCallback(async () => {   
+  const fetchAllGovTotalSupply = useCallback(async () => {
+    if(!_isMounted.current) return
     let govValues: Array<GovValue> = await Promise.all(
       govs.map(
-       async ({
+        async ({
           govContract,
           name,
           icon
@@ -35,8 +37,7 @@ const useAllGovTokenStake = () => {
           govContract: Contract
           name: string
           icon: string
-        }) =>
-        {
+        }) => {
           return {
             name,
             icon,
@@ -45,13 +46,13 @@ const useAllGovTokenStake = () => {
         },
       ),
     )
-    govValues.sort((gov1,gov2) => gov2.govTotalStake.toNumber() - gov1.govTotalStake.toNumber())
+    govValues.sort((gov1, gov2) => gov2.govTotalStake.toNumber() - gov1.govTotalStake.toNumber())
     govValues = govValues.map((gov, index) => {
-        return {
-          ...gov,
-          size: index < 5 ? iconSize[index]: 36
-        }
-      })
+      return {
+        ...gov,
+        size: index < 5 ? iconSize[index] : 36
+      }
+    })
     setGovValues(govValues)
   }, [account, bentoMinerContract, bento])
 
@@ -59,7 +60,10 @@ const useAllGovTokenStake = () => {
     if (bentoMinerContract) {
       fetchAllGovTotalSupply()
     }
-  }, [account, block, bentoMinerContract, setGovValues, bento])
+    return () => {
+      _isMounted.current = false
+    }
+  }, [account, block, bentoMinerContract, bento])
 
   return govValues
 }

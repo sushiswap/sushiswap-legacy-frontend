@@ -80,8 +80,7 @@ const FarmCards: React.FC = () => {
       apys.forEach(({name, apy}) => {
         if(name == farmWithStakedValue.name){
           farmWithStakedValue.apy = apy
-          console.log('apy.name:', name)
-          console.log('apy.apy:', apy)
+          console.log('forEach apy:', apy.toNumber())
         }
       })
 
