@@ -70,12 +70,12 @@ const FarmCards: React.FC = () => {
         ...farm,
         ...stakedValue[i],
         govToken: farm.govToken,
-        apy: null,
+        apy: null
       }
 
       apys.forEach(({name, apy}) => {
         if(name == farmWithStakedValue.name){
-          farmWithStakedValue.apy = apy
+          farmWithStakedValue.apy = apy.toString() === 'Infinity'? new BigNumber(0): apy
         }
       })
 
@@ -85,6 +85,8 @@ const FarmCards: React.FC = () => {
       } else {
         newFarmRows[newFarmRows.length - 1].push(farmWithStakedValue)
       }
+      console.log('newFarmRows.length - 1:', newFarmRows.length - 1)
+      console.log('newFarmRows:', newFarmRows)
       return newFarmRows
     },
     [[]],

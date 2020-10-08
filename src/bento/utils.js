@@ -483,7 +483,6 @@ export const getApyByPool = async (
 
   const bp = await getBentoProduction(bento.contracts.bento, govContract)
 
-
   const apy = bp.times(new BigNumber(blocksInYear))
     .times(bentoPrice)
     .div(govPrice.times(govAmount))
@@ -494,6 +493,7 @@ export const getApyByPool = async (
     apy: apy,
   }
 }
+
 
 export const getBentoProduction = async (bentoMiner, govContract) => {
   let bp = await bentoMiner.methods.bentoProduction(govContract.options.address).call()
