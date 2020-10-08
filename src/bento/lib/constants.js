@@ -96,7 +96,7 @@ export const supportedPools = [
     },
     tokenAddresses: {
       1: '',
-      42: '0xe7221fd1f893342a433ebd4bcb9B672822fC7401'
+      42: '0xeAD76d0E8902992420564F67F04Fb32232C27158'
     },
     govAddresses: {
       1:'',
