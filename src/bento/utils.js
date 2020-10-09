@@ -396,9 +396,9 @@ export const withdrawBento = async (bentoken, bentoMiner, account, v_Bentos_with
 //   await tokenContract.methods.approve(govAddress, ethers.constants.MaxUint256).send({ from: account }).then((rst) => {
 //     console.log('Approved receipt:', rst);
 //   })
-export const approveGovToken = async (govtoken, account, amount) => {
-    return govtoken.methods
-      .approve(govtoken.options.address, new BigNumber(amount).times(new BigNumber(10).pow(18)))
+export const approveGovToken = async (tokenContract, govAddress, account, amount) => {
+    return tokenContract.methods
+      .approve(govAddress, new BigNumber(amount).times(new BigNumber(10).pow(18)))
       .send({ from: account })
       .then((rst) => {
         console.log('Approved receipt:', rst);
@@ -406,7 +406,7 @@ export const approveGovToken = async (govtoken, account, amount) => {
         return true
       })
       .catch((e) => {
-        console.log(`failed to approve ${e} amount ${amount} govtoken ${govtoken.options.address} account ${account}`)
+        console.log(`failed to approve ${e} amount ${amount} govtoken ${govAddress} account ${account}`)
         return false
       })
 }

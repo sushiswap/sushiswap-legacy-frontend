@@ -139,7 +139,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
   const tokenBalance = useTokenBalance(farm.tokenAddress)
   const { onStake } = useStake(farm)
 
-  const { onApprove } = useApprove(farm.tokenContract)
+  const { onApprove } = useApprove(farm)
   const { onUnstake } = useUnstake(farm)
   const { onClaimMinedToken } = useClaimMinedToken(farm.pid)
   // console.log(`farm.tokenAddress ${tokenLocked}`)

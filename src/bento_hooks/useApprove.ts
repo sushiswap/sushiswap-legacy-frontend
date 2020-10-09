@@ -9,7 +9,7 @@ import { approveGovToken, getBentoMinerContract, getBentoContract } from '../ben
 import { BigNumber } from '../sushi'
 
 // const useApprove = (lpContract: Contract) => {
-const useApprove = (tokenContract: Contract) => {
+const useApprove = (farm) => {
   const [result, setResult] = useState(false)
   const { account }: { account: string; ethereum: provider } = useWallet()
   const bento = useBento()
@@ -18,7 +18,7 @@ const useApprove = (tokenContract: Contract) => {
   // const tokenContract = getBentoContract(bento)
 
   const handleApprove = useCallback(async (amount: string) => {
-      return await approveGovToken(tokenContract, account, amount).then((result) => {
+      return await approveGovToken(farm.tokenContract,farm.govAddress, account, amount).then((result) => {
         console.log('result in useAppve', result)
         return (result)
       }) 

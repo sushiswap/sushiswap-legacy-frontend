@@ -82,7 +82,6 @@ const Balances: React.FC = () => {
   const totalSupply = useBentoSupply()
   // const napSupply = useGovTokenStake()
   const govRows = useAllGovTokenStake()
-  console.log("govRows:", govRows)
   const votes = useVotes()
   return (
     <>
@@ -229,72 +228,6 @@ const Balances: React.FC = () => {
                   <Vote vote={vote} />
                 </React.Fragment>
               ))}
-
-              {/* <StyledAuctionEntry>
-                <StyledAuctionEntryName>
-                  <Label text="stake bento to miner" />
-                </StyledAuctionEntryName>
-                <Spacer></Spacer>
-                <StyledAuctionEntryContent>
-                  <Label text="$BENTO"></Label>
-                  <input value={depositAmount} onChange={(e) =>
-                    setDepositAmount(Number(e.target.value))
-                  }></input>
-                </StyledAuctionEntryContent>
-                <Spacer size="sm"></Spacer>
-                <StyledAuctionEntryContent>
-                  <Button size="sm" text="stake" onClick={async () => {
-                    if (bento) {
-                      let flag = await depositBento2Miner(bento, depositAmount, account)
-                      console.log('launch vote:', flag)
-                    }
-                  }} />
-                </StyledAuctionEntryContent>
-              </StyledAuctionEntry>
-
-              <StyledAuctionEntry>
-                <StyledAuctionEntryName>
-                  <Label text="launch a vote" />
-                </StyledAuctionEntryName>
-                <Spacer></Spacer>
-                <StyledAuctionEntryContent>
-                  <Label text="$BENTO"></Label>
-                  <input value={pid} onChange={(e) =>
-                    setPid(Number(e.target.value))
-                  }></input>
-                </StyledAuctionEntryContent>
-                <Spacer size="sm"></Spacer>
-                <StyledAuctionEntryContent>
-                  <Button size="sm" text="launch Vote" onClick={async () => {
-                    if (bento) {
-                      let flag = await govLaunchVote(bento, pid, block + 2002, account)
-                      console.log('launch vote:', flag)
-                    }
-                  }} />
-                </StyledAuctionEntryContent>
-              </StyledAuctionEntry>
-
-              <StyledAuctionEntry>
-                <StyledAuctionEntryName>
-                  <Label text="castVote" />
-                </StyledAuctionEntryName>
-                <Spacer></Spacer>
-                <StyledAuctionEntryContent>
-                  <Label text="$BENTO"></Label>
-                  <input value={pid} onChange={(e) =>
-                    setPid(Number(e.target.value))
-                  }></input>
-                </StyledAuctionEntryContent>
-                <Spacer size="sm"></Spacer>
-                <StyledAuctionEntryContent>
-                  <Button size="sm" text="Cast Vote" onClick={async () => {
-                    if (bentoMiner) {
-                      let flag = await govCastVote(bentoMiner, pid, account)
-                      console.log('flagflagflagflagflag:', flag)
-                    }
-                  }} />
-                </StyledAuctionEntryContent>
-              </StyledAuctionEntry> */}
 
             </StyledAuctionEntrys>
           </CardContent>

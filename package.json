@@ -1,4 +1,5 @@
 {
+  "homepage": "https://TheDAS-designer.github.io/bento-frontend",
   "name": "yam",
   "version": "0.1.0",
   "private": true,
@@ -17,7 +18,7 @@
     "react-countup": "^4.3.3",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^3.4.3",
     "styled-components": "^5.1.1",
     "typescript": "^3.9.7",
     "use-i18n": "^1.0.1",
@@ -26,10 +27,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI= GENERATE_SOURCEMAP=false react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "yarn build && cp ./build/index.html ./build/200.html && surge ./build sushiswap.org"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -b master -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -50,7 +52,8 @@
     "@types/numeral": "0.0.28",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
-    "@types/styled-components": "^5.1.2"
+    "@types/styled-components": "^5.1.2",
+    "gh-pages": "^3.1.0"
   },
   "prettier": {
     "trailingComma": "all",
