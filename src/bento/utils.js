@@ -470,23 +470,27 @@ export const getApyByPool = async (
 ) => {
 
   const govPrice = await getGovPriceInWeth(tokenContract, lpContract, wethContract)
-
-  console.log('getApyByPool govPrice: ', govPrice.toNumber())
+ 
 
   const govAmount = await totalGovTokensLocked(govContract)
-
-  console.log('getApyByPool govAmount: ', govAmount.toNumber())
+  
 
   const bentoPrice = await getBentoPriceInWeth(bento.contracts.bento, bento.contracts.bentoLP, wethContract)
 
-  console.log('getApyByPool bentoPrice: ', bentoPrice.toNumber())
 
   const bp = await getBentoProduction(bento.contracts.bento, govContract)
+
+  if( !validateBigNumbers(govPrice, govAmount, bentoPrice, bp) ){
+    return {
+      icon,
+      name,
+      apy: new BigNumber(0),
+    }
+  }
 
   const apy = bp.times(new BigNumber(blocksInYear))
     .times(bentoPrice)
     .div(govPrice.times(govAmount))
-  console.log(' apy.toNumber(): ', apy.toNumber())
   return {
     icon,
     name,
@@ -494,6 +498,16 @@ export const getApyByPool = async (
   }
 }
 
+const validateBigNumbers =  (...arr) => {
+  let flag = true
+  for( let i in arr){
+    if(arr[i].isNaN() || arr[i].isNegative() || arr[i].isZero() ){
+      flag = false
+      break
+    }
+  }
+  return flag
+}
 
 export const getBentoProduction = async (bentoMiner, govContract) => {
   let bp = await bentoMiner.methods.bentoProduction(govContract.options.address).call()
