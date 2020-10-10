@@ -5,7 +5,7 @@ import { Contract } from 'web3-eth-contract'
 import BigNumber from 'bignumber.js'
 import { useWallet } from 'use-wallet'
 
-import { getBentoMinerContract, getGovTotalSupply, getGovs, getCastingVoteByContract } from '../bento/utils'
+import {  getGovTotalSupply, getGovs, getCastingVoteByContract } from '../bento/utils'
 import useBento from './useBento'
 import useBlock from './useBlock'
 
@@ -22,10 +22,12 @@ export interface IVote {
 }
 const useVotes = () => {
   const [votes, setVotes] = useState([] as Array<IVote>)
-  const { account }: { account: string; ethereum: provider } = useWallet()
+  
   const bento = useBento()
-  const bentoMinerContract = getBentoMinerContract(bento)
+  const wallet = useWallet()
   const block = useBlock()
+  const account  = wallet.account
+
   const govs = getGovs(bento)
 
   const fetchVotes = useCallback(async () => {
@@ -44,8 +46,8 @@ const useVotes = () => {
           pid: number
         }) => {
           if(pid === 0) return
-
-          let vote = await getCastingVoteByContract(govContract, block)
+          // @ts-ignore
+          let vote = await getCastingVoteByContract(govContract, await bento.web3.eth.getBlockNumber())
 
           vote.map( (_vote) => {
             votes.push({
@@ -59,13 +61,13 @@ const useVotes = () => {
     //console.log('votes:', votes)
     votes = votes.sort((vote1, vote2) => vote2.nowBentosInVote.toNumber() - vote1.nowBentosInVote.toNumber())
     setVotes(votes)
-  }, [account, bentoMinerContract, bento])
+  }, [account, bento])
 
   useEffect(() => {
-    if (bentoMinerContract) {
+    if (bento && account) {
       fetchVotes()
     }
-  }, [account, block, bentoMinerContract, setVotes, bento, govs])
+  }, [account, block, setVotes, bento, govs])
 
   return votes
 }

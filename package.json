@@ -1,6 +1,6 @@
 {
   "homepage": "https://TheDAS-designer.github.io/bento-frontend",
-  "name": "yam",
+  "name": "bento-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

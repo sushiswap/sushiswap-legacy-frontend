@@ -327,7 +327,7 @@ export const playerToGovTokens = async (bentoMiner, account) => {
 
   gov_locked = await bentoMiner.methods.playerToGovTokens(account).call()
   console.log(`gov_locked ${gov_locked}`)
-  if(gov_locked){
+  if (gov_locked) {
     return new BigNumber(gov_locked)
   } else {
     return new BigNumber(0)
@@ -397,18 +397,18 @@ export const withdrawBento = async (bentoken, bentoMiner, account, v_Bentos_with
 //     console.log('Approved receipt:', rst);
 //   })
 export const approveGovToken = async (tokenContract, govAddress, account, amount) => {
-    return tokenContract.methods
-      .approve(govAddress, new BigNumber(amount).times(new BigNumber(10).pow(18)))
-      .send({ from: account })
-      .then((rst) => {
-        console.log('Approved receipt:', rst);
+  return tokenContract.methods
+    .approve(govAddress, new BigNumber(amount).times(new BigNumber(10).pow(18)))
+    .send({ from: account })
+    .then((rst) => {
+      console.log('Approved receipt:', rst);
 
-        return true
-      })
-      .catch((e) => {
-        console.log(`failed to approve ${e} amount ${amount} govtoken ${govAddress} account ${account}`)
-        return false
-      })
+      return true
+    })
+    .catch((e) => {
+      console.log(`failed to approve ${e} amount ${amount} govtoken ${govAddress} account ${account}`)
+      return false
+    })
 }
 
 
@@ -470,17 +470,17 @@ export const getApyByPool = async (
 ) => {
 
   const govPrice = await getGovPriceInWeth(tokenContract, lpContract, wethContract)
- 
+
 
   const govAmount = await totalGovTokensLocked(govContract)
-  
+
 
   const bentoPrice = await getBentoPriceInWeth(bento.contracts.bento, bento.contracts.bentoLP, wethContract)
 
 
   const bp = await getBentoProduction(bento.contracts.bento, govContract)
 
-  if( !validateBigNumbers(govPrice, govAmount, bentoPrice, bp) ){
+  if (!validateBigNumbers(govPrice, govAmount, bentoPrice, bp)) {
     return {
       icon,
       name,
@@ -498,10 +498,10 @@ export const getApyByPool = async (
   }
 }
 
-const validateBigNumbers =  (...arr) => {
+const validateBigNumbers = (...arr) => {
   let flag = true
-  for( let i in arr){
-    if(arr[i].isNaN() || arr[i].isNegative() || arr[i].isZero() ){
+  for (let i in arr) {
+    if (arr[i].isNaN() || arr[i].isNegative() || arr[i].isZero()) {
       flag = false
       break
     }
@@ -592,11 +592,16 @@ export const getVoteObjectInfo = async (govContract, pid) => {
 
 export const getCastingVoteByContract = async (govContract, block) => {
 
-
   // get voteCreate Events
   const votesCreatedStream = await govContract.getPastEvents('voteCreated', { fromBlock: 0, toBlock: 'latest' })
-
-  let votesCreated = votesCreatedStream.map((event) => { if (event.returnValues && event.returnValues.endAtBlockNumber > block) return event.returnValues })
+  let votesCreated = votesCreatedStream.filter(
+     (event) => event.returnValues && event.returnValues.endAtBlockNumber > block
+  ).map(
+    (event) => {
+      return event.returnValues
+    }
+  )
+  console.log('votesCreated:', votesCreated)
   // get vote object
   votesCreated = await Promise.all(votesCreated.map(async (vote) => {
     let _vote = getVoteObjectInfo(govContract, vote.Proposalid)
@@ -604,7 +609,7 @@ export const getCastingVoteByContract = async (govContract, block) => {
       proposal_id: vote.Proposalid,
       originator: _vote.Originator,
       endAtBlockNumber: _vote.endAtBlockNumber,
-      nowBentosInVote: _vote.nowBentosInVote? new BigNumber(_vote.nowBentosInVote): new BigNumber(0),
+      nowBentosInVote: _vote.nowBentosInVote ? new BigNumber(_vote.nowBentosInVote) : new BigNumber(0),
       trueoptionVotes: _vote.trueoptionVotes,
       falseOptionVotes: _vote.falseOptionVotes,
       stateNow: _vote.stateNow,

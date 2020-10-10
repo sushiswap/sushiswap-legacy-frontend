@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { HashRouter as Router, Route, Switch,   } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import { UseWalletProvider } from 'use-wallet'
 import DisclaimerModal from './components/DisclaimerModal'
@@ -31,7 +31,8 @@ const App: React.FC = () => {
 
   return (
     <Providers>
-      <Router>
+      
+      <Router basename="/">
         <TopBar onPresentMobileMenu={handlePresentMobileMenu} />
         <MobileMenu onDismiss={handleDismissMobileMenu} visible={mobileMenu} />
         <Switch>
@@ -49,6 +50,7 @@ const App: React.FC = () => {
           </Route>
         </Switch>
       </Router>
+      
       <Disclaimer />
     </Providers>
   )
@@ -57,22 +59,6 @@ const App: React.FC = () => {
 const Providers: React.FC = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
-      {/* <UseWalletProvider
-        chainId={1}
-        connectors={{
-          //walletconnect: { rpcUrl: 'https://mainnet.eth.aragon.network/' },
-          walletconnect: { rpcUrl: 'https://api.infura.io/v1/jsonrpc/kovan' },
-        }}
-      >
-        <SushiProvider>
-          <TransactionProvider>
-            <FarmsProvider>
-              <ModalsProvider>{children}</ModalsProvider>
-            </FarmsProvider>
-          </TransactionProvider>
-        </SushiProvider>
-
-      </UseWalletProvider> */}
       <UseWalletProvider
         chainId={42}
         connectors={{
