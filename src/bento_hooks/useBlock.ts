@@ -24,7 +24,9 @@ const useBlock = () => {
 
     const interval = setInterval(async () => {
       const latestBlockNumber = await web3.eth.getBlockNumber()
+      
       if (block !== latestBlockNumber) {
+        // console.log('latestBlockNumber:', latestBlockNumber)
         // setBlock(latestBlockNumber)
       }
     }, 1000)
