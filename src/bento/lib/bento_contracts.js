@@ -1,8 +1,7 @@
 import BigNumber from 'bignumber.js/bignumber'
 import ERC20Abi from './abi/erc20.json'
 import BentoMinerAbi from './abi/ABI_BentoMiner.json'
-//ABI_NAPToken.json
-import ABI_NAPToken from './abi/ABI_NAPToken.json'
+import GovernorAlphaAbi from './abi/ABI_Comp_Gov.json'
 import BentoAbi from './abi/ABI_Bentoken.json'
 import UNIV2PairAbi from './abi/uni_v2_lp.json'
 import WETHAbi from './abi/weth_kovan.json'
@@ -32,9 +31,11 @@ export class Contracts {
         lpAddress: pool.lpAddresses[networkId],
         tokenAddress: pool.tokenAddresses[networkId],
         govAddress: pool.govAddresses[networkId],
+        originalGovAddress: pool.originalGovAddress[networkId],
         lpContract: new this.web3.eth.Contract(UNIV2PairAbi),
         govContract: new this.web3.eth.Contract(BentoMinerAbi),
         tokenContract: new this.web3.eth.Contract(ERC20Abi),
+        originalGovContract: new this.web3.eth.Contract(GovernorAlphaAbi),
       }),
     )
 
@@ -54,13 +55,14 @@ export class Contracts {
     setProvider(this.bentoMiner, contractAddresses.bentoMiner[networkId])
     setProvider(this.weth, contractAddresses.weth[networkId])
     this.pools.forEach(
-      ({ lpContract, lpAddress, tokenContract, tokenAddress, govContract, govAddress, pid }) => {
+      ({ lpContract, lpAddress, tokenContract, tokenAddress, govContract, govAddress, pid, originalGovContract, originalGovAddress }) => {
         if(pid === 0) {
           bentoLPAddress = lpAddress
         }
         setProvider(lpContract, lpAddress)
         setProvider(tokenContract, tokenAddress)
         setProvider(govContract, govAddress)
+        setProvider(originalGovContract, originalGovAddress)
       },
     )
 

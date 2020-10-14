@@ -98,6 +98,10 @@ export const supportedPools = [
       1: '',
       42: '0xeAD76d0E8902992420564F67F04Fb32232C27158'
     },
+    originalGovAddress: {
+      1: '',
+      42: '0x665a5f09716d63D9256934855b0CE2056a5C4Cf8'
+    },
     govAddresses: {
       1:'',
       42: '0xfB9e1591f67d4f9c32995252aEfe8A6EE798fAd7',
@@ -117,6 +121,10 @@ export const supportedPools = [
       1: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
       42: '0xb4a94DA855Da0B1174Bf10E9900D7001332C01Dd'
     },
+    originalGovAddress: {
+      1: '',
+      42: '0x665a5f09716d63D9256934855b0CE2056a5C4Cf8'
+    },
     govAddresses: {
       1:'',
       42: '0xfB9e1591f67d4f9c32995252aEfe8A6EE798fAd7',
@@ -125,6 +133,29 @@ export const supportedPools = [
     symbol: 'NAP',
     tokenSymbol: 'BENTO',
     icon: '🥮',
+  },
+  {
+    pid: 1,
+    lpAddresses: {
+      1: '',
+      42: '0x4268A742ae9bA78B07d1679665B208392f63f746'
+    },
+    tokenAddresses: {
+      1: '',
+      42: '0x61460874a7196d6a22D1eE4922473664b3E95270'
+    },
+    originalGovAddress: {
+      1: '',
+      42: '0x665a5f09716d63D9256934855b0CE2056a5C4Cf8'
+    },
+    govAddresses: {
+      1:'',
+      42: '0xfB9e1591f67d4f9c32995252aEfe8A6EE798fAd7',
+    },
+    name: 'COMP',
+    symbol: 'COMP',
+    tokenSymbol: 'BENTO',
+    icon: '🍤',
   },
   
   

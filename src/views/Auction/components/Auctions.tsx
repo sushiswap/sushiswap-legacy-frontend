@@ -15,11 +15,10 @@ import useSushi from '../../../hooks/useSushi'
 import { getEarned, getMasterChefContract } from '../../../sushi/utils'
 import { bnToDec } from '../../../utils'
 import { useI18n  } from 'use-i18n';
-import useModal from '../../../hooks/useModal'
-import useStake from '../../../hooks/useStake'
 import Card, { GreyCard, LightCard } from './Card'
-import { Auction } from '../../../contexts/Auctions'
-import useAuctions from '../../../hooks/useAuctions'
+//import { Auction } from '../../../contexts/Auctions'
+import {default as useAuctions, Auction} from '../../../bento_hooks/useAuctions'
+import { getBalanceNumber } from '../../../utils/formatBalance'
 
 
 interface AuctionList extends Auction, StakedValue {
@@ -27,66 +26,32 @@ interface AuctionList extends Auction, StakedValue {
 }
 
 const Auctions: React.FC = () => {
-  
-  const [auctions] = useAuctions()
+
   const { account } = useWallet()
   const stakedValue = useAllStakedValue()
 
-  const sushiIndex = auctions.findIndex(
-    ({ tokenSymbol }) => tokenSymbol === 'SUSHI',
-  )
-
-  const sushiPrice =
-    sushiIndex >= 0 && stakedValue[sushiIndex]
-      ? stakedValue[sushiIndex].tokenPriceInWeth
-      : new BigNumber(0)
-
-  const BLOCKS_PER_YEAR = new BigNumber(2336000)
-  const SUSHI_PER_BLOCK = new BigNumber(1000)
-
-  const rows = auctions.reduce<AuctionList[][]>(
-    (farmRows, farm, i) => {
-      const farmWithStakedValue = {
-        ...farm,
-        ...stakedValue[i],
-        apy: stakedValue[i]
-          ? sushiPrice
-              .times(SUSHI_PER_BLOCK)
-              .times(BLOCKS_PER_YEAR)
-              .times(stakedValue[i].poolWeight)
-              .div(stakedValue[i].totalWethValue)
-          : null,
-      }
-      const newFarmRows = [...farmRows]
-      if (newFarmRows[newFarmRows.length - 1].length === 3) {
-        newFarmRows.push([farmWithStakedValue])
-      } else {
-        newFarmRows[newFarmRows.length - 1].push(farmWithStakedValue)
-      }
-      return newFarmRows
-    },
-    [[]],
-  )
+  const auctions = useAuctions()
+  if(auctions)console.log('auctions:', auctions)
 
   return (
     <Box>
-    {/* {!!rows[0].length ? ( */}
-          {/* <StyledRow key={0}> */}
+    {!!auctions.length ? auctions.map((auction, i) => ( 
+          <StyledRow key={i}> 
               <React.Fragment>
-                <AuctionCard auction={rows[0][0]} />
+                <AuctionDetails auction={auction} />
               </React.Fragment>
-          {/* </StyledRow> */}
-      {/* ) : (
+          </StyledRow> 
+       )) : (
         <StyledLoadingWrapper>
           <Loader text="Cooking the rice ..." />
         </StyledLoadingWrapper>
-      )} */}
+      )} 
     </Box>
   )
 }
 
 interface PositionCardProps {
-  auction: AuctionList
+  auction: Auction
 }
 
 const AuctionCard: React.FC<PositionCardProps> = ({ auction }) => {
@@ -128,15 +93,17 @@ const AuctionCard: React.FC<PositionCardProps> = ({ auction }) => {
 
 
   return (
-    <Box>
-      <AuctionDetails />
-      <AuctionDetails />
-      </Box>
+     <Box>
+      {/* <AuctionDetails />
+     <AuctionDetails /> */}
+     </Box>
   )
 }
 
-
-const AuctionDetails: React.FC = ({ }) => {
+interface AuctionDetailsContent {
+  auction: Auction
+}
+const AuctionDetails: React.FC<AuctionDetailsContent> = ({auction} :AuctionDetailsContent) => {
   const t = useI18n();
   const [showMore, setShowMore] = useState(true)
   const poolActive = true
@@ -152,6 +119,7 @@ const AuctionDetails: React.FC = ({ }) => {
     }
   }, [showMore, arrow])
 
+
   return (
 
     <StyledPositionCard>
@@ -165,17 +133,17 @@ const AuctionDetails: React.FC = ({ }) => {
                 target="_blank"
                 href="https://uniswap.info/pair/0xce84867c3c02b05dc570d0135103d3fb9cc19433"
               >
-                COMP-IP 123
+              {auction.auctionName}
               </StyledLink>
             </RowFixed>
             <RowFixed gap="2px">
-                <StyledText>1231 BENTO </StyledText>
+                <StyledText>{auction.totalBentoInVote} BENTO </StyledText>
             </RowFixed>
             <RowFixed gap="2px">
-                <StyledText>123 COMP </StyledText>
+                <StyledText>{getBalanceNumber(auction.totalVotes)} COMP </StyledText>
             </RowFixed>
             <RowFixed gap="2px">
-                <StyledText>1 hour 45 m 10 s </StyledText>
+  <StyledText>{auction.endAtBlockNumber}</StyledText>
             </RowFixed>
 
             <RowFixed gap="0px">
@@ -196,7 +164,7 @@ const AuctionDetails: React.FC = ({ }) => {
       <AutoColumn justify='flex-start'>
         <RowFixed gap="0px">
           <StyledText>
-            COMP-IP 123：是否加入BAT的抵押借贷功能？
+          {auction.auctionName}：{auction.proposalDescription}
           </StyledText>
         </RowFixed>
       </AutoColumn>
@@ -212,7 +180,18 @@ const AuctionDetails: React.FC = ({ }) => {
                   {t.auction_agree}
                 </StyledText>
                 <StyledBox>
-                <StyledBar height='10%'>
+                <StyledBar height={ 
+                  
+                  auction.auctionAgainstVotes === 0 
+                  
+                  ? (auction.auctionForVotes === 0 ? '0%': '100%')
+                  
+                  : (`${(auction.auctionForVotes
+                    /(auction.auctionForVotes + auction.auctionAgainstVotes)
+                    *100)
+                    .toLocaleString('en-US')
+                    .slice(0, -1)}%`)
+                  }>
 
                 </StyledBar>
                 </StyledBox>
@@ -236,7 +215,18 @@ const AuctionDetails: React.FC = ({ }) => {
                   {t.auction_disagree}
                 </StyledText>
                 <StyledBox>
-                <StyledBar height='90%'>
+                <StyledBar height={ 
+                  
+                  auction.auctionForVotes === 0 
+                  
+                  ? (auction.auctionAgainstVotes === 0 ? '0%': '100%')
+                  
+                  : (`${(auction.auctionAgainstVotes
+                    /(auction.auctionForVotes + auction.auctionAgainstVotes)
+                    *100)
+                    .toLocaleString('en-US')
+                    .slice(0, -1)}%`)
+                  }>
 
                 </StyledBar>
                 </StyledBox>

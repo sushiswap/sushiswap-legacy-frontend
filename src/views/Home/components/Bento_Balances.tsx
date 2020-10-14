@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import CountUp from 'react-countup'
 import styled, { AnyStyledComponent } from 'styled-components'
 import { useWallet } from 'use-wallet'
@@ -13,7 +13,7 @@ import useBentoSupply from '../../../bento_hooks/useBentoSupply'
 import usePendingRewards from '../../../bento_hooks/usePendingRewards'
 import useAllGovTokenStake from '../../../bento_hooks/useAllGovTokenStake'
 import useBlock from '../../../bento_hooks/useBlock'
-import {default as useVotes, IVote} from '../../../bento_hooks/useVotes'
+import { default as useVotes, IVote } from '../../../bento_hooks/useVotes'
 import useBentoBalance from '../../../bento_hooks/useBentoBalance'
 import useGovTokenStake from '../../../bento_hooks/useGovTokenStake'
 import useBentoTotalBurned from '../../../bento_hooks/useBentoTotalBurned'
@@ -83,6 +83,15 @@ const Balances: React.FC = () => {
   // const napSupply = useGovTokenStake()
   const govRows = useAllGovTokenStake()
   const votes = useVotes()
+  const [val, setVal] = useState('')
+  const handleChange = useCallback(
+    (e: React.FormEvent<HTMLInputElement>) => {
+      setVal(e.currentTarget.value)
+    },
+    [setVal],
+  )
+
+
   return (
     <>
       <StyledWrapper>
@@ -229,6 +238,21 @@ const Balances: React.FC = () => {
                 </React.Fragment>
               ))}
 
+              <StyledAuctionEntry>
+                <StyledAuctionEntryName>
+                  <Label text="vote id" />
+                </StyledAuctionEntryName>
+                <Spacer></Spacer>
+                <StyledAuctionEntryContent>
+                  <input onChange={handleChange} />
+                </StyledAuctionEntryContent>
+                <Spacer size="sm"></Spacer>
+                <StyledAuctionEntryContent>
+                  <Button onClick={() => {
+                    govLaunchVote(bento, val, account)
+                  }} text="launch vote"/>
+                </StyledAuctionEntryContent>
+              </StyledAuctionEntry>
             </StyledAuctionEntrys>
           </CardContent>
           <Footnote>
@@ -252,23 +276,23 @@ export interface Vote {
   vote: IVote
 }
 
-const Vote: React.FC<Vote> = ({vote}) => {
+const Vote: React.FC<Vote> = ({ vote }) => {
   return (
     <>
-    <StyledAuctionEntry>
-      <StyledAuctionEntryName>
-        <Label text={`${vote.name} ${vote.proposal_id}`} />
-      </StyledAuctionEntryName>
-      <Spacer></Spacer>
-      <StyledAuctionEntryContent>
-        <Label text="$BENTO"></Label>
-      </StyledAuctionEntryContent>
+      <StyledAuctionEntry>
+        <StyledAuctionEntryName>
+          <Label text={`${vote.name} ${vote.proposal_id}`} />
+        </StyledAuctionEntryName>
+        <Spacer></Spacer>
+        <StyledAuctionEntryContent>
+          <Label text="$BENTO"></Label>
+        </StyledAuctionEntryContent>
+        <Spacer size="sm"></Spacer>
+        <StyledAuctionEntryContent>
+          <Label text={getBalanceNumber(vote.nowBentosInVote).toString()} />
+        </StyledAuctionEntryContent>
+      </StyledAuctionEntry>
       <Spacer size="sm"></Spacer>
-      <StyledAuctionEntryContent>
-        <Label text={getBalanceNumber(vote.nowBentosInVote).toString()} />
-      </StyledAuctionEntryContent>
-    </StyledAuctionEntry>
-    <Spacer size="sm"></Spacer>
     </>
   )
 }

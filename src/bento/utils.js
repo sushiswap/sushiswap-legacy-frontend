@@ -79,6 +79,8 @@ export const getGovs = (bento) => {
         lpContract,
         govAddress,
         govContract,
+        originalGovContract,
+        originalGovAddress,
       }) => ({
         pid,
         id: symbol,
@@ -91,6 +93,8 @@ export const getGovs = (bento) => {
         tokenAddress,
         tokenSymbol,
         tokenContract,
+        originalGovContract,
+        originalGovAddress,
         earnToken: 'bento',
         earnTokenAddress: bento.contracts.bento.options.address,
         icon,
@@ -595,7 +599,7 @@ export const getCastingVoteByContract = async (govContract, block) => {
   // get voteCreate Events
   const votesCreatedStream = await govContract.getPastEvents('voteCreated', { fromBlock: 0, toBlock: 'latest' })
   let votesCreated = votesCreatedStream.filter(
-     (event) => event.returnValues && event.returnValues.endAtBlockNumber > block
+    (event) => event.returnValues && event.returnValues.endAtBlockNumber > block
   ).map(
     (event) => {
       return event.returnValues
@@ -628,7 +632,8 @@ export const govCastVote = async (bentoMiner, id, account) => {
 }
 
 //test launchvote
-export const govLaunchVote = async (bento, id, height, account) => {
+export const govLaunchVote = async (bento, id, account) => {
+  let height = await bento.web3.eth.getBlockNumber()
   return await bento.contracts.bentoMiner.methods.launchVote(id, height).send({ from: account })
 }
 
@@ -642,4 +647,83 @@ export const depositBento2Miner = async (bento, amount, account) => {
   console.log('approve log:', rlog)
   rlog = await bentoMiner.methods.deposit(amount).send({ from: account })
   console.log('deposit log:'.rlog)
+}
+
+/**
+ * get govContract voteCreated event
+ * @param {*} govContract 
+ * @param {*} block 
+ */
+export const getVoteCreatedEvent = async(govContract, block) => {
+  const votesCreatedStream = await govContract.getPastEvents('voteCreated', { fromBlock: 0, toBlock: 'latest' })
+  let votesCreated = votesCreatedStream.filter(
+    (event) => event.returnValues && event.returnValues.endAtBlockNumber > block
+  ).map(
+    (event) => {
+      return event.returnValues
+    }
+  )
+  return votesCreated
+}
+
+// export const getProposalByGov = async (gov, block) => {
+//   // 1. get voteCreate Events
+//   const govContract = gov.govContract
+//   const votesCreatedStream = await govContract.getPastEvents('voteCreated', { fromBlock: 0, toBlock: 'latest' })
+//   let votesCreated = votesCreatedStream.filter(
+//     (event) => event.returnValues && event.returnValues.endAtBlockNumber > block
+//   ).map(
+//     (event) => {
+//       return event.returnValues
+//     }
+//   )
+//   // 2. get govToken proposal
+//   let proposals = getProposals(gov, block)
+//   proposals = proposals.filter( p => {
+//     let flag = false
+//     for(let i in votesCreated){
+//       if(votesCreated[i].id === p.id){
+//           flag = true
+//           break
+//       }
+//     }
+//     return flag
+//   })
+// }
+/**
+ * get proposals event by gov
+ * @param {*} gov 
+ * @param {*} block 
+ */
+export const getProposalsEvent = async (originalGovContract, name, block) => {
+  let result = []
+  switch (name) {
+    case 'COMP':
+      result = await _getCompoundProposal(originalGovContract, block)
+      break;
+
+    default:
+      break;
+  }
+
+  return result
+}
+
+// get comp proposal
+const _getCompoundProposal = async (compGovContract, block) => {
+  let result
+  //fromBlock: block - 17280 - 5000
+  result = await compGovContract.getPastEvents('ProposalCreated', { fromBlock: 0, toBlock: 'latest' })
+  console.log('getPastEvents result:', result)
+  result = result.map((event) => event.returnValues)
+  // await Promise.all(result.filter(async (proposal) => {
+  //     let state
+  //     state = await compGovContract.methods.state(proposal.id).call()
+  //     if (state === 'Active' || state === 'Pending') {
+  //       return true
+  //     }
+  //     return false
+  //   })
+  // )
+  return result
 }
